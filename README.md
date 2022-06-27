@@ -490,7 +490,7 @@ InvalidActionException
 </td>
 <td>
 
-Ticks the game state when the player moves in the specified direction **one** square. The player's movement must be carried out first, <i>then</i> enemy movement.
+Ticks the game state when the player uses/attempts to use an item. The player's action (attempts/using an item) must be carried out first, <i>then</i> enemy movement.
 
 </td>
 <td>
@@ -513,7 +513,7 @@ public DungeonResponse tick(Direction movementDirection)
 
 </td>
 <td>
-Ticks the game state when the player uses/attempts to use an item. The player's action (attempts/using an item) must be carried out first, <i>then</i> enemy movement.
+Ticks the game state when the player moves in the specified direction **one** square. The player's movement must be carried out first, <i>then</i> enemy movement.
 </td>
 <td>
 N/A
