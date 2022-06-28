@@ -182,8 +182,7 @@ public class ExampleTests {
         return controller.tick(Direction.RIGHT);
     }
 
-    private void assertBattleCalculations(String enemyType, BattleResponse battle, boolean enemyDies, String configFilePath)
-    {
+    private void assertBattleCalculations(String enemyType, BattleResponse battle, boolean enemyDies, String configFilePath) {
         List<RoundResponse> rounds = battle.getRounds();
         double playerHealth = Double.parseDouble(getValueFromConfigFile("player_health", configFilePath));
         double enemyHealth = Double.parseDouble(getValueFromConfigFile(enemyType + "_attack", configFilePath));
