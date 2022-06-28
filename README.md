@@ -19,6 +19,7 @@ This specification is broken into four parts:
 ## 0. Changelog
 
 - Tue 28 Jun 11:30am - Correct descriptions for `tick` overloads in interface, add note about keeping branches when squashing and fix formatting in link, add setup images
+- Tue 28 Jun 8:00pm - Fix two battle calculation tests in `ExampleTests`
 
 ## 1. Aims
 
