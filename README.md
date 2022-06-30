@@ -22,6 +22,7 @@ This specification is broken into four parts:
 - Tue 28 Jun 6pm - Replace `gameMode` parameter with `configName` in new game method i.e. `newGame(String dungeonName, String configName)`
 - Tue 28 Jun 8:00pm - Fix two battle calculation tests in `ExampleTests`
 - Wed 29 Jun 9:30pm - Fix front-end config selector in starter code
+- Thu 30 Jun 10:30pm - Add `player` to dungeon input entities
 
 ## 1. Aims
 
@@ -203,6 +204,7 @@ The `type` field will be a string that starts with one of the following prefixes
 
 | Entity | JSON Prefix | Creatable in Dungeon Map? |
 | ------ | ----------- | ------------------------- |
+| Player    | <code>player</code> | Yes |
 | Wall      | <code>wall</code> | Yes |
 | Exit      | <code>exit</code> | Yes |
 | Boulder   | <code>boulder</code> | Yes |
