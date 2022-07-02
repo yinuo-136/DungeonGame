@@ -24,6 +24,7 @@ This specification is broken into four parts:
 - Wed 29 Jun 9:30pm - Fix front-end config selector in starter code
 - Thu 30 Jun 10:30pm - Add `player` to dungeon input entities
 - Sat 2 Jul 12pm - Allies provide attack/defence bonuses
+- Sat 2 Jul 12:30pm - Add coverage extraction
 
 ## 1. Aims
 
