@@ -23,6 +23,7 @@ This specification is broken into four parts:
 - Tue 28 Jun 8:00pm - Fix two battle calculation tests in `ExampleTests`
 - Wed 29 Jun 9:30pm - Fix front-end config selector in starter code
 - Thu 30 Jun 10:30pm - Add `player` to dungeon input entities
+- Sat 2 Jul 12pm - Allies provide attack/defence bonuses
 
 ## 1. Aims
 
@@ -128,6 +129,8 @@ Enemy Health = Enemy Health - (Player Attack Damage / 5)
 ```
 
 If the Player's health is <= 0, then the Player dies, is removed from the game and the game is over. If the enemy's health is <= 0, then the enemy dies and is removed from the game. If after the above 'round', neither the Player nor the enemy is dead, the round repeats until either the Player or enemy is dead.
+
+In battles, allies provide an attack and defence bonus to the player.
 
 ### 3.6.1 Weapons in Battle
 
@@ -266,6 +269,8 @@ During automarking, we will be providing our own configuration files with each t
 
 | JSON Format                     | Description                                                                                                                                  |
 |---------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------|
+| `ally_attack`                  | Attack bonus each ally gives to the player.                                                                                                  |
+| `ally_defence`                  | Reduction in effect of enemy attack damage each ally gives to the player.                                                                                                  |
 | `bribe_radius`                  | Radius in which a mercenary can be bribed.                                                                                                   |
 | `bribe_amount`                  | Amount of gold required to bribe a mercenary.                                                                                                |
 | `bomb_radius`                   | Blast radius of bomb.                                                                                                                        |
