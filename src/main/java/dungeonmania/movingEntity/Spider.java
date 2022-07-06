@@ -8,6 +8,7 @@ public class Spider implements Moving {
     private boolean isAlive = true;
     private double health;
     private int damage;
+    private SpiderMovingState currentState = new CircleDirection(this); 
     
     public Spider(Position position, double health, int damage) {
         this.position = position;
@@ -16,7 +17,7 @@ public class Spider implements Moving {
     }
     
     public void move() {
-        // TODO Auto-generated method stub
+        
     }
     
     @Override
@@ -30,5 +31,8 @@ public class Spider implements Moving {
         return position;
     }
     
+    public void setCurrentState(SpiderMovingState state) {
+        currentState = state;
+    }
 }
     
