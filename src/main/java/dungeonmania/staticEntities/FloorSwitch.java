@@ -9,6 +9,7 @@ public class FloorSwitch {
     public FloorSwitch(int x, int y) {
         this.pos = new Position(x, y);
         //TODO: init the isTrigger.
+        this.isTriggered = false;
     }
 
     public Position getPos() {

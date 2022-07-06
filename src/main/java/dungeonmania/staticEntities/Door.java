@@ -21,8 +21,10 @@ public class Door {
         return isOpen;
     }
 
-    public void Open() {
-        this.isOpen = true;
+    public void Open(int key) {
+        if (key == this.key){
+            this.isOpen = true; 
+        }
     }
 
     public int getKey() {
