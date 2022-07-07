@@ -66,8 +66,8 @@ public class PlayerTests {
     @Test
     @DisplayName("Tests if player spawns with correct Health")
     public void PlayerTestHealth() {
-        double defaultHealth = 5;
-        double newHealth = 10;
+        double defaultHealth = 10;
+        double newHealth = 20;
         Player player = new Player(0,0);
         double health = player.getHealth();
 
@@ -93,7 +93,7 @@ public class PlayerTests {
     @Test
     @DisplayName("Tests if player's health is set to correct value")
     public void PlayerTestSetHealth() {
-        double newHealth = 10;
+        double newHealth = 20;
         Player player = new Player(0,0);
 
         player.setHealth(newHealth);
@@ -105,7 +105,7 @@ public class PlayerTests {
     @Test
     @DisplayName("Tests if player's health reduces by the correct amount")
     public void PlayerTestReduceHealth() {
-        double newHealth = 10;
+        double newHealth = 20;
         double reduce = 5;
         Player player = new Player(0,0, newHealth);
 
@@ -227,7 +227,7 @@ public class PlayerTests {
     @Test
     @DisplayName("Tests if player identifies correctly it is alive")
     public void PlayerTestAlive(){
-        double newHealth = 10;
+        double newHealth = 20;
         Player player = new Player(0,0, newHealth);
 
         assertTrue(player.isAlive());
@@ -241,7 +241,7 @@ public class PlayerTests {
     @Test
     @DisplayName("Tests if player correctly identifies correctly it is alive")
     public void PlayerTestDead(){
-        double newHealth = -10;
+        double newHealth = -20;
         Player player = new Player(0,0, newHealth);
 
         assertFalse(player.isAlive());
