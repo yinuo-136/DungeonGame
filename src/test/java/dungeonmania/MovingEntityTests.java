@@ -108,7 +108,7 @@ public class MovingEntityTests {
 
         Position startMPos = new Position(2, 2);
         Position startPPos = new Position(5, 2);
-        Mercenary mercenary = new Mercenary(startMPos, 10, 0);
+        Mercenary mercenary = new Mercenary(startMPos, 10, 0, 1);
         Player player = new Player(startPPos, 10, 0);
         mercenary.move(player);
         Position expectMPos = new Position(3, 2);
@@ -122,6 +122,6 @@ public class MovingEntityTests {
     @Test
     @DisplayName("Test bribe Mercenary")
     public void testBribeMercenary(){
-        
+
     }
 }

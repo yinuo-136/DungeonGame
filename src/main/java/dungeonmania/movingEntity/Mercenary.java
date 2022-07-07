@@ -5,7 +5,7 @@ import dungeonmania.util.Position;
 
 public class Mercenary implements Moving {
     private Position position;
-    private boolean isAlive = true;
+    //private boolean isAlive = true;
     private double health;
     private int damage;
     private MercenaryMovingStrategy currentState = new NotBribedStrategy();
@@ -24,7 +24,10 @@ public class Mercenary implements Moving {
     
     @Override
     public void attack(Player player) {
-        // TODO Auto-generated method stub
+        while(player.isAlive() || this.isAlive()) {
+            player.setHealth(player.getHealth() - this.damage);
+            this.setHealth(this.getHealth() - player.getDamage());
+        }
     }
 
     @Override
@@ -36,6 +39,25 @@ public class Mercenary implements Moving {
     public boolean bribe(int bribeAmount) {
         if (bribeAmount >= costToBribe) {
             currentState = new BribedStrategy();
+            return true;
+        }
+        return false;
+    }
+
+    public double getHealth() {
+        return health;
+    }
+
+    public void setHealth(double health) {
+        this.health = health;
+    }
+
+    public int getDamage() {
+        return damage;
+    }
+
+    public boolean isAlive() {
+        if (this.getHealth() > 0){
             return true;
         }
         return false;

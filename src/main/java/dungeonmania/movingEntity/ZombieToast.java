@@ -10,15 +10,15 @@ import dungeonmania.util.Position;
 
 public class ZombieToast implements Moving {
     private double health;
-    private int attackDamage;
+    private int damage;
     private Position position;
-    private boolean isAlive = true;
+    //private boolean isAlive = true;
     private List<Direction> directions = Arrays.asList(Direction.DOWN, Direction.UP, Direction.LEFT, Direction.RIGHT);
     
-    public ZombieToast(Position position, double health, int attackDamage) {
+    public ZombieToast(Position position, double health, int damage) {
         this.position = position;
         this.health = health;
-        this.attackDamage = attackDamage;
+        this.damage = damage;
     }
 
     public void move() {
@@ -30,7 +30,11 @@ public class ZombieToast implements Moving {
 
     @Override
     public void attack(Player player) {
-        
+        while(player.isAlive() || this.isAlive()) {
+            player.setHealth(player.getHealth() - this.damage);
+            this.setHealth(this.getHealth() - player.getDamage());
+        }
+        // then remove the player or the enemy depend on who died first.
     }
 
     @Override
@@ -43,12 +47,19 @@ public class ZombieToast implements Moving {
         return health;
     }
 
+    public void setHealth(double health) {
+        this.health = health;
+    }
+
     public int getDamage() {
-        return attackDamage;
+        return damage;
     }
 
     public boolean isAlive() {
-        return isAlive;
+        if (this.getHealth() > 0){
+            return true;
+        }
+        return false;
     }
 
     
