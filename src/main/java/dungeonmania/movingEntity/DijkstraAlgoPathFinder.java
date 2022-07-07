@@ -5,7 +5,7 @@ import java.util.LinkedList;
 
 import dungeonmania.util.Direction;
 
-public class DijkstraAlgoPathFinder {
+// public class DijkstraAlgoPathFinder {
     //dijkstra's algorithm
     // public static void findPath(int[][] map, int startX, int startY, int endX, int endY) {
     //     int[][] dist = new int[map.length][map[0].length];
@@ -42,8 +42,8 @@ public class DijkstraAlgoPathFinder {
     //     }
     //     System.out.println("(" + x + ", " + y + ")");
     // }
- 
-public static class pathUnweighted {
+// } 
+public class DijkstraAlgoPathFinder {
  
     // Driver Program
     public static void main(String args[])
@@ -173,4 +173,4 @@ public static class pathUnweighted {
         return false;
     }
 }
-}
+
