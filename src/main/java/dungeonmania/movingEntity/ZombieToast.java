@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import dungeonmania.player.Player;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
@@ -32,7 +33,7 @@ public class ZombieToast implements Moving {
     public void attack(Player player) {
         while(player.isAlive() || this.isAlive()) {
             player.setHealth(player.getHealth() - this.damage);
-            this.setHealth(this.getHealth() - player.getDamage());
+            this.setHealth(this.getHealth() - player.getAttack());
         }
         // then remove the player or the enemy depend on who died first.
     }

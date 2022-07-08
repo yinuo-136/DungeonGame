@@ -1,5 +1,6 @@
 package dungeonmania.movingEntity;
 
+import dungeonmania.player.Player;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
@@ -26,7 +27,7 @@ public class Spider implements Moving {
     public void attack(Player player) {
         while(player.isAlive() || this.isAlive()) {
             player.setHealth(player.getHealth() - this.damage);
-            this.setHealth(this.getHealth() - player.getDamage());
+            this.setHealth(this.getHealth() - player.getAttack());
         }
     }
 

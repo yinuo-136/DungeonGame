@@ -1,5 +1,6 @@
 package dungeonmania.movingEntity;
 
+import dungeonmania.player.Player;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
