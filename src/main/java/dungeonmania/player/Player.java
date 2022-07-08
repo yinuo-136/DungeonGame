@@ -4,7 +4,12 @@ import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class Player {
-    //TODO: Finish STUB
+    private static final double DEFAULT_HEALTH = 10;
+    private static final int DEFAULT_ATTACK = 5;
+
+    Position position;
+    int attack;
+    double health;
 
     /**
      * Creates a Player Object at a sepcificied location with default health and attack values.
@@ -14,8 +19,11 @@ public class Player {
      * 
      */
     public Player(Position position){
-        //TODO 
-        return; 
+        this.position = position;
+        attack = DEFAULT_ATTACK;
+        health = DEFAULT_HEALTH;
+
+        return;
     }
 
     /**
@@ -27,8 +35,11 @@ public class Player {
      * 
      */
     public Player(Position position, int attack){
-        //TODO 
-        return;         
+        this.position = position;
+        this.attack = attack;
+        health = DEFAULT_HEALTH;        
+
+        return;                  
     }
 
     /**
@@ -40,7 +51,10 @@ public class Player {
      * 
      */
     public Player(Position position, double health){
-        //TODO 
+        this.position = position;
+        attack = DEFAULT_ATTACK;
+        this.health = health;        
+
         return; 
     }
 
@@ -54,7 +68,10 @@ public class Player {
      * 
      */
     public Player(Position position, int attack, double health){
-        //TODO 
+        this.position = position;
+        this.attack = attack;
+        this.health = health;
+
         return; 
     }
 
@@ -64,8 +81,7 @@ public class Player {
      * @return Attack - Integer
      */
     public int getAttack(){
-        //TODO 
-        return 0; 
+        return attack; 
     }
 
     /**
@@ -74,7 +90,8 @@ public class Player {
      * @param attack
      */
     public void setAttack(int attack){
-        //TODO 
+        this.attack = attack;
+        
         return;
     }
 
@@ -83,28 +100,29 @@ public class Player {
      * 
      * @return Health - Integer
      */
-    public double getHealth(){
-        //TODO 
-        return 0;
+    public double getHealth(){ 
+        return health;
     }
     
     /**
      * Sets the Health to a specified value.
      * 
-     * @param Health
+     * @param health
      */
-    public void setHealth(double Health){
-        //TODO 
+    public void setHealth(double health){
+        this.health = health;
+
         return;
     }
     
     /**
      * Reduces the Health by a specified value.
      * 
-     * @param Health
+     * @param health
      */
-    public void reduceHealth(double Health){
-        //TODO 
+    public void reduceHealth(double health){
+        this.health -= health;
+
         return;
     }
 
@@ -114,8 +132,7 @@ public class Player {
      * @return Position - Position
      */
     public Position getPos(){
-        //TODO 
-        return new Position(0,0);
+        return position;
     }
 
     /**
@@ -125,7 +142,8 @@ public class Player {
      * @param y - Vertical Position 
      */
     public void setPos(int x, int y){
-        //TODO 
+        position = new Position(x, y);
+         
         return;
     }
 
@@ -135,7 +153,8 @@ public class Player {
      * @param position - Position (x and y)  
      */
     public void setPos(Position position){
-        //TODO 
+        this.position = position;
+
         return;
     }
     
@@ -145,7 +164,8 @@ public class Player {
      * @param direction
      */
     public void move(Direction direction){
-        //TODO 
+        position = position.translateBy(direction);
+
         return;
     }
     
@@ -158,7 +178,7 @@ public class Player {
      *      <code>false</code> otherwise.
      */
     public Boolean isAlive() {
-        //TODO 
-        return false;
+        if (health > 0) { return true; }
+        else { return false; }
     }
 }
