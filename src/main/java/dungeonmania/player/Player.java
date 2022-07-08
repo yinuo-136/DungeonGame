@@ -13,7 +13,7 @@ public class Player {
      * @param y     - Vertical Position
      * 
      */
-    public Player(int x, int y){
+    public Player(Position position){
         //TODO 
         return; 
     }
@@ -26,7 +26,7 @@ public class Player {
      * @param attack    - Attack of the player
      * 
      */
-    public Player(int x, int y, int attack){
+    public Player(Position position, int attack){
         //TODO 
         return;         
     }
@@ -39,7 +39,7 @@ public class Player {
      * @param health    - Health of the player
      * 
      */
-    public Player(int x, int y, double health){
+    public Player(Position position, double health){
         //TODO 
         return; 
     }
@@ -53,7 +53,7 @@ public class Player {
      * @param health   - Health of the player
      * 
      */
-    public Player(int x, int y, int attack, double health){
+    public Player(Position position, int attack, double health){
         //TODO 
         return; 
     }
