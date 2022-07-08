@@ -18,8 +18,8 @@ public class Player {
      * @param y     - Vertical Position
      * 
      */
-    public Player(int x, int y){
-        position = new Position(x, y);
+    public Player(Position position){
+        this.position = position;
         attack = DEFAULT_ATTACK;
         health = DEFAULT_HEALTH;
 
@@ -34,12 +34,12 @@ public class Player {
      * @param attack    - Attack of the player
      * 
      */
-    public Player(int x, int y, int attack){
-        position = new Position(x, y);
+    public Player(Position position, int attack){
+        this.position = position;
         this.attack = attack;
-        health = DEFAULT_HEALTH; 
-         
-        return;         
+        health = DEFAULT_HEALTH;        
+
+        return;                  
     }
 
     /**
@@ -50,11 +50,11 @@ public class Player {
      * @param health    - Health of the player
      * 
      */
-    public Player(int x, int y, double health){
-        position = new Position(x, y);
+    public Player(Position position, double health){
+        this.position = position;
         attack = DEFAULT_ATTACK;
-        this.health = health; 
-        
+        this.health = health;        
+
         return; 
     }
 
@@ -67,10 +67,10 @@ public class Player {
      * @param health   - Health of the player
      * 
      */
-    public Player(int x, int y, int attack, double health){
-        position = new Position(x, y);
+    public Player(Position position, int attack, double health){
+        this.position = position;
         this.attack = attack;
-        this.health = health; 
+        this.health = health;
 
         return; 
     }
