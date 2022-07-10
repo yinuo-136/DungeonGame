@@ -63,5 +63,11 @@ public class Mercenary implements Moving {
         }
         return false;
     }
+
+    @Override
+    public String getType() {
+        // TODO Auto-generated method stub
+        return "Mercenary";	
+    }
     
 }

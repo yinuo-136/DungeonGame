@@ -67,6 +67,12 @@ public class Spider implements Moving {
     public void setHealth(double health) {
         this.health = health;
     }
+
+    @Override
+    public String getType() {
+        // TODO Auto-generated method stub
+        return "Spider";
+    }
     
 }
     

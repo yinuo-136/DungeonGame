@@ -7,4 +7,5 @@ import dungeonmania.util.Position;
 public interface Moving {
     public void attack(Player player);
     public Position getPosition();
+    public String getType();
 }
