@@ -2,6 +2,7 @@ package dungeonmania.movingEntity;
 
 import dungeonmania.Entity;
 import dungeonmania.player.Player;
+import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
@@ -13,12 +14,11 @@ public class Spider extends Entity implements Moving {
     private double health;
     private int damage;
     private SpiderMovingState currentState = new CircleDirection(this); 
+    private String type = "spider";
     
-    public Spider(Position position, double health, int damage, String id) {
+    public Spider(Position position, String id) {
         this.position = position;
         this.spawnPosition = position;
-        this.health = health;
-        this.damage = damage;
         this.id = id;
     }
     
@@ -74,5 +74,17 @@ public class Spider extends Entity implements Moving {
     public String getId() {
         return id;
     }
+
+    public String getType() {
+        return type;
+    }
+
+    @Override
+    public EntityResponse getEntityResponse() {
+        EntityResponse response = new EntityResponse(id, type, position, false);
+        return response;
+    }
+
+    
 }
     

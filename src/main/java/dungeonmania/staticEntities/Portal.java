@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dungeonmania.Entity;
+import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Position;
 
 public class Portal extends Entity {
@@ -11,6 +12,7 @@ public class Portal extends Entity {
     private static List<Portal> portalList = new ArrayList<>();
     private Position pos;
     private String colour;
+    private String type = "portal";
 
     public Portal(Position p, String colour, String id) {
         this.id = id;
@@ -32,4 +34,13 @@ public class Portal extends Entity {
     }
     
     //TODO:teleport to the other portal
+    public String getType() {
+        return type;
+    }
+
+    @Override
+    public EntityResponse getEntityResponse() {
+        EntityResponse response = new EntityResponse(id, type, pos, false);
+        return response;
+    }
 }

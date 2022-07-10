@@ -1,11 +1,13 @@
 package dungeonmania.staticEntities;
 
 import dungeonmania.Entity;
+import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Position;
 
 public class Boulder extends Entity {
     private String id;
     private Position position;
+    private String type = "boulder";
 
     public Boulder(Position position, String id) {
         this.position = position;
@@ -23,6 +25,16 @@ public class Boulder extends Entity {
 
     public String getId() {
         return id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    @Override
+    public EntityResponse getEntityResponse() {
+        EntityResponse response = new EntityResponse(id, type, position, false);
+        return response;
     }
 
     

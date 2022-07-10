@@ -1,6 +1,7 @@
 package dungeonmania.staticEntities;
 
 import dungeonmania.Entity;
+import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Position;
 
 public class ZombieToastSpawner extends Entity{
@@ -8,6 +9,7 @@ public class ZombieToastSpawner extends Entity{
     private Position pos;
     private static int Spawntime;
     private int RemainingTimeToSpawn;
+    private String type = "zombie_toast_spawner";
 
     public ZombieToastSpawner(Position p, String id) {
         this.id = id;
@@ -33,6 +35,16 @@ public class ZombieToastSpawner extends Entity{
 
     public String getId() {
         return id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    @Override
+    public EntityResponse getEntityResponse() {
+        EntityResponse response = new EntityResponse(id, type, pos, true);
+        return response;
     }
 
     //TODO: Spawn a zombie toast.

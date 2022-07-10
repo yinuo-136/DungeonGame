@@ -7,6 +7,7 @@ import java.util.Random;
 
 import dungeonmania.Entity;
 import dungeonmania.player.Player;
+import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
@@ -17,12 +18,11 @@ public class ZombieToast extends Entity implements Moving {
     private Position position;
     //private boolean isAlive = true;
     private List<Direction> directions = Arrays.asList(Direction.DOWN, Direction.UP, Direction.LEFT, Direction.RIGHT);
-    
-    public ZombieToast(Position position, double health, int damage, String id) {
+    private String type = "zombie_toast";
+
+    public ZombieToast(Position position, String id) {
         this.id = id;
         this.position = position;
-        this.health = health;
-        this.damage = damage;
     }
 
     public void move() {
@@ -68,6 +68,16 @@ public class ZombieToast extends Entity implements Moving {
 
     public String getId() {
         return id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    @Override
+    public EntityResponse getEntityResponse() {
+        EntityResponse response = new EntityResponse(id, type, position, false);
+        return response;
     }
     
     

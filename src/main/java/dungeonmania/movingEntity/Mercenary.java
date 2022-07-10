@@ -2,6 +2,7 @@ package dungeonmania.movingEntity;
 
 import dungeonmania.Entity;
 import dungeonmania.player.Player;
+import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
@@ -13,13 +14,10 @@ public class Mercenary extends Entity implements Moving {
     private int damage;
     private MercenaryMovingStrategy currentState = new NotBribedStrategy();
     private int costToBribe;
-    private String type = "player";
+    private String type = "mercenary";
 
-    public Mercenary(Position position, double health, int damage, int costToBribe, String id) {
+    public Mercenary(Position position, String id) {
         this.position = position;
-        this.health = health;
-        this.damage = damage;
-        this.costToBribe = costToBribe;
         this.id = id;
     }
     
@@ -71,5 +69,16 @@ public class Mercenary extends Entity implements Moving {
     public String getId() {
         return id;
     }
+
+    public String getType() {
+        return type;
+    }
+
+    @Override
+    public EntityResponse getEntityResponse() {
+        EntityResponse response = new EntityResponse(id, type, position, true);
+        return response;
+    }
+    
     
 }
