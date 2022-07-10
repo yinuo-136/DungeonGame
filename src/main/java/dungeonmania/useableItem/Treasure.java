@@ -1,5 +1,7 @@
 package dungeonmania.useableItem;
 
+import dungeonmania.Entity;
+
 public class Treasure implements Item{
 
     @Override

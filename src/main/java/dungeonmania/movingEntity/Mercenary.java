@@ -1,10 +1,12 @@
 package dungeonmania.movingEntity;
 
+import dungeonmania.Entity;
 import dungeonmania.player.Player;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class Mercenary implements Moving {
+public class Mercenary extends Entity implements Moving {
+    private String id;
     private Position position;
     //private boolean isAlive = true;
     private double health;
@@ -12,11 +14,12 @@ public class Mercenary implements Moving {
     private MercenaryMovingStrategy currentState = new NotBribedStrategy();
     private int costToBribe;
 
-    public Mercenary(Position position, double health, int damage, int costToBribe) {
+    public Mercenary(Position position, double health, int damage, int costToBribe, String id) {
         this.position = position;
         this.health = health;
         this.damage = damage;
         this.costToBribe = costToBribe;
+        this.id = id;
     }
     
     public void move(Player player) {
@@ -62,6 +65,10 @@ public class Mercenary implements Moving {
             return true;
         }
         return false;
+    }
+
+    public String getId() {
+        return id;
     }
     
 }

@@ -1,5 +1,6 @@
 package dungeonmania.useableItem.Potion;
 
+import dungeonmania.Entity;
 import dungeonmania.useableItem.Item;
 
 public abstract class Potion implements Item{

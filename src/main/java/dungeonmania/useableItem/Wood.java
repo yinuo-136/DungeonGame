@@ -1,5 +1,7 @@
 package dungeonmania.useableItem;
 
+import dungeonmania.Entity;
+
 public class Wood implements Item{
 
     @Override

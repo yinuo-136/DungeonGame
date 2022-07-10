@@ -17,7 +17,7 @@ public class PlayerTests {
     @Test
     @DisplayName("Test whether the player spawns at correct position")
     public void PlayerTestSpawnLocation() {
-        Player player = new Player(defaultPosition);
+        Player player = new Player(defaultPosition, "1");
         Position position = player.getPos();
 
         assertEquals(position, new Position(0, 0));
@@ -43,7 +43,7 @@ public class PlayerTests {
     public void PlayerTestAttack() {
         int defaultAttack = 5;
         int newAttack = 10;
-        Player player = new Player(defaultPosition);
+        Player player = new Player(defaultPosition, "1");
         int attack = player.getAttack();
 
         assertEquals(attack, defaultAttack);
@@ -70,7 +70,7 @@ public class PlayerTests {
     public void PlayerTestHealth() {
         double defaultHealth = 10;
         double newHealth = 20;
-        Player player = new Player(defaultPosition);
+        Player player = new Player(defaultPosition, "1");
         double health = player.getHealth();
 
         assertEquals(health, defaultHealth);
@@ -96,7 +96,7 @@ public class PlayerTests {
     @DisplayName("Tests if player's health is set to correct value")
     public void PlayerTestSetHealth() {
         double newHealth = 20;
-        Player player = new Player(defaultPosition);
+        Player player = new Player(defaultPosition, "1");
 
         player.setHealth(newHealth);
         double health = player.getHealth();
@@ -121,7 +121,7 @@ public class PlayerTests {
     @DisplayName("Tests if player's position is set to correct value")
     public void PlayerTestSetPosition() {
         Position newPosition = new Position(1, 1);
-        Player player = new Player(defaultPosition);
+        Player player = new Player(defaultPosition, "1");
 
         player.setPos(newPosition);
         Position position = player.getPos();
@@ -138,7 +138,7 @@ public class PlayerTests {
     @Test
     @DisplayName("Tests if player moves up")
     public void PlayerTestMoveUp() {
-        Player player = new Player(defaultPosition);
+        Player player = new Player(defaultPosition, "1");
 
         player.move(Direction.UP);
         Position position = player.getPos();
@@ -155,7 +155,7 @@ public class PlayerTests {
     @Test
     @DisplayName("Tests if player moves left")
     public void PlayerTestMoveLeft() {
-        Player player = new Player(defaultPosition);
+        Player player = new Player(defaultPosition, "1");
 
         player.move(Direction.LEFT);
         Position position = player.getPos();
@@ -173,7 +173,7 @@ public class PlayerTests {
     @Test
     @DisplayName("Tests if player moves right")
     public void PlayerTestMoveRight() {
-        Player player = new Player(defaultPosition);
+        Player player = new Player(defaultPosition, "1");
 
         player.move(Direction.RIGHT);
         Position position = player.getPos();
@@ -190,7 +190,7 @@ public class PlayerTests {
     @Test
     @DisplayName("Tests if player moves down")
     public void PlayerTestMoveDown() {
-        Player player = new Player(defaultPosition);
+        Player player = new Player(defaultPosition, "1");
 
         player.move(Direction.DOWN);
         Position position = player.getPos();
@@ -207,7 +207,7 @@ public class PlayerTests {
     @Test
     @DisplayName("Tests if player moves correctly")
     public void PlayerTestMove() {
-        Player player = new Player(defaultPosition);
+        Player player = new Player(defaultPosition, "1");
 
         player.move(Direction.DOWN);
         player.move(Direction.DOWN);

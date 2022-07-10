@@ -13,9 +13,6 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.google.gson.JsonParser;
-
-
 
 public class DungeonManiaController {
     public String getSkin() {
@@ -42,10 +39,14 @@ public class DungeonManiaController {
 
     /**
      * /game/new
-     * @throws IOException
      */
-    public DungeonResponse newGame(String dungeonName, String configName) throws IllegalArgumentException, IOException {
-        String jsonContent = FileLoader.loadResourceFile(dungeonName);
+    public DungeonResponse newGame(String dungeonName, String configName) throws IllegalArgumentException{
+        String jsonContent = null;
+        try {
+            jsonContent = FileLoader.loadResourceFile(dungeonName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         JSONObject dungeonContent = new JSONObject(jsonContent);
         JSONArray arr = dungeonContent.getJSONArray("entities");
         for (int i = 0; i < arr.length(); i++){
@@ -53,10 +54,8 @@ public class DungeonManiaController {
         }
         return null;
     }
-    public static void main(String[] args) throws IllegalArgumentException, IOException {
-        DungeonManiaController c = new DungeonManiaController();
-        c.newGame("/dungeons/2_doors.json", "temp");
-    }
+
+    
     /**
      * /game/dungeonResponseModel
      */

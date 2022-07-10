@@ -1,14 +1,17 @@
 package dungeonmania.staticEntities;
 
+import dungeonmania.Entity;
 import dungeonmania.util.Position;
 
-public class ZombieToastSpawner {
+public class ZombieToastSpawner extends Entity{
+    private String id;
     private Position pos;
     private static int Spawntime;
     private int RemainingTimeToSpawn;
 
-    public ZombieToastSpawner(int x, int y) {
-        this.pos = new Position(x, y);  
+    public ZombieToastSpawner(Position p, String id) {
+        this.id = id;
+        this.pos = p;  
         RemainingTimeToSpawn = Spawntime;
     }
 
@@ -26,6 +29,10 @@ public class ZombieToastSpawner {
 
     public void setRemainingTimeToSpawn(int remainingTimeToSpawn) {
         RemainingTimeToSpawn = remainingTimeToSpawn;
+    }
+
+    public String getId() {
+        return id;
     }
 
     //TODO: Spawn a zombie toast.

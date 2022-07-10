@@ -1,10 +1,12 @@
 package dungeonmania.movingEntity;
 
+import dungeonmania.Entity;
 import dungeonmania.player.Player;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class Spider implements Moving {
+public class Spider extends Entity implements Moving {
+    private String id;
     private Position position;
     private Position spawnPosition;
     //private boolean isAlive = true;
@@ -12,11 +14,12 @@ public class Spider implements Moving {
     private int damage;
     private SpiderMovingState currentState = new CircleDirection(this); 
     
-    public Spider(Position position, double health, int damage) {
+    public Spider(Position position, double health, int damage, String id) {
         this.position = position;
         this.spawnPosition = position;
         this.health = health;
         this.damage = damage;
+        this.id = id;
     }
     
     public void move() {
@@ -68,5 +71,8 @@ public class Spider implements Moving {
         this.health = health;
     }
     
+    public String getId() {
+        return id;
+    }
 }
     

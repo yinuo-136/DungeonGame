@@ -1,21 +1,24 @@
 package dungeonmania.staticEntities;
 
+import dungeonmania.Entity;
 import dungeonmania.util.Position;
 
-public class Boulder {
-    private Position pos;
+public class Boulder extends Entity {
+    private String id;
+    private Position position;
 
-    public Boulder(int x, int y) {
-        this.pos = new Position(x, y);
+    public Boulder(Position position, String id) {
+        this.position = position;
+        this.id = id;
     }
 
     public Position getPos() {
-        return pos;
+        return position;
     }
 
     public void setPos(Position p){
         //TODO: Floor switch check before and after set
-        this.pos = p;
+        this.position = p;
     }
 
     
