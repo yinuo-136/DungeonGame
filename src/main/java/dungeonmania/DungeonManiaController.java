@@ -6,8 +6,7 @@ import dungeonmania.util.Direction;
 import dungeonmania.util.FileLoader;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -15,6 +14,9 @@ import org.json.JSONObject;
 
 
 public class DungeonManiaController {
+    private int DungeonCounter = 0;
+    private HashMap<String, DungeonInfo> infoMap = new HashMap<>();
+
     public String getSkin() {
         return "default";
     }
@@ -41,20 +43,34 @@ public class DungeonManiaController {
      * /game/new
      */
     public DungeonResponse newGame(String dungeonName, String configName) throws IllegalArgumentException{
+
+        //Create a new dungeon with unique id.
+        DungeonCounter = DungeonCounter + 1;
+        String dungeonId = Integer.toString(DungeonCounter);
+        DungeonInfo info = new DungeonInfo();
+        infoMap.put(dungeonId, info);
+
+        //read json from dungeonName
         String jsonContent = null;
         try {
-            jsonContent = FileLoader.loadResourceFile(dungeonName);
+            jsonContent = FileLoader.loadResourceFile("/dungeons/" + dungeonName + ".json");
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        //convert json into JSONObject
         JSONObject dungeonContent = new JSONObject(jsonContent);
-        JSONArray arr = dungeonContent.getJSONArray("entities");
-        for (int i = 0; i < arr.length(); i++){
-            System.out.println(arr.get(i));
-        }
+
+        //store entities from JSONOject into dungeonInfo
+        JSONArray arrEntities = dungeonContent.getJSONArray("entities");
+        
         return null;
     }
-
+    
+    public static void main(String[] args) {
+        DungeonManiaController c = new DungeonManiaController();
+        c.newGame("/dungeons/2_doors.json", "temp");
+    }
     
     /**
      * /game/dungeonResponseModel

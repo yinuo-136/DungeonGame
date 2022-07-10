@@ -21,5 +21,9 @@ public class Boulder extends Entity {
         this.position = p;
     }
 
+    public String getId() {
+        return id;
+    }
+
     
 }

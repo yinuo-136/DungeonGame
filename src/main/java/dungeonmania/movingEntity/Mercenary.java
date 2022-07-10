@@ -13,6 +13,7 @@ public class Mercenary extends Entity implements Moving {
     private int damage;
     private MercenaryMovingStrategy currentState = new NotBribedStrategy();
     private int costToBribe;
+    private String type = "player";
 
     public Mercenary(Position position, double health, int damage, int costToBribe, String id) {
         this.position = position;
