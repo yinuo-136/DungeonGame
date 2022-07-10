@@ -1,8 +1,8 @@
-package dungeonmania.useableItem.Potion;
+package dungeonmania.inventoryItem.Potion;
 
-import dungeonmania.useableItem.Item;
+import dungeonmania.inventoryItem.InvItem;
 
-public abstract class Potion implements Item{
+public abstract class Potion implements InvItem{
     int duration;
 
     public Potion(int duration) {
