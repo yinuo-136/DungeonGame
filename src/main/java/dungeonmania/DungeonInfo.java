@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import dungeonmania.collectableEntity.CollectableEntity;
+import dungeonmania.inventoryItem.Bomb;
 import dungeonmania.movingEntity.Mercenary;
 import dungeonmania.movingEntity.Spider;
 import dungeonmania.movingEntity.ZombieToast;
@@ -34,14 +35,14 @@ public class DungeonInfo {
             //get an id for that entity
             this.entityCounter = this.entityCounter + 1;
             String id = Integer.toString(this.entityCounter);
-            entityMap.put(id, DungeonInfo.createEntity(json, id));
+            entityMap.put(id, DungeonInfo.createEntity(json, id, this));
         }
     }
 
     //helper methods
 
     //create an entity class in terms of the type.
-    public static Entity createEntity(JSONObject json, String id){
+    public static Entity createEntity(JSONObject json, String id, DungeonInfo info){
         Entity newEntity;
         int x = (int) json.get("x");
         int y = (int) json.get("y");
@@ -99,16 +100,52 @@ public class DungeonInfo {
             default:
                 newEntity = new CollectableEntity(id, (String) json.get("type"), new Position(x, y));
         }
+        newEntity.setDungeonInfo(info);
         return newEntity;
     }
 
+    // get a list of entityResponse for controller to use
     public List<EntityResponse> getListEntityResponse() {
         List<EntityResponse> list = new ArrayList<>();
         for (Entity e: entityMap.values()) {
             list.add(e.getEntityResponse());
-            System.out.println(e.getType());
         }
 
         return list;
     } 
+
+    // set config
+    public void setConfigs(JSONObject config){
+        for (String keyString : config.keySet()){
+            int configValue = config.getInt(keyString);
+            DungeonInfo.setConfig(configValue, keyString);
+        }
+    }
+
+    public static void setConfig(int configValue, String configName){
+        switch(configName){
+            //TODO: more config values need to be init here.
+            case "bomb_radius":
+                Bomb.setRadius(configValue);
+                break;
+            case "bribe_amount":
+                Mercenary.setCostToBribe(configValue);
+                break;
+            case "bribe_radius":
+                Mercenary.setBribeRadius(configValue);
+                break;
+            case "zombie_spawn_rate":
+                ZombieToastSpawner.setSpawntime(configValue);
+                break;
+            case "mercenary_attack":
+                Mercenary.setDamage(configValue);
+                break;
+            case "mercenary_health":
+            case "spider_attack":
+            case "spider_health": 
+            case "player_attack":
+            case "player_health":           
+            default:
+        }
+    }
 }

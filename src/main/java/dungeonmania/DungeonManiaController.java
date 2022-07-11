@@ -75,6 +75,22 @@ public class DungeonManiaController {
         //get the list of entity response
         List<EntityResponse> entityResponses = info.getListEntityResponse();
 
+        //TODO: read and store the goals
+        JSONObject jsonGoals = dungeonContent.getJSONObject("goal-condition");
+
+        //read and set config file
+        try {
+            jsonContent = FileLoader.loadResourceFile("/configs/" + configName + ".json");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //convert json into JSONObject
+        JSONObject configContent = new JSONObject(jsonContent);
+
+        //set config
+        info.setConfigs(configContent);
+
         DungeonResponse response = new DungeonResponse(dungeonId, dungeonName, entityResponses, new ArrayList<ItemResponse>(), new ArrayList<BattleResponse>(), new ArrayList<String>(), ":exit");
 
         return response;
@@ -84,12 +100,8 @@ public class DungeonManiaController {
      * /game/dungeonResponseModel
      */
     public DungeonResponse getDungeonResponseModel() {
-        DungeonInfo info = infoMap.get(DungeonId);
-        //get the list of entity response
-        List<EntityResponse> entityResponses = info.getListEntityResponse();
-
-        DungeonResponse response = new DungeonResponse(DungeonId, DungeonName, entityResponses, new ArrayList<ItemResponse>(), new ArrayList<BattleResponse>(), new ArrayList<String>(), ":exit");
-        return response;
+        
+        return null;
     }
 
     /**
