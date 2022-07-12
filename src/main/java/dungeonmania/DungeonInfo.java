@@ -148,4 +148,24 @@ public class DungeonInfo {
             default:
         }
     }
+
+    public List<String> getEntitiesStringByPosition(Position pos) {
+        List<String> entities = new ArrayList<String>();
+        for (EntityResponse entity : this.getListEntityResponse()) {
+            if (entity.getPosition().equals(pos)) {
+                entities.add(entity.getType());
+            }
+        }
+        return entities;
+    }
+
+    public List<EntityResponse> getEntitiesByPosition(Position pos) {
+        List<EntityResponse> entities = new ArrayList<EntityResponse>();
+        for (EntityResponse entity : this.getListEntityResponse()) {
+            if (entity.getPosition().equals(pos)) {
+                entities.add(entity);
+            }
+        }
+        return entities;
+    }
 }

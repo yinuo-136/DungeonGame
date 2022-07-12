@@ -10,9 +10,9 @@ public class Spider extends Entity implements Moving {
     private String id;
     private Position position;
     private Position spawnPosition;
-    //private boolean isAlive = true;
+    private static double classHealth;
     private double health;
-    private int damage;
+    private static int damage;
     private SpiderMovingState currentState = new CircleDirection(this); 
     private String type = "spider";
     
@@ -20,6 +20,7 @@ public class Spider extends Entity implements Moving {
         this.position = position;
         this.spawnPosition = position;
         this.id = id;
+        this.health = classHealth;
     }
     
     public void move() {
@@ -71,13 +72,15 @@ public class Spider extends Entity implements Moving {
     public void setHealth(double health) {
         this.health = health;
     }
+
+    @Override
+    public String getType() {
+        // TODO Auto-generated method stub
+        return "Spider";
+    }
     
     public String getId() {
         return id;
-    }
-
-    public String getType() {
-        return type;
     }
 
     @Override
@@ -86,6 +89,11 @@ public class Spider extends Entity implements Moving {
         return response;
     }
 
+    @Override
+    public int getDamage() {
+        // TODO Auto-generated method stub
+        return damage;
+    }
     
 }
     

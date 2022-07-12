@@ -9,9 +9,11 @@ import dungeonmania.util.Position;
 public class Mercenary extends Entity implements Moving {
     private String id;
     private Position position;
-    //private boolean isAlive = true;
+    private static double classHealth;
     private double health;
     private static int damage;
+    private static int bribedDamage;
+    private static int bribedDefence;
     private MercenaryMovingStrategy currentState = new NotBribedStrategy();
     private static int costToBribe;
     private static int bribeRadius;
@@ -20,10 +22,11 @@ public class Mercenary extends Entity implements Moving {
     public Mercenary(Position position, String id) {
         this.position = position;
         this.id = id;
+        this.health = classHealth;
     }
     
     public void move(Player player) {
-        // TODO Auto-generated method stub
+        currentState.move();
     }
     
     @Override
@@ -43,6 +46,7 @@ public class Mercenary extends Entity implements Moving {
     public boolean bribe(int bribeAmount) {
         if (bribeAmount >= costToBribe) {
             currentState = new BribedStrategy();
+            damage = bribedDamage;
             return true;
         }
         return false;

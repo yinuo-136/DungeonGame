@@ -175,9 +175,6 @@
 //          *  wall   wall  wall  wall
 //          */
         
-//         DungeonResponse initialResponse = controller.newGame("d_battleTest_basicMercenary", configFile);
-//         int mercenaryCount = countEntityOfType(initialResponse, "mercenary");
-        
 //         assertEquals(1, countEntityOfType(initialResponse, "player"));
 //         assertEquals(1, mercenaryCount);
 //         return controller.tick(Direction.RIGHT);
@@ -191,10 +188,10 @@
 //         double enemyAttack = Double.parseDouble(getValueFromConfigFile(enemyType + "_attack", configFilePath));
 
 //         for (RoundResponse round : rounds) {
-//             assertEquals(round.getDeltaCharacterHealth(), enemyAttack / 10);
-//             assertEquals(round.getDeltaEnemyHealth(), playerAttack / 5);
-//             enemyHealth -= round.getDeltaEnemyHealth();
-//             playerHealth -= round.getDeltaCharacterHealth();
+//             assertEquals(round.getDeltaCharacterHealth(), -(enemyAttack / 10));
+//             assertEquals(round.getDeltaEnemyHealth(), -(playerAttack / 5));
+//             enemyHealth += round.getDeltaEnemyHealth();
+//             playerHealth += round.getDeltaCharacterHealth();
 //         }
 
 //         if (enemyDies) {
