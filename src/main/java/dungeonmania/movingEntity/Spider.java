@@ -62,7 +62,8 @@ public class Spider extends Entity implements Moving {
     public SpiderMovingState getCurrentState() {
         return currentState;
     }
-
+    
+    @Override
     public double getHealth() {
         return health;
     }
