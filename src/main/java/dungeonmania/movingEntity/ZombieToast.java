@@ -17,9 +17,10 @@ public class ZombieToast extends Entity implements Moving {
     private double health;
     private static int damage;
     private Position position;
-    private List<Direction> directions = Arrays.asList(Direction.DOWN, Direction.UP, Direction.LEFT, Direction.RIGHT);
+    //private List<Direction> directions = Arrays.asList(Direction.DOWN, Direction.UP, Direction.LEFT, Direction.RIGHT);
     private String type = "zombie_toast";
-    private List<String> movingConstrintItemList = Arrays.asList("Wall", "Boulder");
+    //private List<String> movingConstrintItemList = Arrays.asList("Wall", "Boulder");
+    private MercenaryMovingStrategy currentState = new RandomStrategy();
 
     public ZombieToast(Position position, String id) {
         this.id = id;
@@ -28,22 +29,7 @@ public class ZombieToast extends Entity implements Moving {
     }
 
     public void move() {
-        Random rand = new Random();
-        Direction randDirection = directions.get(rand.nextInt(directions.size()));
-        while (getEntitiesByPosition(position.translateBy(randDirection)).contains(movingConstrintItemList)) {
-            randDirection = directions.get(rand.nextInt(directions.size()));
-        }
-        position = position.translateBy(randDirection);
-    }
-
-    public List<String> getEntitiesByPosition(Position pos) {
-        List<String> entities = new ArrayList<String>();
-        for (EntityResponse entity : dungeonInfo.getListEntityResponse()) {
-            if (entity.getPosition().equals(pos)) {
-                entities.add(entity.getType());
-            }
-        }
-        return entities;
+        currentState.move(this);
     }
 
     @Override
@@ -57,7 +43,6 @@ public class ZombieToast extends Entity implements Moving {
 
     @Override
     public Position getPosition() {
-        
         return position;
     }
 
@@ -92,6 +77,18 @@ public class ZombieToast extends Entity implements Moving {
     public EntityResponse getEntityResponse() {
         EntityResponse response = new EntityResponse(id, type, position, false);
         return response;
+    }
+
+    @Override
+    public void setPosition(Position pos) {
+        
+        
+    }
+
+    @Override
+    public List<String> getEntitiesByPosition(Position pos) {
+        // TODO Auto-generated method stub
+        return getEntitiesByPosition(position);
     }
     
     

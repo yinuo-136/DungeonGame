@@ -1,5 +1,7 @@
 package dungeonmania.movingEntity;
 
+import java.util.List;
+
 import dungeonmania.Entity;
 import dungeonmania.player.Player;
 import dungeonmania.response.models.EntityResponse;
@@ -26,7 +28,7 @@ public class Mercenary extends Entity implements Moving {
     }
     
     public void move(Player player) {
-        currentState.move();
+        currentState.move(this);
     }
     
     @Override
@@ -95,6 +97,17 @@ public class Mercenary extends Entity implements Moving {
 
     public static void setBribeRadius(int bribeRadius) {
         Mercenary.bribeRadius = bribeRadius;
+    }
+
+    @Override
+    public List<String> getEntitiesByPosition(Position pos) {
+        // TODO Auto-generated method stub
+        return getEntitiesByPosition(position);
+    }
+
+    @Override
+    public void setPosition(Position pos) {
+        this.position = pos;
     }
     
     
