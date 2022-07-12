@@ -1,14 +1,19 @@
 package dungeonmania.staticEntities;
 
+import dungeonmania.Entity;
+import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Position;
 
-public class Door {
+public class Door extends Entity{
+    private String id;
     private Position pos;
     private boolean isOpen;
     private int key;
+    private String type = "door";
 
-    public Door(int x, int y, int key) {
-        this.pos = new Position(x, y);
+    public Door(Position position, int key, String id) {
+        this.id = id;
+        this.pos = position;
         this.isOpen = false;
         this.key = key;
     }
@@ -31,5 +36,18 @@ public class Door {
         return key;
     }
 
+    public String getId() {
+        return id;
+    }
+ 
+    public String getType() {
+        return type;
+    }
+
+    @Override
+    public EntityResponse getEntityResponse() {
+        EntityResponse response = new EntityResponse(id, type, pos, false);
+        return response;
+    }
     
 }

@@ -1,26 +1,32 @@
 package dungeonmania.movingEntity;
 
+import dungeonmania.Entity;
 import dungeonmania.player.Player;
+import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class Mercenary implements Moving {
+public class Mercenary extends Entity implements Moving {
+    private String id;
     private Position position;
-    //private boolean isAlive = true;
+    private static double classHealth;
     private double health;
-    private int damage;
+    private static int damage;
+    private static int bribedDamage;
+    private static int bribedDefence;
     private MercenaryMovingStrategy currentState = new NotBribedStrategy();
-    private int costToBribe;
+    private static int costToBribe;
+    private static int bribeRadius;
+    private String type = "mercenary";
 
-    public Mercenary(Position position, double health, int damage, int costToBribe) {
+    public Mercenary(Position position, String id) {
         this.position = position;
-        this.health = health;
-        this.damage = damage;
-        this.costToBribe = costToBribe;
+        this.id = id;
+        this.health = classHealth;
     }
     
     public void move(Player player) {
-        // TODO Auto-generated method stub
+        currentState.move();
     }
     
     @Override
@@ -40,6 +46,7 @@ public class Mercenary implements Moving {
     public boolean bribe(int bribeAmount) {
         if (bribeAmount >= costToBribe) {
             currentState = new BribedStrategy();
+            damage = bribedDamage;
             return true;
         }
         return false;
@@ -47,7 +54,7 @@ public class Mercenary implements Moving {
 
     public double getHealth() {
         return health;
-    }
+    }  
 
     public void setHealth(double health) {
         this.health = health;
@@ -55,6 +62,10 @@ public class Mercenary implements Moving {
 
     public int getDamage() {
         return damage;
+    }
+    
+    public static void setDamage(int damage) {
+        Mercenary.damage = damage;
     }
 
     public boolean isAlive() {
@@ -64,10 +75,27 @@ public class Mercenary implements Moving {
         return false;
     }
 
-    @Override
-    public String getType() {
-        // TODO Auto-generated method stub
-        return "Mercenary";	
+    public String getId() {
+        return id;
     }
+
+    public String getType() {
+        return type;
+    }
+
+    @Override
+    public EntityResponse getEntityResponse() {
+        EntityResponse response = new EntityResponse(id, type, position, true);
+        return response;
+    }
+
+    public static void setCostToBribe(int costToBribe) {
+        Mercenary.costToBribe = costToBribe;
+    }
+
+    public static void setBribeRadius(int bribeRadius) {
+        Mercenary.bribeRadius = bribeRadius;
+    }
+    
     
 }

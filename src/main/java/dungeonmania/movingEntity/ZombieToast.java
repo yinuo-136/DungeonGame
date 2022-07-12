@@ -5,28 +5,45 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import dungeonmania.Entity;
 import dungeonmania.player.Player;
+import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class ZombieToast implements Moving {
+public class ZombieToast extends Entity implements Moving {
+    private String id;
+    private static double classHealth;
     private double health;
-    private int damage;
+    private static int damage;
     private Position position;
-    //private boolean isAlive = true;
     private List<Direction> directions = Arrays.asList(Direction.DOWN, Direction.UP, Direction.LEFT, Direction.RIGHT);
-    
-    public ZombieToast(Position position, double health, int damage) {
+    private String type = "zombie_toast";
+    private List<String> movingConstrintItemList = Arrays.asList("Wall", "Boulder");
+
+    public ZombieToast(Position position, String id) {
+        this.id = id;
         this.position = position;
-        this.health = health;
-        this.damage = damage;
+        this.health = classHealth;
     }
 
     public void move() {
         Random rand = new Random();
         Direction randDirection = directions.get(rand.nextInt(directions.size()));
-        
+        while (getEntitiesByPosition(position.translateBy(randDirection)).contains(movingConstrintItemList)) {
+            randDirection = directions.get(rand.nextInt(directions.size()));
+        }
         position = position.translateBy(randDirection);
+    }
+
+    public List<String> getEntitiesByPosition(Position pos) {
+        List<String> entities = new ArrayList<String>();
+        for (EntityResponse entity : dungeonInfo.getListEntityResponse()) {
+            if (entity.getPosition().equals(pos)) {
+                entities.add(entity.getType());
+            }
+        }
+        return entities;
     }
 
     @Override
@@ -63,12 +80,19 @@ public class ZombieToast implements Moving {
         return false;
     }
 
-    @Override
-    public String getType() {
-        // TODO Auto-generated method stub
-        return getType();
+    public String getId() {
+        return id;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    @Override
+    public EntityResponse getEntityResponse() {
+        EntityResponse response = new EntityResponse(id, type, position, false);
+        return response;
+    }
     
     
 }

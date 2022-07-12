@@ -40,20 +40,20 @@
 //     public void testBasicMovement() {
 //         // Test movement
 //         Position startPos = new Position(2, 2);
-//         ZombieToast zombie = new ZombieToast(startPos, 10, 0);
+//         ZombieToast zombie = new ZombieToast(startPos, 10, 0, "1");
 //         Position expectPos = new Position(3, 2);
 
 //         // Test zombie cannot pass through wall
 //         // x x x
 //         // x - -
 //         // x x x
-//         Wall w = new Wall(1, 1);
-//         Wall w2 = new Wall(2, 1);
-//         Wall w3 = new Wall(3, 1);
-//         Wall w4 = new Wall(1, 2);
-//         Wall w5 = new Wall(3, 3);
-//         Wall w6 = new Wall(2, 3);
-//         Wall w7 = new Wall(1, 3);
+//         Wall w = new Wall(new Position(1, 1), "1");
+//         Wall w2 = new Wall(new Position(2, 1), "2");
+//         Wall w3 = new Wall(new Position(3, 1), "3");
+//         Wall w4 = new Wall(new Position(1, 2), "4");
+//         Wall w5 = new Wall(new Position(3, 3), "5");
+//         Wall w6 = new Wall(new Position(2, 3), "6");
+//         Wall w7 = new Wall(new Position(1, 3), "7");
 //         zombie.move();
 //         assertEquals(expectPos, zombie.getPosition());
 
@@ -65,7 +65,7 @@
 //         Position startPlayerPos = new Position(1, 1);
 //         Position startZombiePos = new Position(1,1);
 //         Player player = new Player(startPlayerPos, 10, 10);
-//         ZombieToast zombie = new ZombieToast(startZombiePos, 10, 0);
+//         ZombieToast zombie = new ZombieToast(startZombiePos, 10, 0, "1");
 //         double playerhealth = player.getHealth();
 //         double enemieshealth = zombie.getHealth();
 //         zombie.attack(player);
@@ -78,7 +78,7 @@
 //     public void testSpiderMovement(){
 //         // test basic spider movement, without blocking
 //         Position startPos = new Position(2, 2);
-//         Spider spider = new Spider(startPos, 10, 0);
+//         Spider spider = new Spider(startPos, 10, 0, "1");
 //         Position expectPos = new Position(2, 1);
 //         spider.move();
 //         assertEquals(expectPos, spider.getPosition());
@@ -99,17 +99,17 @@
 //         // x x x
 //         // x M - - P
 //         // x x x
-//         Wall w = new Wall(1, 1);
-//         Wall w2 = new Wall(2, 1);
-//         Wall w3 = new Wall(3, 1);
-//         Wall w4 = new Wall(1, 2);
-//         Wall w5 = new Wall(3, 3);
-//         Wall w6 = new Wall(2, 3);
-//         Wall w7 = new Wall(1, 3);
+//         Wall w = new Wall(new Position(1, 1), "1");
+//         Wall w2 = new Wall(new Position(2, 1), "2");
+//         Wall w3 = new Wall(new Position(3, 1), "2");
+//         Wall w4 = new Wall(new Position(1, 2), "3");
+//         Wall w5 = new Wall(new Position(3, 3), "4");
+//         Wall w6 = new Wall(new Position(2, 3), "5");
+//         Wall w7 = new Wall(new Position(1, 3), "6");
 
 //         Position startMPos = new Position(2, 2);
 //         Position startPPos = new Position(5, 2);
-//         Mercenary mercenary = new Mercenary(startMPos, 10, 0, 1);
+//         Mercenary mercenary = new Mercenary(startMPos, 10, 0, 1, "1");
 //         Player player = new Player(startPPos, 10, 0);
 //         mercenary.move(player);
 //         Position expectMPos = new Position(3, 2);
