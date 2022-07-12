@@ -87,6 +87,12 @@ public class Spider extends Entity implements Moving {
         EntityResponse response = new EntityResponse(id, type, position, false);
         return response;
     }
+
+    @Override
+    public int getDamage() {
+        // TODO Auto-generated method stub
+        return damage;
+    }
     
 }
     
