@@ -27,14 +27,13 @@ public class PlayerTests {
     @Test
     @DisplayName("Tests if player's health reduces by the correct amount")
     public void PlayerTestReduceHealth() {
-        double newHealth = 20;
         double reduce = 5;
         Player player = new Player(defaultPosition, "1");
 
         player.reduceHealth(reduce);
         double health = player.getHealth();
 
-        assertEquals(health, newHealth - reduce);
+        assertEquals(health, 10 - reduce);
     }
 
     @Test
