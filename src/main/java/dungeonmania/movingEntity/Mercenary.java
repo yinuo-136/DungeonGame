@@ -1,22 +1,25 @@
 package dungeonmania.movingEntity;
 
+import dungeonmania.Entity;
 import dungeonmania.player.Player;
+import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class Mercenary implements Moving {
+public class Mercenary extends Entity implements Moving {
+    private String id;
     private Position position;
     //private boolean isAlive = true;
     private double health;
-    private int damage;
+    private static int damage;
     private MercenaryMovingStrategy currentState = new NotBribedStrategy();
-    private int costToBribe;
+    private static int costToBribe;
+    private static int bribeRadius;
+    private String type = "mercenary";
 
-    public Mercenary(Position position, double health, int damage, int costToBribe) {
+    public Mercenary(Position position, String id) {
         this.position = position;
-        this.health = health;
-        this.damage = damage;
-        this.costToBribe = costToBribe;
+        this.id = id;
     }
     
     public void move(Player player) {
@@ -47,7 +50,7 @@ public class Mercenary implements Moving {
 
     public double getHealth() {
         return health;
-    }
+    }  
 
     public void setHealth(double health) {
         this.health = health;
@@ -56,6 +59,10 @@ public class Mercenary implements Moving {
     public int getDamage() {
         return damage;
     }
+    
+    public static void setDamage(int damage) {
+        Mercenary.damage = damage;
+    }
 
     public boolean isAlive() {
         if (this.getHealth() > 0){
@@ -63,5 +70,28 @@ public class Mercenary implements Moving {
         }
         return false;
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    @Override
+    public EntityResponse getEntityResponse() {
+        EntityResponse response = new EntityResponse(id, type, position, true);
+        return response;
+    }
+
+    public static void setCostToBribe(int costToBribe) {
+        Mercenary.costToBribe = costToBribe;
+    }
+
+    public static void setBribeRadius(int bribeRadius) {
+        Mercenary.bribeRadius = bribeRadius;
+    }
+    
     
 }

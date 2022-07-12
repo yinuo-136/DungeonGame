@@ -1,22 +1,25 @@
 package dungeonmania.movingEntity;
 
+import dungeonmania.Entity;
 import dungeonmania.player.Player;
+import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class Spider implements Moving {
+public class Spider extends Entity implements Moving {
+    private String id;
     private Position position;
     private Position spawnPosition;
     //private boolean isAlive = true;
     private double health;
     private int damage;
     private SpiderMovingState currentState = new CircleDirection(this); 
+    private String type = "spider";
     
-    public Spider(Position position, double health, int damage) {
+    public Spider(Position position, String id) {
         this.position = position;
         this.spawnPosition = position;
-        this.health = health;
-        this.damage = damage;
+        this.id = id;
     }
     
     public void move() {
@@ -67,6 +70,21 @@ public class Spider implements Moving {
     public void setHealth(double health) {
         this.health = health;
     }
+    
+    public String getId() {
+        return id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    @Override
+    public EntityResponse getEntityResponse() {
+        EntityResponse response = new EntityResponse(id, type, position, false);
+        return response;
+    }
+
     
 }
     

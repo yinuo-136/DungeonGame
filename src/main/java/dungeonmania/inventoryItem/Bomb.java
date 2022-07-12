@@ -5,11 +5,10 @@ public class Bomb implements InvItem {
     private String id;
     private String type = "bomb";
 
-    private int radius;
+    private static int radius;
 
-    public Bomb(String id, int radius) {
+    public Bomb(String id) {
         this.id = id;
-        this.radius = radius;
     }
 
     public String getId() {
@@ -22,6 +21,10 @@ public class Bomb implements InvItem {
 
     public int getRadius() {
         return radius;
+    }
+
+    public static void setRadius(int radius) {
+        Bomb.radius = radius;
     }
 
     @Override

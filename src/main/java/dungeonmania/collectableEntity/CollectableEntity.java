@@ -1,9 +1,10 @@
 package dungeonmania.collectableEntity;
+import dungeonmania.Entity;
 import dungeonmania.player.Player;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Position;
 
-public class CollectableEntity {
+public class CollectableEntity extends Entity{
 
     private String id;
     private String type;
@@ -32,7 +33,7 @@ public class CollectableEntity {
     }
     
     public EntityResponse getEntityResponse(){
-        EntityResponse response = null;
+        EntityResponse response = new EntityResponse(id, type, position, false);
         return response;
     }
 }

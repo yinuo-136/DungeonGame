@@ -1,11 +1,15 @@
 package dungeonmania.player;
 
+import dungeonmania.Entity;
+import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class Player {
+public class Player extends Entity {
     private static final double DEFAULT_HEALTH = 10;
     private static final int DEFAULT_ATTACK = 5;
+    private String id;
+    private String type = "player";
 
     Position position;
     int attack;
@@ -18,8 +22,9 @@ public class Player {
      * @param y     - Vertical Position
      * 
      */
-    public Player(Position position){
+    public Player(Position position, String id){
         this.position = position;
+        this.id = id;
         attack = DEFAULT_ATTACK;
         health = DEFAULT_HEALTH;
 
@@ -181,4 +186,22 @@ public class Player {
         if (health > 0) { return true; }
         else { return false; }
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+
+
+    @Override
+    public EntityResponse getEntityResponse() {
+        EntityResponse response = new EntityResponse(id, type, position, false);
+        return response;
+    }
+
+    
 }
