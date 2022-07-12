@@ -32,8 +32,8 @@ public class Mercenary extends Entity implements Moving {
     @Override
     public void attack(Player player) {
         while(player.isAlive() || this.isAlive()) {
-            player.setHealth(player.getHealth() - this.damage);
-            this.setHealth(this.getHealth() - player.getAttack());
+            player.setHealth(player.getHealth() - (this.damage / 10));
+            this.setHealth(this.getHealth() - (player.getAttack() / 5));
         }
     }
 
@@ -52,6 +52,7 @@ public class Mercenary extends Entity implements Moving {
         return false;
     }
 
+    @Override
     public double getHealth() {
         return health;
     }  

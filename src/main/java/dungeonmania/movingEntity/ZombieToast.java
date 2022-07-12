@@ -61,6 +61,7 @@ public class ZombieToast extends Entity implements Moving {
         return position;
     }
 
+    @Override
     public double getHealth() {
         return health;
     }

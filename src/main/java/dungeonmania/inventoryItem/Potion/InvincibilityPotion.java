@@ -1,9 +1,20 @@
 package dungeonmania.inventoryItem.Potion;
+import dungeonmania.inventoryItem.InvItem;
 
-public class InvincibilityPotion extends Potion {
+public class InvincibilityPotion implements Potion, InvItem {
 
+    private static int duration;
+    
     public InvincibilityPotion(int duration) {
-        super(duration);
+        InvincibilityPotion.duration = duration;
+    }
+    @Override
+    public int getDuration() {
+        return duration;
+    }
+    @Override
+    public void setDuration(int duration) {
+        InvincibilityPotion.duration = duration;
     }
 
     @Override
