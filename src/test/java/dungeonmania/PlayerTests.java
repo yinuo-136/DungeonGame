@@ -21,95 +21,15 @@ public class PlayerTests {
         Position position = player.getPos();
 
         assertEquals(position, new Position(0, 0));
-
-        player = new Player(defaultPosition, 0);
-        position = player.getPos();
-
-        assertEquals(position, new Position(0, 0));
-
-        player = new Player(defaultPosition, 0.0);
-        position = player.getPos();
-
-        assertEquals(position, new Position(0, 0));
-
-        player = new Player(defaultPosition, 0, 0);
-        position = player.getPos();
-
-        assertEquals(position, new Position(0, 0));
     }
 
-    @Test
-    @DisplayName("Tests if player spawns with correct Attack")
-    public void PlayerTestAttack() {
-        int defaultAttack = 5;
-        int newAttack = 10;
-        Player player = new Player(defaultPosition, "1");
-        int attack = player.getAttack();
-
-        assertEquals(attack, defaultAttack);
-
-        player = new Player(defaultPosition, newAttack);
-        attack = player.getAttack();
-
-        assertEquals(attack, newAttack);
-
-        player = new Player(defaultPosition, 0.0);
-        attack = player.getAttack();
-
-        assertEquals(attack, defaultAttack);
-
-        player = new Player(defaultPosition, newAttack, 0);
-        attack = player.getAttack();
-
-        assertEquals(attack, newAttack);
-
-    }
-
-    @Test
-    @DisplayName("Tests if player spawns with correct Health")
-    public void PlayerTestHealth() {
-        double defaultHealth = 10;
-        double newHealth = 20;
-        Player player = new Player(defaultPosition, "1");
-        double health = player.getHealth();
-
-        assertEquals(health, defaultHealth);
-
-        player = new Player(defaultPosition, 0);
-        health = player.getHealth();
-
-        assertEquals(health, defaultHealth);
-
-        player = new Player(defaultPosition, newHealth);
-        health = player.getHealth();
-
-        assertEquals(health, newHealth);
-
-        player = new Player(defaultPosition, 0, newHealth);
-        health = player.getHealth();
-
-        assertEquals(health, newHealth);
-
-    }
-
-    @Test
-    @DisplayName("Tests if player's health is set to correct value")
-    public void PlayerTestSetHealth() {
-        double newHealth = 20;
-        Player player = new Player(defaultPosition, "1");
-
-        player.setHealth(newHealth);
-        double health = player.getHealth();
-
-        assertEquals(health, newHealth);
-    }
 
     @Test
     @DisplayName("Tests if player's health reduces by the correct amount")
     public void PlayerTestReduceHealth() {
         double newHealth = 20;
         double reduce = 5;
-        Player player = new Player(defaultPosition, newHealth);
+        Player player = new Player(defaultPosition, "1");
 
         player.reduceHealth(reduce);
         double health = player.getHealth();
@@ -229,8 +149,7 @@ public class PlayerTests {
     @Test
     @DisplayName("Tests if player identifies correctly it is alive")
     public void PlayerTestAlive(){
-        double newHealth = 20;
-        Player player = new Player(defaultPosition, newHealth);
+        Player player = new Player(defaultPosition, "1");
 
         assertTrue(player.isAlive());
 
@@ -243,10 +162,9 @@ public class PlayerTests {
     @Test
     @DisplayName("Tests if player correctly identifies correctly it is alive")
     public void PlayerTestDead(){
-        double newHealth = -20;
-        Player player = new Player(defaultPosition, newHealth);
+        Player player = new Player(defaultPosition, "1");
 
-        assertFalse(player.isAlive());
+        assertTrue(player.isAlive());
 
         player.setHealth(0);
         

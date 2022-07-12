@@ -6,13 +6,12 @@ import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class Player extends Entity {
-    private static final double DEFAULT_HEALTH = 10;
-    private static final int DEFAULT_ATTACK = 5;
+    private static double DEFAULT_HEALTH = 10;
+    private static int DEFAULT_ATTACK;
     private String id;
     private String type = "player";
 
     Position position;
-    int attack;
     double health;
 
     /**
@@ -25,59 +24,9 @@ public class Player extends Entity {
     public Player(Position position, String id){
         this.position = position;
         this.id = id;
-        attack = DEFAULT_ATTACK;
         health = DEFAULT_HEALTH;
 
         return;
-    }
-
-    /**
-     * Creates a Player Object at a sepcificied location with a custom attack value and default health value.
-     *  
-     * @param x     - Horizontal Position
-     * @param y     - Vertical Position
-     * @param attack    - Attack of the player
-     * 
-     */
-    public Player(Position position, int attack){
-        this.position = position;
-        this.attack = attack;
-        health = DEFAULT_HEALTH;        
-
-        return;                  
-    }
-
-    /**
-     * Creates a Player Object at a sepcificied location with a custom health value and default attack value.
-     *  
-     * @param x     - Horizontal Position
-     * @param y     - Vertical Position
-     * @param health    - Health of the player
-     * 
-     */
-    public Player(Position position, double health){
-        this.position = position;
-        attack = DEFAULT_ATTACK;
-        this.health = health;        
-
-        return; 
-    }
-
-    /**
-     * Creates a Player Object at a sepcificied location with custom health and attack values.
-     *  
-     * @param x    - Horizontal Position
-     * @param y     - Vertical Position
-     * @param attack   - Attack of the player
-     * @param health   - Health of the player
-     * 
-     */
-    public Player(Position position, int attack, double health){
-        this.position = position;
-        this.attack = attack;
-        this.health = health;
-
-        return; 
     }
 
     /**
@@ -86,18 +35,7 @@ public class Player extends Entity {
      * @return Attack - Integer
      */
     public int getAttack(){
-        return attack; 
-    }
-
-    /**
-     * Sets the Attack value of the player.
-     * 
-     * @param attack
-     */
-    public void setAttack(int attack){
-        this.attack = attack;
-        
-        return;
+        return DEFAULT_ATTACK; 
     }
 
     /**
