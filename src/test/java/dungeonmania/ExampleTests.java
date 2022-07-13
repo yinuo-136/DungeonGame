@@ -126,6 +126,23 @@ public class ExampleTests {
         res = dmc.tick(Direction.UP);
         assertEquals(expectedPosition3, getEntities(res, "spider").get(0).getPosition());
     }
+
+    @Test
+    public void testZombieBasicMovement() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_zombieTest_BasicMovement", "c_spiderTest_basicMovement");
+        Position pos = getEntities(res, "zombie_toast").get(0).getPosition();
+        Position expectedPosition = pos.translateBy(Direction.LEFT);
+
+        //   1 2 3
+        // 0 W W W
+        // 1 x Z W
+        // 2 W W W
+        res = dmc.tick(Direction.DOWN);
+        assertEquals(expectedPosition, getEntities(res, "zombie_toast").get(0).getPosition());
+
+    }
+
         
 //     @Test
 //     @DisplayName("Test surrounding entities are removed when placing a bomb next to an active switch with config file bomb radius set to 2")
