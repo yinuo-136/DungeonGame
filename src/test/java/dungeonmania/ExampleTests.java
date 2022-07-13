@@ -70,7 +70,6 @@ public class ExampleTests {
         DungeonManiaController dmc;
         dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_spiderTest_basicMovement", "c_spiderTest_basicMovement");
-        //assertEquals(null, getEntities(res, "spider"));
         Position pos = getEntities(res, "spider").get(0).getPosition();
 
         List<Position> movementTrajectory = new ArrayList<Position>();
@@ -96,6 +95,36 @@ public class ExampleTests {
                 nextPositionElement = 0;
             }
         }
+    }
+
+    @Test
+    @DisplayName("Test reverse movement of spiders")
+    public void SpiderReverseMovement(){
+        // x x B
+        // x S x
+        // x x x
+
+        DungeonManiaController dmc;
+        dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_spiderTest_ReverseMovement", "c_spiderTest_basicMovement");
+        Position pos = getEntities(res, "spider").get(0).getPosition();
+
+        Position expectedPosition = pos.translateBy(Direction.UP);
+        res = dmc.tick(Direction.DOWN);
+        assertEquals(expectedPosition, getEntities(res, "spider").get(0).getPosition());
+
+        //   4 5 6
+        // 4 x S B
+        // 5 x x x
+        // 6 x x x
+        // spider move counterclockwise cause boulder
+        Position expectedPosition2 = new Position(4, 4);
+        res = dmc.tick(Direction.DOWN);
+        assertEquals(expectedPosition2, getEntities(res, "spider").get(0).getPosition());
+
+        Position expectedPosition3 = new Position(4, 5);
+        res = dmc.tick(Direction.UP);
+        assertEquals(expectedPosition3, getEntities(res, "spider").get(0).getPosition());
     }
         
 //     @Test
