@@ -1,56 +1,50 @@
 package dungeonmania.movingEntity;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
+import dungeonmania.Entity;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-// public class DijkstraAlgoPathFinder {
-    //dijkstra's algorithm
-    // public static void findPath(int[][] map, int startX, int startY, int endX, int endY) {
-    //     int[][] dist = new int[map.length][map[0].length];
-    //     int[][] prev = new int[map.length][map[0].length];
-    //     for (int i = 0; i < map.length; i++) {
-    //         for (int j = 0; j < map[0].length; j++) {
-    //             dist[i][j] = Integer.MAX_VALUE;
-    //             prev[i][j] = -1;
-    //         }
-    //     }
-    //     dist[startX][startY] = 0;
-    //     prev[startX][startY] = -1;
-    //     for (int i = 0; i < map.length; i++) {
-    //         for (int j = 0; j < map[0].length; j++) {
-    //             for (int k = 0; k < 4; k++) {
-    //                 int x = i + Direction.values()[k].getOffset().getX();
-    //                 int y = j + Direction.values()[k].getOffset().getY();
-    //                 if (x >= 0 && x < map.length && y >= 0 && y < map[0].length) {
-    //                     if (dist[i][j] + 1 < dist[x][y]) {
-    //                         dist[x][y] = dist[i][j] + 1;
-    //                         prev[x][y] = k;
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     }
-    //     int x = endX;
-    //     int y = endY;
-    //     while (prev[x][y] != -1) {
-    //         System.out.println("(" + x + ", " + y + ")");
-    //         int k = prev[x][y];
-    //         x = x + Direction.values()[k].getOffset().getX();
-    //         y = y + Direction.values()[k].getOffset().getY();
-    //     }
-    //     System.out.println("(" + x + ", " + y + ")");
-    // }
-// } 
 public class DijkstraAlgoPathFinder {
  
-    public ArrayList<ArrayList<Integer>> buildGraph(Position startingPos) {
-        int v = 10;
+    public ArrayList<ArrayList<Integer>> buildGraph(Position startingPos, Entity e) {
+        List<String> movingConstrintItemList = Arrays.asList("wall", "boulder");
+        int range = 60;
+        int v = range * range;
         ArrayList<ArrayList<Integer>> adj = new ArrayList<ArrayList<Integer>>(v);
         for (int i = 0; i < v; i++) {
             adj.add(new ArrayList<Integer>());
+        }
+        
+        int left = range/2;
+        int top = range/2;
+        Position topLeftCorner = startingPos.translateBy(-left,-top); 
+        int x = topLeftCorner.getX();
+        int x1 = 0;
+        while (x < topLeftCorner.getX() + range - 1) {
+            int y = topLeftCorner.getY();
+            int y1 = 0;
+            while (y < topLeftCorner.getY() + range - 1) {
+                // check if the position is a wall or a boulder, and positions on the right and bottom
+                if (!e.getDungeonInfo().getEntitiesStringByPosition(new Position(x,y)).stream().anyMatch(element -> movingConstrintItemList.contains(element))) {
+                    List<String> right_pos_entites = e.getDungeonInfo().getEntitiesStringByPosition(new Position(x+1,y));
+                    if (!right_pos_entites.stream().anyMatch(element -> movingConstrintItemList.contains(element))) {
+                        addEdge(adj, x1*range+y1, x1*range+y1+1);
+                    }
+                    List<String> bottom_pos_entites = e.getDungeonInfo().getEntitiesStringByPosition(new Position(x,y-1));
+                    if (!bottom_pos_entites.stream().anyMatch(element -> movingConstrintItemList.contains(element))) {
+                        addEdge(adj, x1*range+y1, x1*range+y1+range);
+                    }
+                } 
+                y++;
+                y1++;
+            }
+            x++;
+            x1++;
         }
         return adj;
     }

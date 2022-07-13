@@ -15,5 +15,7 @@ public abstract class Entity {
         this.dungeonInfo = dungeonInfo;
     }
 
-    
+    public DungeonInfo getDungeonInfo(){
+        return dungeonInfo;
+    }
 }
