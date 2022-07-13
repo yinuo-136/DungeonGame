@@ -11,22 +11,27 @@ import dungeonmania.util.Position;
 public class Mercenary extends Entity implements Moving {
     private String id;
     private Position position;
-    private static double classHealth;
     private double health;
-    private static int damage;
+    private int damage;
     private static int bribedDamage;
     private static int bribedDefence;
     private MercenaryMovingStrategy currentState = new NotBribedStrategy();
-    private static int costToBribe;
-    private static int bribeRadius;
+    private int costToBribe;
+    private int bribeRadius;
     private String type = "mercenary";
 
     public Mercenary(Position position, String id) {
         this.position = position;
         this.id = id;
-        this.health = classHealth;
     }
     
+    public void setConfig(){
+        this.health = dungeonInfo.getSpecificConfig("mercenary_health");
+        this.damage = dungeonInfo.getSpecificConfig("mercenary_attack");
+        this.costToBribe = dungeonInfo.getSpecificConfig("bribe_amount");
+        this.bribeRadius = dungeonInfo.getSpecificConfig("bribe_radius");
+    }
+
     public void move(Player player) {
         currentState.move(this);
     }
@@ -34,13 +39,13 @@ public class Mercenary extends Entity implements Moving {
     @Override
     public void attack(Player player) {
         while(player.isAlive() || this.isAlive()) {
-            player.setHealth(player.getHealth() - damage);
-            this.setHealth(this.getHealth() - player.getAttack());
+            player.setHealth(player.getHealth() - (this.damage / 10));
+            this.setHealth(this.getHealth() - (player.getAttack() / 5));
         }
     }
 
     @Override
-    public Position getPosition() {
+    public Position getPos() {
         // TODO Auto-generated method stub
         return position;
     }
@@ -54,6 +59,7 @@ public class Mercenary extends Entity implements Moving {
         return false;
     }
 
+    @Override
     public double getHealth() {
         return health;
     }  
@@ -64,10 +70,6 @@ public class Mercenary extends Entity implements Moving {
 
     public int getDamage() {
         return damage;
-    }
-    
-    public static void setDamage(int damage) {
-        Mercenary.damage = damage;
     }
 
     public boolean isAlive() {
@@ -91,23 +93,15 @@ public class Mercenary extends Entity implements Moving {
         return response;
     }
 
-    public static void setCostToBribe(int costToBribe) {
-        Mercenary.costToBribe = costToBribe;
-    }
-
-    public static void setBribeRadius(int bribeRadius) {
-        Mercenary.bribeRadius = bribeRadius;
+    @Override
+    public void setPos(Position pos) {
+        this.position = pos;
     }
 
     @Override
     public List<String> getEntitiesStringByPosition(Position pos) {
         // TODO Auto-generated method stub
-        return getEntitiesStringByPosition(position);
-    }
-
-    @Override
-    public void setPosition(Position pos) {
-        this.position = pos;
+        return null;
     }
     
     

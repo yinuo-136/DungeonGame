@@ -1,9 +1,25 @@
 package dungeonmania.inventoryItem.Potion;
+import dungeonmania.inventoryItem.InvItem;
+import dungeonmania.response.models.ItemResponse;
 
-public class InvincibilityPotion extends Potion {
+public class InvincibilityPotion implements Potion, InvItem {
 
-    public InvincibilityPotion(int duration) {
-        super(duration);
+
+    private int duration;
+    private String id;
+    private String type = "invincibility_potion";
+    
+    public InvincibilityPotion(int duration, String id) {
+        this.duration = duration;
+        this.id = id;
+    }
+    @Override
+    public int getDuration() {
+        return duration;
+    }
+    @Override
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 
     @Override
@@ -12,8 +28,8 @@ public class InvincibilityPotion extends Potion {
     }
 
     @Override
-    public void getItemResponse() {
-        // TODO Auto-generated method stub
+    public ItemResponse getItemResponse() {
+        return new ItemResponse(id, type);
         
     }
     

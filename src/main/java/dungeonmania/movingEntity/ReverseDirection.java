@@ -25,11 +25,10 @@ public class ReverseDirection implements SpiderMovingState{
     @Override
     public void move() {
         List<Position> adjacentPositions = spider.getSpawnPosition().getAdjacentPositions();
-        if (spider.getPosition() == spider.getSpawnPosition()) {
-            spider.setPosition(spider.getPosition().translateBy(Direction.UP));
-            return;
+        if (spider.getPos() == spider.getSpawnPosition()) {
+            spider.setPosition(spider.getPos().translateBy(Direction.UP));
         }
-        int index = adjacentPositions.indexOf(spider.getPosition());
+        int index = adjacentPositions.indexOf(spider.getPos());
         // if there the location doesnt have boulders in it, move to the next location
         // else change state to circle direction
         if (spider.getEntitiesStringByPosition(adjacentPositions.get((index + 1) % adjacentPositions.size())).contains("Boulder")) {

@@ -2,9 +2,10 @@ package dungeonmania.staticEntities;
 
 import dungeonmania.Entity;
 import dungeonmania.response.models.EntityResponse;
+import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class Exit extends Entity {
+public class Exit extends staticEntity {
     private Position pos;
     private String id;
     private String type = "exit";
@@ -30,5 +31,21 @@ public class Exit extends Entity {
     public EntityResponse getEntityResponse() {
         EntityResponse response = new EntityResponse(id, type, pos, false);
         return response;
+    }
+
+    @Override
+    public void setConfig() {
+        
+    }
+
+    @Override
+    public Position playerMoveIn(Position p, Direction d) {
+        return this.pos;
+    }
+
+    @Override
+    public Position boulderMoveIn(Position p) {
+
+        return this.pos;
     }
 }

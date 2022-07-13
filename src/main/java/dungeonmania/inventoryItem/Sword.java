@@ -1,5 +1,7 @@
 package dungeonmania.inventoryItem;
 
+import dungeonmania.response.models.ItemResponse;
+
 public class Sword implements InvItem {
 
     private String id;
@@ -41,8 +43,8 @@ public class Sword implements InvItem {
     }
 
     @Override
-    public void getItemResponse() {
-        // TODO Auto-generated method stub
+    public ItemResponse getItemResponse() {
+        return new ItemResponse(id, type);
         
     }
     

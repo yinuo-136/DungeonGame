@@ -13,9 +13,8 @@ import dungeonmania.util.Position;
 
 public class ZombieToast extends Entity implements Moving {
     private String id;
-    private static double classHealth;
     private double health;
-    private static int damage;
+    private int damage;
     private Position position;
     private String type = "zombie_toast";
     private MercenaryMovingStrategy currentState = new RandomStrategy();
@@ -23,7 +22,12 @@ public class ZombieToast extends Entity implements Moving {
     public ZombieToast(Position position, String id) {
         this.id = id;
         this.position = position;
-        this.health = classHealth;
+        
+    }
+
+    public void setConfig(){
+        this.health = dungeonInfo.getSpecificConfig("zombie_health");
+        this.damage = dungeonInfo.getSpecificConfig("zombie_attack");
     }
 
     public void move() {
@@ -40,10 +44,16 @@ public class ZombieToast extends Entity implements Moving {
     }
 
     @Override
+<<<<<<< HEAD
     public Position getPosition() {
+=======
+    public Position getPos() {
+        
+>>>>>>> origin/master
         return position;
     }
 
+    @Override
     public double getHealth() {
         return health;
     }
@@ -87,6 +97,5 @@ public class ZombieToast extends Entity implements Moving {
     public List<String> getEntitiesStringByPosition(Position pos) {
         return getEntitiesStringByPosition(position);
     }
-    
     
 }

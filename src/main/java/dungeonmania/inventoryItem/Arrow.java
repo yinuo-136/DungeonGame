@@ -1,5 +1,7 @@
 package dungeonmania.inventoryItem;
 
+import dungeonmania.response.models.ItemResponse;
+
 public class Arrow implements InvItem {
 
     private String id;
@@ -24,8 +26,8 @@ public class Arrow implements InvItem {
     }
 
     @Override
-    public void getItemResponse() {
-        // TODO Auto-generated method stub
+    public ItemResponse getItemResponse() {
+        return new ItemResponse(id, type);
         
     }
     
