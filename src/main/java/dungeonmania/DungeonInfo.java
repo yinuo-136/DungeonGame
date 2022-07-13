@@ -108,6 +108,12 @@ public class DungeonInfo {
                 newEntity.setDungeonInfo(info);
                 newEntity.setConfig();
                 break;
+
+            case "zombie_toast":
+                newEntity = new ZombieToast(new Position(x, y), id);
+                newEntity.setDungeonInfo(info);
+                newEntity.setConfig();
+                break;
             
             case "key":
                 newEntity = new Key(id, (String) json.get("type"), new Position(x, y), (int) json.get("key"));

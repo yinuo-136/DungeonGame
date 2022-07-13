@@ -22,7 +22,6 @@ public class ZombieToast extends Entity implements Moving {
     public ZombieToast(Position position, String id) {
         this.id = id;
         this.position = position;
-        
     }
 
     public void setConfig(){
@@ -89,7 +88,6 @@ public class ZombieToast extends Entity implements Moving {
     @Override
     public void setPos(Position pos) {
         this.position = pos;
-        
     }
 
     @Override
