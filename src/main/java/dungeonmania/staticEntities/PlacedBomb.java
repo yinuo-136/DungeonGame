@@ -12,13 +12,13 @@ public class PlacedBomb extends staticEntity {
     private String id;
     private int radius;
 
-    public PlacedBomb(Position position, String id) {
+    public PlacedBomb(Position position, String id, int radius) {
         this.pos = position;
-        this.id = id;      
+        this.id = id;   
+        this.radius = radius;   
     }
 
     public void setConfig(){
-        radius = dungeonInfo.getSpecificConfig("bomb_radius");
     }
     
     public Position getPos() {

@@ -1,13 +1,17 @@
 package dungeonmania.inventoryItem.Potion;
 import dungeonmania.inventoryItem.InvItem;
+import dungeonmania.response.models.ItemResponse;
 
 public class InvincibilityPotion implements Potion, InvItem {
 
 
     private int duration;
+    private String id;
+    private String type = "invincibility_potion";
     
-    public InvincibilityPotion(int duration) {
+    public InvincibilityPotion(int duration, String id) {
         this.duration = duration;
+        this.id = id;
     }
     @Override
     public int getDuration() {
@@ -24,8 +28,8 @@ public class InvincibilityPotion implements Potion, InvItem {
     }
 
     @Override
-    public void getItemResponse() {
-        // TODO Auto-generated method stub
+    public ItemResponse getItemResponse() {
+        return new ItemResponse(id, type);
         
     }
     

@@ -105,7 +105,8 @@ public class DungeonManiaController {
     public DungeonResponse getDungeonResponseModel() {
         DungeonInfo info = infoMap.get(this.dungeonId);
         List<EntityResponse> entityResponses = info.getListEntityResponse();
-        return new DungeonResponse(dungeonId, dungeonName, entityResponses, new ArrayList<ItemResponse>(), new ArrayList<BattleResponse>(), new ArrayList<String>(), ":exit");
+        List<ItemResponse> itemResponses = info.getListItemResponse();
+        return new DungeonResponse(dungeonId, dungeonName, entityResponses, itemResponses, new ArrayList<BattleResponse>(), new ArrayList<String>(), ":exit");
     }
 
     /**

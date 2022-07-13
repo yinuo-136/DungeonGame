@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import dungeonmania.collectableEntity.CollectableEntity;
+import dungeonmania.collectableEntity.Key;
 import dungeonmania.inventoryItem.Bomb;
 import dungeonmania.inventoryItem.InvItem;
 import dungeonmania.inventoryItem.Sword;
@@ -19,6 +20,7 @@ import dungeonmania.movingEntity.Spider;
 import dungeonmania.movingEntity.ZombieToast;
 import dungeonmania.player.Player;
 import dungeonmania.response.models.EntityResponse;
+import dungeonmania.response.models.ItemResponse;
 import dungeonmania.staticEntities.Boulder;
 import dungeonmania.staticEntities.Door;
 import dungeonmania.staticEntities.Exit;
@@ -104,6 +106,9 @@ public class DungeonInfo {
                 newEntity.setConfig();
                 break;
             
+            case "key":
+                newEntity = new Key(id, (String) json.get("type"), new Position(x, y), (int) json.get("key"));
+                break;
             // if default, it will be collectableEntities
             default:
                 newEntity = new CollectableEntity(id, (String) json.get("type"), new Position(x, y));
@@ -184,5 +189,13 @@ public class DungeonInfo {
         return itemList;
     }
 
-    
+    // get a list of itemResponse for controller to use
+    public List<ItemResponse> getListItemResponse() {
+        List<ItemResponse> list = new ArrayList<>();
+        for (InvItem i: itemList) {
+            list.add(i.getItemResponse());
+        }
+
+        return list;
+    }
 }

@@ -1,12 +1,16 @@
 package dungeonmania.inventoryItem;
 
+import dungeonmania.response.models.ItemResponse;
+
 public class Bomb implements InvItem {
 
     private String id;
     private String type = "bomb";
+    private int radius;
 
-    public Bomb(String id) {
+    public Bomb(String id, int radius) {
         this.id = id;
+        this.radius = radius;
     }
 
     public String getId() {
@@ -25,8 +29,8 @@ public class Bomb implements InvItem {
     }
 
     @Override
-    public void getItemResponse() {
-        // TODO Auto-generated method stub
+    public ItemResponse getItemResponse() {
+        return new ItemResponse(id, type);
         
     }
     

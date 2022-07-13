@@ -1,12 +1,16 @@
 package dungeonmania.inventoryItem;
 
-public class Key implements InvItem {
+import dungeonmania.response.models.ItemResponse;
+
+public class ItemKey implements InvItem {
 
     private String id;
+    private int key;
     private String type = "key";
 
-    public Key(String id) {
+    public ItemKey(String id, int key) {
         this.id = id;
+        this.key = key;
     }
 
     public String getId() {
@@ -24,8 +28,8 @@ public class Key implements InvItem {
     }
 
     @Override
-    public void getItemResponse() {
-        // TODO Auto-generated method stub
+    public ItemResponse getItemResponse() {
+        return new ItemResponse(id, type);
         
     }
     

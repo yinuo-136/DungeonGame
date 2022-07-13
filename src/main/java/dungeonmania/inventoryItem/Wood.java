@@ -1,6 +1,14 @@
 package dungeonmania.inventoryItem;
 
+import dungeonmania.response.models.ItemResponse;
+
 public class Wood implements InvItem {
+    private String id;
+    private String type = "wood";
+
+    public Wood(String id){
+        this.id = id;
+    }
 
     @Override
     public void use() {
@@ -8,8 +16,8 @@ public class Wood implements InvItem {
     }
 
     @Override
-    public void getItemResponse() {
-        // TODO Auto-generated method stub
+    public ItemResponse getItemResponse() {
+        return new ItemResponse(id, type);
         
     }
     

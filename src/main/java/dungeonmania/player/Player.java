@@ -3,6 +3,8 @@ package dungeonmania.player;
 import java.util.List;
 
 import dungeonmania.Entity;
+import dungeonmania.collectableEntity.CollectableEntity;
+import dungeonmania.collectableEntity.Key;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.staticEntities.staticEntity;
 import dungeonmania.util.Direction;
@@ -131,6 +133,21 @@ public class Player extends Entity {
             this.position = checkPosition;
         } else {
             this.position = p;
+        }
+
+        //After move to the cell, collect all collectables
+        checkEntity = dungeonInfo.getEntitiesByPosition(this.position);
+        for(Entity e : checkEntity){
+            if (e instanceof CollectableEntity) {
+                if (e instanceof Key){
+                    Key k = (Key) e;
+                    k.pickup();
+                } else {
+                    CollectableEntity ce = (CollectableEntity) e;
+                    ce.pickup();
+                }
+
+            }
         }
         
     }
