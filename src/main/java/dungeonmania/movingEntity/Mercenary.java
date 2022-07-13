@@ -34,7 +34,7 @@ public class Mercenary extends Entity implements Moving {
     @Override
     public void attack(Player player) {
         while(player.isAlive() || this.isAlive()) {
-            player.setHealth(player.getHealth() - this.damage);
+            player.setHealth(player.getHealth() - damage);
             this.setHealth(this.getHealth() - player.getAttack());
         }
     }
@@ -100,9 +100,9 @@ public class Mercenary extends Entity implements Moving {
     }
 
     @Override
-    public List<String> getEntitiesByPosition(Position pos) {
+    public List<String> getEntitiesStringByPosition(Position pos) {
         // TODO Auto-generated method stub
-        return getEntitiesByPosition(position);
+        return getEntitiesStringByPosition(position);
     }
 
     @Override

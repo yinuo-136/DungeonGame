@@ -13,7 +13,8 @@ public class RandomStrategy implements MercenaryMovingStrategy {
     public void move(Moving entity) {
         Random rand = new Random();
         Direction randDirection = directions.get(rand.nextInt(directions.size()));
-        while (entity.getEntitiesByPosition(entity.getPosition().translateBy(randDirection)).contains(movingConstrintItemList)) {
+        // if the random direction is not a wall or a boulder, move the entity.
+        while (entity.getEntitiesStringByPosition(entity.getPosition().translateBy(randDirection)).stream().anyMatch(element -> movingConstrintItemList.contains(element))) {
             randDirection = directions.get(rand.nextInt(directions.size()));
         }
         entity.setPosition(entity.getPosition().translateBy(randDirection));
@@ -21,7 +22,6 @@ public class RandomStrategy implements MercenaryMovingStrategy {
 
     @Override
     public String getStatename() {
-        // TODO Auto-generated method stub
         return "Random";
     }
 

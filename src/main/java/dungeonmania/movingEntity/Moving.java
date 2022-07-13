@@ -13,5 +13,5 @@ public interface Moving {
     public String getType();
     public double getHealth();
     public int getDamage();
-    public List<String> getEntitiesByPosition(Position pos);
+    public List<String> getEntitiesStringByPosition(Position pos);
 }

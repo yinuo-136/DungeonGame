@@ -16,7 +16,7 @@ public class Spider extends Entity implements Moving {
     private double health;
     private static int damage;
     private SpiderMovingState currentState = new CircleDirection(this); 
-    private String type = "spider";
+    private String type = "Spider";
     
     public Spider(Position position, String id) {
         this.position = position;
@@ -32,14 +32,13 @@ public class Spider extends Entity implements Moving {
     @Override
     public void attack(Player player) {
         while(player.isAlive() || this.isAlive()) {
-            player.setHealth(player.getHealth() - this.damage);
+            player.setHealth(player.getHealth() - damage);
             this.setHealth(this.getHealth() - player.getAttack());
         }
     }
 
     @Override
     public Position getPosition() {
-        // TODO Auto-generated method stub
         return position;
     }
     
@@ -76,7 +75,6 @@ public class Spider extends Entity implements Moving {
 
     @Override
     public String getType() {
-        // TODO Auto-generated method stub
         return "Spider";
     }
     
@@ -92,14 +90,12 @@ public class Spider extends Entity implements Moving {
 
     @Override
     public int getDamage() {
-        // TODO Auto-generated method stub
         return damage;
     }
 
     @Override
-    public List<String> getEntitiesByPosition(Position pos) {
-        // TODO Auto-generated method stub
-        return getEntitiesByPosition(position);
+    public List<String> getEntitiesStringByPosition(Position pos) {
+        return getEntitiesStringByPosition(position);
     }
     
 }

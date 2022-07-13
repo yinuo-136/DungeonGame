@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import dungeonmania.util.Direction;
+import dungeonmania.util.Position;
 
 // public class DijkstraAlgoPathFinder {
     //dijkstra's algorithm
@@ -45,6 +46,14 @@ import dungeonmania.util.Direction;
 // } 
 public class DijkstraAlgoPathFinder {
  
+    public ArrayList<ArrayList<Integer>> buildGraph(Position startingPos) {
+        int v = 10;
+        ArrayList<ArrayList<Integer>> adj = new ArrayList<ArrayList<Integer>>(v);
+        for (int i = 0; i < v; i++) {
+            adj.add(new ArrayList<Integer>());
+        }
+        return adj;
+    }
     // Driver Program
     public static void main(String args[])
     {

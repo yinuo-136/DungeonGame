@@ -29,12 +29,18 @@ public class CircleDirection implements SpiderMovingState{
         List<Position> adjacentPositions = spider.getSpawnPosition().getAdjacentPositions();
         if (spider.getPosition() == spider.getSpawnPosition()) {
             spider.setPosition(spider.getPosition().translateBy(Direction.UP));
+            return;
         }
         int index = adjacentPositions.indexOf(spider.getPosition());
         // if there the location doesnt have boulders in it, move to the next location
         // else change state to reverse direction
-        spider.setPosition(adjacentPositions.get((index + 1) % adjacentPositions.size()));
-        
+        if (spider.getEntitiesStringByPosition(adjacentPositions.get((index + 1) % adjacentPositions.size())).contains("Boulder")) {
+            onCounterClockwise(spider);
+            spider.move();
+        } else {
+            spider.setPosition(adjacentPositions.get((index + 1) % adjacentPositions.size()));
+        }
+    
     }
     
     

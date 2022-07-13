@@ -17,9 +17,7 @@ public class ZombieToast extends Entity implements Moving {
     private double health;
     private static int damage;
     private Position position;
-    //private List<Direction> directions = Arrays.asList(Direction.DOWN, Direction.UP, Direction.LEFT, Direction.RIGHT);
     private String type = "zombie_toast";
-    //private List<String> movingConstrintItemList = Arrays.asList("Wall", "Boulder");
     private MercenaryMovingStrategy currentState = new RandomStrategy();
 
     public ZombieToast(Position position, String id) {
@@ -35,7 +33,7 @@ public class ZombieToast extends Entity implements Moving {
     @Override
     public void attack(Player player) {
         while(player.isAlive() || this.isAlive()) {
-            player.setHealth(player.getHealth() - this.damage);
+            player.setHealth(player.getHealth() - damage);
             this.setHealth(this.getHealth() - player.getAttack());
         }
         // then remove the player or the enemy depend on who died first.
@@ -81,14 +79,13 @@ public class ZombieToast extends Entity implements Moving {
 
     @Override
     public void setPosition(Position pos) {
-        
+        this.position = pos;
         
     }
 
     @Override
-    public List<String> getEntitiesByPosition(Position pos) {
-        // TODO Auto-generated method stub
-        return getEntitiesByPosition(position);
+    public List<String> getEntitiesStringByPosition(Position pos) {
+        return getEntitiesStringByPosition(position);
     }
     
     
