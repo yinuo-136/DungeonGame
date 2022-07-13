@@ -1,18 +1,20 @@
 package dungeonmania.player;
 
+import java.util.List;
+
 import dungeonmania.Entity;
 import dungeonmania.response.models.EntityResponse;
+import dungeonmania.staticEntities.staticEntity;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class Player extends Entity {
-    private static double DEFAULT_HEALTH = 10;
-    private static int DEFAULT_ATTACK;
     private String id;
     private String type = "player";
 
-    Position position;
-    double health;
+    private int attack;
+    private Position position;
+    private double health;
 
     /**
      * Creates a Player Object at a sepcificied location with default health and attack values.
@@ -24,9 +26,13 @@ public class Player extends Entity {
     public Player(Position position, String id){
         this.position = position;
         this.id = id;
-        health = DEFAULT_HEALTH;
 
         return;
+    }
+
+    public void setConfig(){
+        this.health = dungeonInfo.getSpecificConfig("player_health");
+        this.attack = dungeonInfo.getSpecificConfig("player_attack");
     }
 
     /**
@@ -35,7 +41,7 @@ public class Player extends Entity {
      * @return Attack - Integer
      */
     public int getAttack(){
-        return DEFAULT_ATTACK; 
+        return attack; 
     }
 
     /**
@@ -107,9 +113,26 @@ public class Player extends Entity {
      * @param direction
      */
     public void move(Direction direction){
-        position = position.translateBy(direction);
+        //check the static entities before move into the cell
+        Position p = null;
+        Position checkPosition = position.translateBy(direction);
+        List<Entity> checkEntity = dungeonInfo.getEntitiesByPosition(checkPosition);
+        for (Entity e : checkEntity){
+            if (e instanceof staticEntity){
+                staticEntity se = (staticEntity) e;
+                p = se.playerMoveIn(this.position, direction);
+            }
 
-        return;
+            if (this.position.equals(p)){
+                break;
+            }
+        }
+        if (p == null){
+            this.position = checkPosition;
+        } else {
+            this.position = p;
+        }
+        
     }
     
     /**
@@ -133,13 +156,12 @@ public class Player extends Entity {
         return type;
     }
 
-
-
     @Override
     public EntityResponse getEntityResponse() {
         EntityResponse response = new EntityResponse(id, type, position, false);
         return response;
     }
+
 
     
 }

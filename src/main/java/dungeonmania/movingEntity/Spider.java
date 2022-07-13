@@ -7,12 +7,14 @@ import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class Spider extends Entity implements Moving {
+    private int damage;
+    private int SpawnRate;
+
     private String id;
     private Position position;
     private Position spawnPosition;
-    private static double classHealth;
     private double health;
-    private static int damage;
+    private int timeToSpawn;
     private SpiderMovingState currentState = new CircleDirection(this); 
     private String type = "spider";
     
@@ -20,9 +22,16 @@ public class Spider extends Entity implements Moving {
         this.position = position;
         this.spawnPosition = position;
         this.id = id;
-        this.health = classHealth;
+        
     }
     
+    public void setConfig(){
+        this.health = dungeonInfo.getSpecificConfig("spider_health");
+        this.damage = dungeonInfo.getSpecificConfig("spider_attack");
+        this.SpawnRate = dungeonInfo.getSpecificConfig("spider_spawn_rate");
+        this.timeToSpawn = SpawnRate;
+    }
+
     public void move() {
         currentState.move();
     }
@@ -36,7 +45,7 @@ public class Spider extends Entity implements Moving {
     }
 
     @Override
-    public Position getPosition() {
+    public Position getPos() {
         // TODO Auto-generated method stub
         return position;
     }
@@ -94,6 +103,7 @@ public class Spider extends Entity implements Moving {
         // TODO Auto-generated method stub
         return damage;
     }
+    
     
 }
     

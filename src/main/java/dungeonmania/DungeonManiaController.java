@@ -18,8 +18,8 @@ import org.json.JSONObject;
 
 
 public class DungeonManiaController {
-    private String DungeonId;
-    private String DungeonName;
+    private String dungeonId;
+    private String dungeonName;
     private int DungeonCounter = 0;
     private HashMap<String, DungeonInfo> infoMap = new HashMap<>();
 
@@ -49,16 +49,30 @@ public class DungeonManiaController {
      * /game/new
      */
     public DungeonResponse newGame(String dungeonName, String configName) throws IllegalArgumentException{
-        this.DungeonName = dungeonName;
         //Create a new dungeon with unique id.
+        this.dungeonName = dungeonName;
         DungeonCounter = DungeonCounter + 1;
         String dungeonId = Integer.toString(DungeonCounter);
-        this.DungeonId = dungeonId;
+        this.dungeonId = dungeonId;
         DungeonInfo info = new DungeonInfo();
         infoMap.put(dungeonId, info);
 
-        //read json from dungeonName
         String jsonContent = null;
+        //read and set config file
+        try {
+            jsonContent = FileLoader.loadResourceFile("/configs/" + configName + ".json");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //convert json into JSONObject
+        JSONObject configContent = new JSONObject(jsonContent);
+
+        //set config
+        info.setConfigs(configContent);
+
+        //read json from dungeonName
+
         try {
             jsonContent = FileLoader.loadResourceFile("/dungeons/" + dungeonName + ".json");
         } catch (IOException e) {
@@ -78,18 +92,7 @@ public class DungeonManiaController {
         //TODO: read and store the goals
         JSONObject jsonGoals = dungeonContent.getJSONObject("goal-condition");
 
-        //read and set config file
-        try {
-            jsonContent = FileLoader.loadResourceFile("/configs/" + configName + ".json");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        //convert json into JSONObject
-        JSONObject configContent = new JSONObject(jsonContent);
-
-        //set config
-        info.setConfigs(configContent);
+        
 
         DungeonResponse response = new DungeonResponse(dungeonId, dungeonName, entityResponses, new ArrayList<ItemResponse>(), new ArrayList<BattleResponse>(), new ArrayList<String>(), ":exit");
 
@@ -100,8 +103,9 @@ public class DungeonManiaController {
      * /game/dungeonResponseModel
      */
     public DungeonResponse getDungeonResponseModel() {
-        
-        return null;
+        DungeonInfo info = infoMap.get(this.dungeonId);
+        List<EntityResponse> entityResponses = info.getListEntityResponse();
+        return new DungeonResponse(dungeonId, dungeonName, entityResponses, new ArrayList<ItemResponse>(), new ArrayList<BattleResponse>(), new ArrayList<String>(), ":exit");
     }
 
     /**
@@ -115,7 +119,10 @@ public class DungeonManiaController {
      * /game/tick/movement
      */
     public DungeonResponse tick(Direction movementDirection) {
-        return null;
+        DungeonInfo info = infoMap.get(this.dungeonId);
+        //trigger player movement
+        info.movePLayer(movementDirection);
+        return this.getDungeonResponseModel();
     }
 
     /**

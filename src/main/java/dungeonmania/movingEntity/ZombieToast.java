@@ -13,9 +13,8 @@ import dungeonmania.util.Position;
 
 public class ZombieToast extends Entity implements Moving {
     private String id;
-    private static double classHealth;
     private double health;
-    private static int damage;
+    private int damage;
     private Position position;
     private List<Direction> directions = Arrays.asList(Direction.DOWN, Direction.UP, Direction.LEFT, Direction.RIGHT);
     private String type = "zombie_toast";
@@ -24,7 +23,12 @@ public class ZombieToast extends Entity implements Moving {
     public ZombieToast(Position position, String id) {
         this.id = id;
         this.position = position;
-        this.health = classHealth;
+        
+    }
+
+    public void setConfig(){
+        this.health = dungeonInfo.getSpecificConfig("zombie_health");
+        this.damage = dungeonInfo.getSpecificConfig("zombie_attack");
     }
 
     public void move() {
@@ -56,7 +60,7 @@ public class ZombieToast extends Entity implements Moving {
     }
 
     @Override
-    public Position getPosition() {
+    public Position getPos() {
         
         return position;
     }
@@ -94,6 +98,5 @@ public class ZombieToast extends Entity implements Moving {
         EntityResponse response = new EntityResponse(id, type, position, false);
         return response;
     }
-    
     
 }

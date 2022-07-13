@@ -1,5 +1,6 @@
 package dungeonmania;
 
+import java.io.ObjectInputFilter.Config;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +10,10 @@ import org.json.JSONObject;
 
 import dungeonmania.collectableEntity.CollectableEntity;
 import dungeonmania.inventoryItem.Bomb;
+import dungeonmania.inventoryItem.InvItem;
+import dungeonmania.inventoryItem.Sword;
+import dungeonmania.inventoryItem.Potion.InvincibilityPotion;
+import dungeonmania.inventoryItem.Potion.InvisibilityPotion;
 import dungeonmania.movingEntity.Mercenary;
 import dungeonmania.movingEntity.Spider;
 import dungeonmania.movingEntity.ZombieToast;
@@ -22,10 +27,13 @@ import dungeonmania.staticEntities.PlacedBomb;
 import dungeonmania.staticEntities.Portal;
 import dungeonmania.staticEntities.Wall;
 import dungeonmania.staticEntities.ZombieToastSpawner;
+import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class DungeonInfo {
-    private HashMap<String, Entity> entityMap = new HashMap<>(); 
+    private HashMap<String, Entity> entityMap = new HashMap<>(); // the entity map
+    private HashMap<String, Integer> configMap = new HashMap<>(); // the config file map
+    private List<InvItem> itemList = new ArrayList<>(); // the item list
     private int entityCounter = 0;
 
     //store all entities into map
@@ -50,18 +58,20 @@ public class DungeonInfo {
         switch((String) json.get("type")){
             case "player":
                newEntity = new Player(new Position(x, y), id);
+               newEntity.setDungeonInfo(info);
+               newEntity.setConfig();
                break;
 
             case "mercenary":
                 newEntity = new Mercenary(new Position(x, y), id);
+                newEntity.setDungeonInfo(info);
+                newEntity.setConfig();
                 break;
 
             case "spider":
                 newEntity = new Spider(new Position(x, y), id);
-                break;
-
-            case "zombie_toast":
-                newEntity = new ZombieToast(new Position(x, y), id);
+                newEntity.setDungeonInfo(info);
+                newEntity.setConfig();
                 break;
 
             case "boulder":
@@ -79,10 +89,6 @@ public class DungeonInfo {
             case "switch":
                 newEntity = new FloorSwitch(new Position(x, y), id);
                 break;
-            
-            case "bomb":
-                newEntity = new PlacedBomb(new Position(x, y), id);
-                break;
 
             case "portal":
                 newEntity = new Portal(new Position(x, y), (String) json.get("colour"), id);
@@ -94,6 +100,8 @@ public class DungeonInfo {
             
             case "zombie_toast_spawner":
                 newEntity = new ZombieToastSpawner(new Position(x, y), id);
+                newEntity.setDungeonInfo(info);
+                newEntity.setConfig();
                 break;
             
             // if default, it will be collectableEntities
@@ -118,35 +126,12 @@ public class DungeonInfo {
     public void setConfigs(JSONObject config){
         for (String keyString : config.keySet()){
             int configValue = config.getInt(keyString);
-            DungeonInfo.setConfig(configValue, keyString);
+            configMap.put(keyString, configValue);
         }
     }
 
-    public static void setConfig(int configValue, String configName){
-        switch(configName){
-            //TODO: more config values need to be init here.
-            case "bomb_radius":
-                Bomb.setRadius(configValue);
-                break;
-            case "bribe_amount":
-                Mercenary.setCostToBribe(configValue);
-                break;
-            case "bribe_radius":
-                Mercenary.setBribeRadius(configValue);
-                break;
-            case "zombie_spawn_rate":
-                ZombieToastSpawner.setSpawntime(configValue);
-                break;
-            case "mercenary_attack":
-                Mercenary.setDamage(configValue);
-                break;
-            case "mercenary_health":
-            case "spider_attack":
-            case "spider_health": 
-            case "player_attack":
-            case "player_health":           
-            default:
-        }
+    public int getSpecificConfig(String name){
+        return configMap.get(name);
     }
 
     public List<String> getEntitiesStringByPosition(Position pos) {
@@ -159,13 +144,45 @@ public class DungeonInfo {
         return entities;
     }
 
-    public List<EntityResponse> getEntitiesByPosition(Position pos) {
-        List<EntityResponse> entities = new ArrayList<EntityResponse>();
-        for (EntityResponse entity : this.getListEntityResponse()) {
-            if (entity.getPosition().equals(pos)) {
+    public List<Entity> getEntitiesByPosition(Position pos) {
+        List<Entity> entities = new ArrayList<>();
+        for (Entity entity : entityMap.values()) {
+            if (entity.getPos().equals(pos)) {
                 entities.add(entity);
             }
         }
         return entities;
     }
+
+    //trigger player move
+    public void movePLayer(Direction d){
+        //find player
+        Player p = this.getPlayer();
+        p.move(d);
+    }
+    
+    //find the player
+    public Player getPlayer(){
+        for (Entity e : entityMap.values()){
+            if (e.getType() == "player"){
+                Player p = (Player) e;
+                return p;
+            }
+        }
+        return null;
+    }
+
+    public HashMap<String, Entity> getEntityMap() {
+        return entityMap;
+    }
+
+    public HashMap<String, Integer> getConfigMap() {
+        return configMap;
+    }
+
+    public List<InvItem> getItemList() {
+        return itemList;
+    }
+
+    
 }

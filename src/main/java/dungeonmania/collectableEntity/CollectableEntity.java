@@ -24,7 +24,7 @@ public class CollectableEntity extends Entity{
         return type;
     }
 
-    public Position getPosition() {
+    public Position getPos() {
         return position;
     }
 
@@ -35,5 +35,11 @@ public class CollectableEntity extends Entity{
     public EntityResponse getEntityResponse(){
         EntityResponse response = new EntityResponse(id, type, position, false);
         return response;
+    }
+
+    @Override
+    public void setConfig() {
+        // TODO Auto-generated method stub
+        
     }
 }

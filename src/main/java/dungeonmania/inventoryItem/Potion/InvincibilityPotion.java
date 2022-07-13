@@ -3,10 +3,11 @@ import dungeonmania.inventoryItem.InvItem;
 
 public class InvincibilityPotion implements Potion, InvItem {
 
-    private static int duration;
+
+    private int duration;
     
     public InvincibilityPotion(int duration) {
-        InvincibilityPotion.duration = duration;
+        this.duration = duration;
     }
     @Override
     public int getDuration() {
@@ -14,7 +15,7 @@ public class InvincibilityPotion implements Potion, InvItem {
     }
     @Override
     public void setDuration(int duration) {
-        InvincibilityPotion.duration = duration;
+        this.duration = duration;
     }
 
     @Override

@@ -78,8 +78,6 @@ public class StaticEntityUnitTests {
     public void testZombieToastSpawner(){
         ZombieToastSpawner z = new ZombieToastSpawner(new Position(10, 10), "1");
         assertEquals(new Position(10, 10), z.getPos());
-        ZombieToastSpawner.setSpawntime(10);
-        assertEquals(10, ZombieToastSpawner.getSpawntime());
     }
 }
 

@@ -2,9 +2,10 @@ package dungeonmania.staticEntities;
 
 import dungeonmania.Entity;
 import dungeonmania.response.models.EntityResponse;
+import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class Door extends Entity{
+public class Door extends staticEntity{
     private String id;
     private Position pos;
     private boolean isOpen;
@@ -49,5 +50,29 @@ public class Door extends Entity{
         EntityResponse response = new EntityResponse(id, type, pos, false);
         return response;
     }
+
+    @Override
+    public void setConfig() {
+        
+    }
+
+    @Override
+    public Position playerMoveIn(Position p, Direction d) {
+        if (isOpen()){
+            return this.pos;
+        } else {
+            return p;
+        }
+    }
+
+    @Override
+    public Position boulderMoveIn(Position p) {
+        if (isOpen()){
+            return this.pos;
+        } else {
+            return p;
+        }
+    }
+    
     
 }
