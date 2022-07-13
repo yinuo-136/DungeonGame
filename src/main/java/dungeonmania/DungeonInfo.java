@@ -16,6 +16,7 @@ import dungeonmania.inventoryItem.Sword;
 import dungeonmania.inventoryItem.Potion.InvincibilityPotion;
 import dungeonmania.inventoryItem.Potion.InvisibilityPotion;
 import dungeonmania.movingEntity.Mercenary;
+import dungeonmania.movingEntity.Moving;
 import dungeonmania.movingEntity.Spider;
 import dungeonmania.movingEntity.ZombieToast;
 import dungeonmania.player.Player;
@@ -141,8 +142,8 @@ public class DungeonInfo {
 
     public List<String> getEntitiesStringByPosition(Position pos) {
         List<String> entities = new ArrayList<String>();
-        for (EntityResponse entity : this.getListEntityResponse()) {
-            if (entity.getPosition().equals(pos)) {
+        for (Entity entity : entityMap.values()) {
+            if (entity.getPos().equals(pos)) {
                 entities.add(entity.getType());
             }
         }
@@ -198,4 +199,21 @@ public class DungeonInfo {
 
         return list;
     }
+
+    public void moveAllMovingEntity(){
+        for (Moving e : getAllMovingEntity()){
+            e.move();
+        }
+    }
+
+    public List<Moving> getAllMovingEntity(){
+        List<Moving> list = new ArrayList<>();
+        for (Entity e : entityMap.values()){
+            if (e.getType() == "spider" || e.getType() == "mercenary" || e.getType() == "zombie_toast"){
+                list.add((Moving) e);
+            }
+        }
+        return list;
+    }
+    
 }

@@ -123,6 +123,7 @@ public class DungeonManiaController {
         DungeonInfo info = infoMap.get(this.dungeonId);
         //trigger player movement
         info.movePLayer(movementDirection);
+        info.moveAllMovingEntity();
         return this.getDungeonResponseModel();
     }
 

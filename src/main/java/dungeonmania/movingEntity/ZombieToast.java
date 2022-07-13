@@ -16,9 +16,8 @@ public class ZombieToast extends Entity implements Moving {
     private double health;
     private int damage;
     private Position position;
-    private List<Direction> directions = Arrays.asList(Direction.DOWN, Direction.UP, Direction.LEFT, Direction.RIGHT);
     private String type = "zombie_toast";
-    private List<String> movingConstrintItemList = Arrays.asList("Wall", "Boulder");
+    private MercenaryMovingStrategy currentState = new RandomStrategy();
 
     public ZombieToast(Position position, String id) {
         this.id = id;
@@ -32,28 +31,13 @@ public class ZombieToast extends Entity implements Moving {
     }
 
     public void move() {
-        Random rand = new Random();
-        Direction randDirection = directions.get(rand.nextInt(directions.size()));
-        while (getEntitiesByPosition(position.translateBy(randDirection)).contains(movingConstrintItemList)) {
-            randDirection = directions.get(rand.nextInt(directions.size()));
-        }
-        position = position.translateBy(randDirection);
-    }
-
-    public List<String> getEntitiesByPosition(Position pos) {
-        List<String> entities = new ArrayList<String>();
-        for (EntityResponse entity : dungeonInfo.getListEntityResponse()) {
-            if (entity.getPosition().equals(pos)) {
-                entities.add(entity.getType());
-            }
-        }
-        return entities;
+        currentState.move(this);
     }
 
     @Override
     public void attack(Player player) {
         while(player.isAlive() || this.isAlive()) {
-            player.setHealth(player.getHealth() - this.damage);
+            player.setHealth(player.getHealth() - damage);
             this.setHealth(this.getHealth() - player.getAttack());
         }
         // then remove the player or the enemy depend on who died first.
@@ -61,7 +45,6 @@ public class ZombieToast extends Entity implements Moving {
 
     @Override
     public Position getPos() {
-        
         return position;
     }
 
@@ -97,6 +80,17 @@ public class ZombieToast extends Entity implements Moving {
     public EntityResponse getEntityResponse() {
         EntityResponse response = new EntityResponse(id, type, position, false);
         return response;
+    }
+
+    @Override
+    public void setPos(Position pos) {
+        this.position = pos;
+        
+    }
+
+    @Override
+    public List<String> getEntitiesStringByPosition(Position pos) {
+        return dungeonInfo.getEntitiesStringByPosition(pos);
     }
     
 }

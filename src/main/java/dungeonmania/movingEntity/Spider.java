@@ -1,5 +1,7 @@
 package dungeonmania.movingEntity;
 
+import java.util.List;
+
 import dungeonmania.Entity;
 import dungeonmania.player.Player;
 import dungeonmania.response.models.EntityResponse;
@@ -39,7 +41,7 @@ public class Spider extends Entity implements Moving {
     @Override
     public void attack(Player player) {
         while(player.isAlive() || this.isAlive()) {
-            player.setHealth(player.getHealth() - this.damage);
+            player.setHealth(player.getHealth() - damage);
             this.setHealth(this.getHealth() - player.getAttack());
         }
     }
@@ -84,8 +86,7 @@ public class Spider extends Entity implements Moving {
 
     @Override
     public String getType() {
-        // TODO Auto-generated method stub
-        return "Spider";
+        return type;
     }
     
     public String getId() {
@@ -100,8 +101,17 @@ public class Spider extends Entity implements Moving {
 
     @Override
     public int getDamage() {
-        // TODO Auto-generated method stub
         return damage;
+    }
+
+    @Override
+    public List<String> getEntitiesStringByPosition(Position pos) {
+        return dungeonInfo.getEntitiesStringByPosition(pos);
+    }
+
+    @Override
+    public void setPos(Position pos) {
+        this.position = pos;
     }
     
     
