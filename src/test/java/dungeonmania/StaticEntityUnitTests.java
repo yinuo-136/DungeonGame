@@ -49,10 +49,6 @@ public class StaticEntityUnitTests {
         assertEquals(new Position(3, 2), d.getPos());
         assertEquals(1, d.getKey());
         assertEquals(false, d.isOpen());
-        d.Open(2);
-        assertEquals(false, d.isOpen());
-        d.Open(1);
-        assertEquals(true, d.isOpen());
     }
 
     @Test

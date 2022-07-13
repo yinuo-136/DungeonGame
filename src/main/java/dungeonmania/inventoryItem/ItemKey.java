@@ -21,6 +21,8 @@ public class ItemKey implements InvItem {
         return type;
     }
 
+    
+
     @Override
     public void use() {
         // TODO Auto-generated method stub
@@ -31,6 +33,10 @@ public class ItemKey implements InvItem {
     public ItemResponse getItemResponse() {
         return new ItemResponse(id, type);
         
+    }
+
+    public int getKey() {
+        return key;
     }
     
 }
