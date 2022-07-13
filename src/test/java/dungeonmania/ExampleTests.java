@@ -70,7 +70,7 @@ public class ExampleTests {
         DungeonManiaController dmc;
         dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_spiderTest_basicMovement", "c_spiderTest_basicMovement");
-        assertEquals(null, getEntities(res, "spider"));
+        //assertEquals(null, getEntities(res, "spider"));
         Position pos = getEntities(res, "spider").get(0).getPosition();
 
         List<Position> movementTrajectory = new ArrayList<Position>();

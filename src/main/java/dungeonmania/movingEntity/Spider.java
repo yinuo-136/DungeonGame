@@ -18,7 +18,7 @@ public class Spider extends Entity implements Moving {
     private double health;
     private int timeToSpawn;
     private SpiderMovingState currentState = new CircleDirection(this); 
-    private String type = "Spider";
+    private String type = "spider";
     
     public Spider(Position position, String id) {
         this.position = position;
@@ -47,12 +47,8 @@ public class Spider extends Entity implements Moving {
     }
 
     @Override
-<<<<<<< HEAD
-    public Position getPosition() {
-=======
     public Position getPos() {
         // TODO Auto-generated method stub
->>>>>>> origin/master
         return position;
     }
     
@@ -90,7 +86,7 @@ public class Spider extends Entity implements Moving {
 
     @Override
     public String getType() {
-        return "Spider";
+        return type;
     }
     
     public String getId() {
@@ -110,7 +106,12 @@ public class Spider extends Entity implements Moving {
 
     @Override
     public List<String> getEntitiesStringByPosition(Position pos) {
-        return getEntitiesStringByPosition(position);
+        return dungeonInfo.getEntitiesStringByPosition(pos);
+    }
+
+    @Override
+    public void setPos(Position pos) {
+        this.position = pos;
     }
     
     

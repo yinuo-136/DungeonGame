@@ -83,30 +83,30 @@ public class MovingEntityTests {
     //     assertEquals(enemieshealth-(player.getAttack()/5), zombie.getHealth());
     // }
 
-    @Test
-    @DisplayName("Test spider movement")
-    public void testSpiderMovement(){
-        // x x x
-        // x s x
-        // x x x
-        // test basic spider movement, without blocking
-        Position startPos = new Position(2, 2);
-        Spider spider = new Spider(startPos, "1");
-        Position expectPos = new Position(2, 1);
-        spider.move();
-        assertEquals(expectPos, spider.getPosition());
-        Position newExpectPos = new Position(3, 1);
-        spider.move();
-        // x x s
-        // x x x
-        // x x x
-        assertEquals(newExpectPos, spider.getPosition());
-        for (int i = 1; i <= 7; i++) {
-            spider.move();
-        }
-        assertEquals(expectPos, spider.getPosition());
+    // @Test
+    // @DisplayName("Test spider movement")
+    // public void testSpiderMovement(){
+    //     // x x x
+    //     // x s x
+    //     // x x x
+    //     // test basic spider movement, without blocking
+    //     Position startPos = new Position(2, 2);
+    //     Spider spider = new Spider(startPos, "1");
+    //     Position expectPos = new Position(2, 1);
+    //     spider.move();
+    //     assertEquals(expectPos, spider.getPos());
+    //     Position newExpectPos = new Position(3, 1);
+    //     spider.move();
+    //     // x x s
+    //     // x x x
+    //     // x x x
+    //     assertEquals(newExpectPos, spider.getPos());
+    //     for (int i = 1; i <= 7; i++) {
+    //         spider.move();
+    //     }
+    //     assertEquals(expectPos, spider.getPos());
 
-    }
+    // }
 
     // @Test
     // @DisplayName("Test Mercenary movement")

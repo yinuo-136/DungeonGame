@@ -44,12 +44,7 @@ public class ZombieToast extends Entity implements Moving {
     }
 
     @Override
-<<<<<<< HEAD
-    public Position getPosition() {
-=======
     public Position getPos() {
-        
->>>>>>> origin/master
         return position;
     }
 
@@ -88,14 +83,14 @@ public class ZombieToast extends Entity implements Moving {
     }
 
     @Override
-    public void setPosition(Position pos) {
+    public void setPos(Position pos) {
         this.position = pos;
         
     }
 
     @Override
     public List<String> getEntitiesStringByPosition(Position pos) {
-        return getEntitiesStringByPosition(position);
+        return dungeonInfo.getEntitiesStringByPosition(pos);
     }
     
 }

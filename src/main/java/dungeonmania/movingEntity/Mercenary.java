@@ -32,7 +32,7 @@ public class Mercenary extends Entity implements Moving {
         this.bribeRadius = dungeonInfo.getSpecificConfig("bribe_radius");
     }
 
-    public void move(Player player) {
+    public void move() {
         currentState.move(this);
     }
     
@@ -100,8 +100,7 @@ public class Mercenary extends Entity implements Moving {
 
     @Override
     public List<String> getEntitiesStringByPosition(Position pos) {
-        // TODO Auto-generated method stub
-        return null;
+        return dungeonInfo.getEntitiesStringByPosition(pos);
     }
     
     
