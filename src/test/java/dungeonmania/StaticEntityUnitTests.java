@@ -49,10 +49,6 @@ public class StaticEntityUnitTests {
         assertEquals(new Position(3, 2), d.getPos());
         assertEquals(1, d.getKey());
         assertEquals(false, d.isOpen());
-        d.Open(2);
-        assertEquals(false, d.isOpen());
-        d.Open(1);
-        assertEquals(true, d.isOpen());
     }
 
     @Test
@@ -78,8 +74,6 @@ public class StaticEntityUnitTests {
     public void testZombieToastSpawner(){
         ZombieToastSpawner z = new ZombieToastSpawner(new Position(10, 10), "1");
         assertEquals(new Position(10, 10), z.getPos());
-        ZombieToastSpawner.setSpawntime(10);
-        assertEquals(10, ZombieToastSpawner.getSpawntime());
     }
 }
 

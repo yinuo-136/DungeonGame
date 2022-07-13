@@ -1,12 +1,15 @@
 package dungeonmania.inventoryItem.Potion;
 import dungeonmania.inventoryItem.InvItem;
+import dungeonmania.response.models.ItemResponse;
 
 public class InvisibilityPotion implements Potion, InvItem {
-
-    private static int duration;
+    private int duration;
+    private String id;
+    private String type = "invisibility_potion";
     
-    public InvisibilityPotion(int duration) {
-        InvisibilityPotion.duration = duration;
+    public InvisibilityPotion(int duration, String id) {
+        this.duration = duration;
+        this.id = id;
     }
     @Override
     public int getDuration() {
@@ -14,7 +17,7 @@ public class InvisibilityPotion implements Potion, InvItem {
     }
     @Override
     public void setDuration(int duration) {
-        InvisibilityPotion.duration = duration;
+        this.duration = duration;
     }
 
     @Override
@@ -23,9 +26,9 @@ public class InvisibilityPotion implements Potion, InvItem {
     }
 
     @Override
-    public void getItemResponse() {
-        // TODO Auto-generated method stub
+    public ItemResponse getItemResponse() {
+        return new ItemResponse(id, type);
         
     }
-    
+
 }

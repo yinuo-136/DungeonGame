@@ -2,9 +2,10 @@ package dungeonmania.staticEntities;
 
 import dungeonmania.Entity;
 import dungeonmania.response.models.EntityResponse;
+import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class FloorSwitch extends Entity {
+public class FloorSwitch extends staticEntity {
     private String id;
     private Position pos;
     private boolean isTriggered;
@@ -13,7 +14,6 @@ public class FloorSwitch extends Entity {
     public FloorSwitch(Position p, String id) {
         this.id = id;
         this.pos = p;
-        //TODO: init the isTrigger.
         this.isTriggered = false;
     }
 
@@ -41,5 +41,20 @@ public class FloorSwitch extends Entity {
     public EntityResponse getEntityResponse() {
         EntityResponse response = new EntityResponse(id, type, pos, false);
         return response;
+    }
+
+    @Override
+    public void setConfig() {
+        
+    }
+
+    @Override
+    public Position playerMoveIn(Position p, Direction d) {
+        return this.pos;
+    }
+
+    @Override
+    public Position boulderMoveIn(Position p) {
+        return this.pos;
     } 
 }

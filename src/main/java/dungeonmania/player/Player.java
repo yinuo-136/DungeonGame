@@ -1,19 +1,22 @@
 package dungeonmania.player;
 
+import java.util.List;
+
 import dungeonmania.Entity;
+import dungeonmania.collectableEntity.CollectableEntity;
+import dungeonmania.collectableEntity.Key;
 import dungeonmania.response.models.EntityResponse;
+import dungeonmania.staticEntities.staticEntity;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class Player extends Entity {
-    private static final double DEFAULT_HEALTH = 10;
-    private static final int DEFAULT_ATTACK = 5;
     private String id;
     private String type = "player";
 
-    Position position;
-    int attack;
-    double health;
+    private int attack;
+    private Position position;
+    private double health;
 
     /**
      * Creates a Player Object at a sepcificied location with default health and attack values.
@@ -25,59 +28,13 @@ public class Player extends Entity {
     public Player(Position position, String id){
         this.position = position;
         this.id = id;
-        attack = DEFAULT_ATTACK;
-        health = DEFAULT_HEALTH;
 
         return;
     }
 
-    /**
-     * Creates a Player Object at a sepcificied location with a custom attack value and default health value.
-     *  
-     * @param x     - Horizontal Position
-     * @param y     - Vertical Position
-     * @param attack    - Attack of the player
-     * 
-     */
-    public Player(Position position, int attack){
-        this.position = position;
-        this.attack = attack;
-        health = DEFAULT_HEALTH;        
-
-        return;                  
-    }
-
-    /**
-     * Creates a Player Object at a sepcificied location with a custom health value and default attack value.
-     *  
-     * @param x     - Horizontal Position
-     * @param y     - Vertical Position
-     * @param health    - Health of the player
-     * 
-     */
-    public Player(Position position, double health){
-        this.position = position;
-        attack = DEFAULT_ATTACK;
-        this.health = health;        
-
-        return; 
-    }
-
-    /**
-     * Creates a Player Object at a sepcificied location with custom health and attack values.
-     *  
-     * @param x    - Horizontal Position
-     * @param y     - Vertical Position
-     * @param attack   - Attack of the player
-     * @param health   - Health of the player
-     * 
-     */
-    public Player(Position position, int attack, double health){
-        this.position = position;
-        this.attack = attack;
-        this.health = health;
-
-        return; 
+    public void setConfig(){
+        this.health = dungeonInfo.getSpecificConfig("player_health");
+        this.attack = dungeonInfo.getSpecificConfig("player_attack");
     }
 
     /**
@@ -87,17 +44,6 @@ public class Player extends Entity {
      */
     public int getAttack(){
         return attack; 
-    }
-
-    /**
-     * Sets the Attack value of the player.
-     * 
-     * @param attack
-     */
-    public void setAttack(int attack){
-        this.attack = attack;
-        
-        return;
     }
 
     /**
@@ -169,9 +115,41 @@ public class Player extends Entity {
      * @param direction
      */
     public void move(Direction direction){
-        position = position.translateBy(direction);
+        //check the static entities before move into the cell
+        Position p = null;
+        Position checkPosition = position.translateBy(direction);
+        List<Entity> checkEntity = dungeonInfo.getEntitiesByPosition(checkPosition);
+        for (Entity e : checkEntity){
+            if (e instanceof staticEntity){
+                staticEntity se = (staticEntity) e;
+                p = se.playerMoveIn(this.position, direction);
+            }
 
-        return;
+            if (this.position.equals(p)){
+                break;
+            }
+        }
+        if (p == null){
+            this.position = checkPosition;
+        } else {
+            this.position = p;
+        }
+
+        //After move to the cell, collect all collectables
+        checkEntity = dungeonInfo.getEntitiesByPosition(this.position);
+        for(Entity e : checkEntity){
+            if (e instanceof CollectableEntity) {
+                if (e instanceof Key){
+                    Key k = (Key) e;
+                    k.pickup();
+                } else {
+                    CollectableEntity ce = (CollectableEntity) e;
+                    ce.pickup();
+                }
+
+            }
+        }
+        
     }
     
     /**
@@ -195,13 +173,12 @@ public class Player extends Entity {
         return type;
     }
 
-
-
     @Override
     public EntityResponse getEntityResponse() {
         EntityResponse response = new EntityResponse(id, type, position, false);
         return response;
     }
+
 
     
 }
