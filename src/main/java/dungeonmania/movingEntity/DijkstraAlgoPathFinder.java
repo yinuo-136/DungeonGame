@@ -10,78 +10,99 @@ import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class DijkstraAlgoPathFinder {
+    private int range = 6;
+    private int v = range * range;
+    private int left = range/2;
+    private int top = range/2;
+
+    public DijkstraAlgoPathFinder() {
+
+    }
+
+    public Direction findNextPath(Entity movingEntity) {
+        ArrayList<ArrayList<Integer>> graph = buildGraph(movingEntity);
+        //early exit if there is no path to player
+        if (graph == null) {
+            return null;
+        }
+        Position playerPos = movingEntity.getDungeonInfo().getPlayer().getPos();
+        int playerX = playerPos.getX();
+        int playerY = playerPos.getY();
+        int diffPlayerXToEntity = playerX - movingEntity.getPos().getX();
+        int diffPlayerYToEntity = playerY - movingEntity.getPos().getY(); 
+        int start = top*range + left;
+        int dest = (top + diffPlayerYToEntity)*range + left + diffPlayerXToEntity;
+        List<Integer> path = printShortestDistance(graph, start, dest, v);
+        if (path.size() == 0) {
+            return null;
+        }
+        if (path.get(1) == start - range) {
+            // if direction is UP
+            return Direction.UP;
+        } else if (path.get(1) == start + 1) {
+            // if direction is RIGHT
+            return Direction.RIGHT;
+        } else if (path.get(1) == start - 1) {
+            // if direction is LEFT
+            return Direction.LEFT;
+        } else if (path.get(1) == start + range) {
+            // if direction is DOWN
+            return Direction.DOWN;
+        } 
+        return null;
+    }
  
-    public ArrayList<ArrayList<Integer>> buildGraph(Position startingPos, Entity e) {
+    public ArrayList<ArrayList<Integer>> buildGraph(Entity e) {
         List<String> movingConstrintItemList = Arrays.asList("wall", "boulder");
-        int range = 60;
-        int v = range * range;
+
         ArrayList<ArrayList<Integer>> adj = new ArrayList<ArrayList<Integer>>(v);
         for (int i = 0; i < v; i++) {
             adj.add(new ArrayList<Integer>());
         }
         
-        int left = range/2;
-        int top = range/2;
-        Position topLeftCorner = startingPos.translateBy(-left,-top); 
+        Position topLeftCorner = e.getPos().translateBy(-left,-top); 
         int x = topLeftCorner.getX();
         int x1 = 0;
-        while (x < topLeftCorner.getX() + range - 1) {
-            int y = topLeftCorner.getY();
+        //check if player is in range, if he is out of range, then return null.
+        Position playerPos = e.getDungeonInfo().getPlayer().getPos();
+        if(!(playerPos.getX() >= topLeftCorner.getX() && 
+        playerPos.getX() <= topLeftCorner.getX() + range && 
+        playerPos.getY() >= topLeftCorner.getY() && 
+        playerPos.getY() <= topLeftCorner.getY() + range
+        )) {
+            return null;
+        }
+        int y = topLeftCorner.getY();
+        while (y < topLeftCorner.getY() + range - 1) {
+            x = topLeftCorner.getX();
             int y1 = 0;
-            while (y < topLeftCorner.getY() + range - 1) {
+            // scan all the vertex around the mercenary and build a graph
+            while (x < topLeftCorner.getX() + range - 1) {
                 // check if the position is a wall or a boulder, and positions on the right and bottom
-                if (!e.getDungeonInfo().getEntitiesStringByPosition(new Position(x,y)).stream().anyMatch(element -> movingConstrintItemList.contains(element))) {
+                if (!(e.getDungeonInfo().getEntitiesStringByPosition(new Position(x,y)).stream().anyMatch(element -> movingConstrintItemList.contains(element)))) {
                     List<String> right_pos_entites = e.getDungeonInfo().getEntitiesStringByPosition(new Position(x+1,y));
+                    // if the right position is not a wall or a boulder, then add the edge to the graph.
                     if (!right_pos_entites.stream().anyMatch(element -> movingConstrintItemList.contains(element))) {
                         addEdge(adj, x1*range+y1, x1*range+y1+1);
                     }
                     List<String> bottom_pos_entites = e.getDungeonInfo().getEntitiesStringByPosition(new Position(x,y-1));
+                    // if the bottom position is not a wall or a boulder, then add the edge to the graph.
                     if (!bottom_pos_entites.stream().anyMatch(element -> movingConstrintItemList.contains(element))) {
                         addEdge(adj, x1*range+y1, x1*range+y1+range);
                     }
                 } 
-                y++;
+                x++;
                 y1++;
             }
-            x++;
+            y++;
             x1++;
         }
         return adj;
     }
-    // Driver Program
-    public static void main(String args[])
-    {
-        // No of vertices
-        int v = 8;
- 
-        // Adjacency list for storing which vertices are connected
-        ArrayList<ArrayList<Integer>> adj =
-                            new ArrayList<ArrayList<Integer>>(v);
-        for (int i = 0; i < v; i++) {
-            adj.add(new ArrayList<Integer>());
-        }
- 
-        // Creating graph given in the above diagram.
-        // add_edge function takes adjacency list, source
-        // and destination vertex as argument and forms
-        // an edge between them.
-        addEdge(adj, 0, 1);
-        addEdge(adj, 0, 3);
-        addEdge(adj, 1, 2);
-        addEdge(adj, 3, 4);
-        addEdge(adj, 3, 7);
-        addEdge(adj, 4, 5);
-        addEdge(adj, 4, 6);
-        addEdge(adj, 4, 7);
-        addEdge(adj, 5, 6);
-        addEdge(adj, 6, 7);
-        int source = 0, dest = 7;
-        printShortestDistance(adj, source, dest, v);
-    }
  
     // function to form edge between two vertices
     // source and dest
-    private static void addEdge(ArrayList<ArrayList<Integer>> adj, int i, int j)
+    public void addEdge(ArrayList<ArrayList<Integer>> adj, int i, int j)
     {
         adj.get(i).add(j);
         adj.get(j).add(i);
@@ -89,7 +110,7 @@ public class DijkstraAlgoPathFinder {
  
     // function to print the shortest distance and path
     // between source vertex and destination vertex
-    private static void printShortestDistance(
+    public List<Integer> printShortestDistance(
                      ArrayList<ArrayList<Integer>> adj,
                              int s, int dest, int v)
     {
@@ -98,11 +119,13 @@ public class DijkstraAlgoPathFinder {
         // from s
         int pred[] = new int[v];
         int dist[] = new int[v];
+
+        List<Integer> pathInt = new ArrayList<Integer>();
  
         if (BFS(adj, s, dest, v, pred, dist) == false) {
-            System.out.println("Given source and destination" +
-                                         "are not connected");
-            return;
+            // System.out.println("Given source and destination" +
+            //                              "are not connected");
+            return pathInt;
         }
  
         // LinkedList to store path
@@ -114,14 +137,14 @@ public class DijkstraAlgoPathFinder {
             crawl = pred[crawl];
         }
  
-        // Print distance
-        System.out.println("Shortest path length is: " + dist[dest]);
  
         // Print path
-        System.out.println("Path is ::");
+        //System.out.println("Path is ::");
         for (int i = path.size() - 1; i >= 0; i--) {
-            System.out.print(path.get(i) + " ");
+            //System.out.print(path.get(i) + " ");
+            pathInt.add(path.get(i));
         }
+        return pathInt;
     }
  
     // a modified version of BFS that stores predecessor

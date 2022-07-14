@@ -1,5 +1,7 @@
 package dungeonmania.movingEntity;
 
+import dungeonmania.Entity;
+
 public class RunAwayStrategy implements MercenaryMovingStrategy {
     
     public String getStatename() {
@@ -7,7 +9,8 @@ public class RunAwayStrategy implements MercenaryMovingStrategy {
     }
 
     @Override
-    public void move(Moving movingEntity) {
+    public void move(Entity movingEntity) {
+        // TODO Auto-generated method stub
         
     }
     

@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import dungeonmania.Entity;
 import dungeonmania.util.Direction;
 
 public class RandomStrategy implements MercenaryMovingStrategy {
@@ -24,6 +25,12 @@ public class RandomStrategy implements MercenaryMovingStrategy {
     @Override
     public String getStatename() {
         return "Random";
+    }
+
+    @Override
+    public void move(Entity movingEntity) {
+        // TODO Auto-generated method stub
+        
     }
 
 
