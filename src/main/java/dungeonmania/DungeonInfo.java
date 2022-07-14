@@ -64,6 +64,12 @@ public class DungeonInfo {
                newEntity.setDungeonInfo(info);
                newEntity.setConfig();
                break;
+               
+               case "spider":
+               newEntity = new Spider(new Position(x, y), id);
+               newEntity.setDungeonInfo(info);
+               newEntity.setConfig();
+               break;
 
             case "mercenary":
                 newEntity = new Mercenary(new Position(x, y), id);
