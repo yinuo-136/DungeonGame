@@ -64,15 +64,15 @@ public class DungeonInfo {
                newEntity.setDungeonInfo(info);
                newEntity.setConfig();
                break;
+               
+               case "spider":
+               newEntity = new Spider(new Position(x, y), id);
+               newEntity.setDungeonInfo(info);
+               newEntity.setConfig();
+               break;
 
             case "mercenary":
                 newEntity = new Mercenary(new Position(x, y), id);
-                newEntity.setDungeonInfo(info);
-                newEntity.setConfig();
-                break;
-
-            case "spider":
-                newEntity = new Spider(new Position(x, y), id);
                 newEntity.setDungeonInfo(info);
                 newEntity.setConfig();
                 break;
@@ -220,6 +220,63 @@ public class DungeonInfo {
             }
         }
         return list;
+    }
+
+    public void initSpawnConfig(){
+        //in this stage, only spider needs to be init
+        Spider.setClassHealth(getSpecificConfig("spider_health"));
+        Spider.setDamage(getSpecificConfig("spider_attack"));
+        Spider.setSpawnRate(getSpecificConfig("spider_spawn_rate"));
+        Spider.setTimeToSpawn(getSpecificConfig("spider_spawn_rate"));
+    }
+
+    public boolean isItemInList(String type){
+        List<ItemResponse> list = getListItemResponse();
+        for (ItemResponse i : list){
+            if(i.getType().equals(type)){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public void Spawn(){
+        // spawn zombie
+        List<ZombieToastSpawner> zl = new ArrayList<>();
+        for (Entity e : entityMap.values()){
+            if (e.getType() == "zombie_toast_spawner") {
+                ZombieToastSpawner z = (ZombieToastSpawner) e;
+                zl.add(z);
+            }
+        }
+        for (ZombieToastSpawner z : zl){
+            z.spawn();
+        }
+
+        //spawn spider
+        if (Spider.spawn() == true){
+            spiderSpawn();
+        }
+    }
+
+    public void zombieSpawn(Position p){
+        this.entityCounter = this.entityCounter + 1;
+        String id = Integer.toString(this.entityCounter);
+        ZombieToast z = new ZombieToast(p, id);
+        z.setHealth(configMap.get("zombie_health"));
+        z.setDamage(configMap.get("zombie_attack"));
+        z.setDungeonInfo(this);
+        entityMap.put(id, z);
+    }
+
+    public void spiderSpawn() {
+        this.entityCounter = this.entityCounter + 1;
+        String id = Integer.toString(this.entityCounter);
+        Position p = Spider.generateSpawnPos(getPlayer().getPos());
+        Spider s = new Spider(p, id);
+        s.setDungeonInfo(this);
+        entityMap.put(id, s);
     }
     
 }

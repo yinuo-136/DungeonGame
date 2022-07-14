@@ -25,8 +25,12 @@ public class ZombieToast extends Entity implements Moving {
     }
 
     public void setConfig(){
-        this.health = dungeonInfo.getSpecificConfig("zombie_health");
-        this.damage = dungeonInfo.getSpecificConfig("zombie_attack");
+    }
+
+    
+
+    public void setDamage(int damage) {
+        this.damage = damage;
     }
 
     public void move() {
