@@ -1,12 +1,14 @@
 package dungeonmania;
 
 import dungeonmania.exceptions.InvalidActionException;
+import dungeonmania.inventoryItem.InvItem;
 import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.response.models.ItemResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.FileLoader;
+import dungeonmania.util.Position;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -62,7 +64,7 @@ public class DungeonManiaController {
         try {
             jsonContent = FileLoader.loadResourceFile("/configs/" + configName + ".json");
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IllegalArgumentException();
         }
 
         //convert json into JSONObject
@@ -76,7 +78,7 @@ public class DungeonManiaController {
         try {
             jsonContent = FileLoader.loadResourceFile("/dungeons/" + dungeonName + ".json");
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IllegalArgumentException();
         }
 
         //convert json into JSONObject
@@ -93,7 +95,8 @@ public class DungeonManiaController {
         JSONObject jsonGoals = dungeonContent.getJSONObject("goal-condition");
 
         
-
+        //init spawner status
+        info.initSpawnConfig();
         DungeonResponse response = new DungeonResponse(dungeonId, dungeonName, entityResponses, new ArrayList<ItemResponse>(), new ArrayList<BattleResponse>(), new ArrayList<String>(), ":exit");
 
         return response;
@@ -113,7 +116,17 @@ public class DungeonManiaController {
      * /game/tick/item
      */
     public DungeonResponse tick(String itemUsedId) throws IllegalArgumentException, InvalidActionException {
-        return null;
+        //check exceptions
+        if (itemUsedId != "bomb" && itemUsedId != "invincibility_potion" && itemUsedId != "invisibility_potion"){
+            throw new IllegalArgumentException();
+        }
+
+        DungeonInfo info = infoMap.get(this.dungeonId);
+        if (info.isItemInList(itemUsedId) == false){
+            throw new InvalidActionException("not in the player's inventory");
+        }
+
+        return this.getDungeonResponseModel();
     }
 
     /**
@@ -124,6 +137,7 @@ public class DungeonManiaController {
         //trigger player movement
         info.movePLayer(movementDirection);
         info.moveAllMovingEntity();
+        info.Spawn();
         return this.getDungeonResponseModel();
     }
 
@@ -138,6 +152,56 @@ public class DungeonManiaController {
      * /game/interact
      */
     public DungeonResponse interact(String entityId) throws IllegalArgumentException, InvalidActionException {
-        return null;
+        DungeonInfo info = infoMap.get(this.dungeonId);
+        HashMap<String, Entity> entityMap = info.getEntityMap();
+        Entity e = entityMap.get(entityId);
+        if (e == null) {
+            throw new IllegalArgumentException("null");
+        }
+        if (e.getType() != "zombie_toast_spawner" && e.getType() != "mercenary") {
+            throw new IllegalArgumentException();
+        }
+
+        //case zombie spawner
+        if (e.getType() == "zombie_toast_spawner") {
+            //check player position
+            if (isNearSpawner(e.getPos()) == false) {
+                throw new InvalidActionException(" player is not cardinally adjacent to the spawner");
+            }
+            //check has weapon
+            if (hasWeapon() == false) {
+                throw new InvalidActionException("Player dose not have a weapon");
+            }
+
+        }
+        info.getEntityMap().remove(entityId);
+        System.out.println("1");
+        return this.getDungeonResponseModel();
+    }
+
+    public boolean isNearSpawner(Position Spawner){
+        DungeonInfo info = infoMap.get(this.dungeonId);
+        Position p = info.getPlayer().getPos();
+        Position up = Spawner.translateBy(Direction.UP);
+        Position down = Spawner.translateBy(Direction.DOWN);
+        Position left = Spawner.translateBy(Direction.LEFT);
+        Position right = Spawner.translateBy(Direction.RIGHT);
+        if (up.equals(p) || down.equals(p) 
+        || left.equals(p) || right.equals(p)){
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean hasWeapon(){
+        DungeonInfo info = infoMap.get(this.dungeonId);
+        List<InvItem> itemList = info.getItemList();
+        for (InvItem i : itemList){
+            if (i.getItemResponse().getType() == "sword") {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -1,6 +1,7 @@
 package dungeonmania.movingEntity;
 
 import java.util.List;
+import java.util.Random;
 
 import dungeonmania.Entity;
 import dungeonmania.player.Player;
@@ -9,14 +10,15 @@ import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class Spider extends Entity implements Moving {
-    private int damage;
-    private int SpawnRate;
+    private static int damage;
+    private static int SpawnRate;
+    private static int timeToSpawn;
+    private static double classHealth;
 
     private String id;
     private Position position;
     private Position spawnPosition;
     private double health;
-    private int timeToSpawn;
     private SpiderMovingState currentState = new CircleDirection(this); 
     private String type = "spider";
     
@@ -24,14 +26,10 @@ public class Spider extends Entity implements Moving {
         this.position = position;
         this.spawnPosition = position;
         this.id = id;
-        
+        this.health = classHealth;
     }
     
     public void setConfig(){
-        this.health = dungeonInfo.getSpecificConfig("spider_health");
-        this.damage = dungeonInfo.getSpecificConfig("spider_attack");
-        this.SpawnRate = dungeonInfo.getSpecificConfig("spider_spawn_rate");
-        this.timeToSpawn = SpawnRate;
     }
 
     public void move() {
@@ -113,7 +111,41 @@ public class Spider extends Entity implements Moving {
     public void setPos(Position pos) {
         this.position = pos;
     }
-    
-    
+
+    public static void setDamage(int damage) {
+        Spider.damage = damage;
+    }
+
+    public static void setSpawnRate(int spawnRate) {
+        SpawnRate = spawnRate;
+    }
+
+    public static void setClassHealth(double classHealth) {
+        Spider.classHealth = classHealth;
+    }
+   
+    public static void setTimeToSpawn(int timeToSpawn) {
+        Spider.timeToSpawn = timeToSpawn;
+    }
+
+    public static boolean spawn() {
+        if (SpawnRate == 0) {
+            return false;
+        }
+        timeToSpawn = timeToSpawn - 1;
+        if (timeToSpawn <= 0) {
+            timeToSpawn = SpawnRate;
+            return true;
+        }
+
+        return false;
+    }
+
+    public static Position generateSpawnPos(Position p) {
+        Random r = new Random();
+        int x = r.ints(-10, 10).findFirst().getAsInt();
+        int y = r.ints(-10, 10).findFirst().getAsInt();
+        return p.translateBy(x, y);
+    }
 }
     
