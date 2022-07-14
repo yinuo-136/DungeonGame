@@ -10,7 +10,7 @@ public class RunAwayStrategy implements MercenaryMovingStrategy {
 
     @Override
     public void move(Entity movingEntity) {
-        // TODO Auto-generated method stub
+        
         
     }
     

@@ -10,7 +10,8 @@ import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class DijkstraAlgoPathFinder {
-    private int range = 6;
+    // range would be the like a diameter for the graph that dijstra would run.
+    private int range = 60;
     private int v = range * range;
     private int left = range/2;
     private int top = range/2;
