@@ -1,3 +1,4 @@
+//The BFS algo is from the following website: https://www.geeksforgeeks.org/bfs-or-dfs-for-shortest-path-problem/ 
 package dungeonmania.movingEntity;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +34,39 @@ public class DijkstraAlgoPathFinder {
         int diffPlayerYToEntity = playerY - movingEntity.getPos().getY(); 
         int start = top*range + left;
         int dest = (top + diffPlayerYToEntity)*range + left + diffPlayerXToEntity;
+        List<Integer> path = printShortestDistance(graph, start, dest, v);
+        if (path.size() == 0) {
+            return null;
+        }
+        if (path.get(1) == start - range) {
+            // if direction is UP
+            return Direction.UP;
+        } else if (path.get(1) == start + 1) {
+            // if direction is RIGHT
+            return Direction.RIGHT;
+        } else if (path.get(1) == start - 1) {
+            // if direction is LEFT
+            return Direction.LEFT;
+        } else if (path.get(1) == start + range) {
+            // if direction is DOWN
+            return Direction.DOWN;
+        } 
+        return null;
+    }
+
+    public Direction findNextPathAwayPlayer(Entity movingEntity) {
+        ArrayList<ArrayList<Integer>> graph = buildGraph(movingEntity);
+        //early exit if there is no path to player
+        if (graph == null) {
+            return null;
+        }
+        Position playerPos = movingEntity.getDungeonInfo().getPlayer().getPos();
+        int playerX = playerPos.getX();
+        int playerY = playerPos.getY();
+        int diffEntityToPlayerX = movingEntity.getPos().getX() - playerX;
+        int diffEntityToPlayerY = movingEntity.getPos().getY() - playerY; 
+        int start = top*range + left;
+        int dest = (top + diffEntityToPlayerX)*range + left + diffEntityToPlayerY;
         List<Integer> path = printShortestDistance(graph, start, dest, v);
         if (path.size() == 0) {
             return null;
