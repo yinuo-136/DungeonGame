@@ -1,6 +1,7 @@
 package dungeonmania.movingEntity;
 
 import dungeonmania.Entity;
+import dungeonmania.util.Direction;
 
 public class BribedStrategy implements MercenaryMovingStrategy {
     
@@ -10,8 +11,22 @@ public class BribedStrategy implements MercenaryMovingStrategy {
 
     @Override
     public void move(Entity movingEntity) {
-        // TODO Auto-generated method stub
-        
+        DijkstraAlgoPathFinder pathFinder = new DijkstraAlgoPathFinder();
+        Direction direction = pathFinder.findNextPath(movingEntity);
+        if (direction == null) {
+            return;
+        } 
+        // if that move would cause the entity to hit player, dont move
+        if (checkPlayer(movingEntity, direction)) {
+            return;
+        }
+        movingEntity.setPos(movingEntity.getPos().translateBy(direction));
+    }
+
+    // check if that position is player
+    public boolean checkPlayer(Entity entity, Direction direction) {
+        // check if that direction of entity is a obstacle, return true if it is and vice versa
+        return entity.getPos().translateBy(direction) == entity.getDungeonInfo().getPlayer().getPos();
     }
     
 }
