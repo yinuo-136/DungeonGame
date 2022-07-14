@@ -46,7 +46,6 @@ public class Mercenary extends Entity implements Moving {
 
     @Override
     public Position getPos() {
-        // TODO Auto-generated method stub
         return position;
     }
 

@@ -11,6 +11,9 @@ public abstract class Entity {
     public abstract EntityResponse getEntityResponse();
     public abstract void setConfig();
     
+    public void setPos(Position pos) {
+    }
+    
     public void setDungeonInfo(DungeonInfo dungeonInfo) {
         this.dungeonInfo = dungeonInfo;
     }

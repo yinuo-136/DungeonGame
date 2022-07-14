@@ -143,6 +143,34 @@ public class ExampleTests {
 
     }
 
+    @Test
+    public void testMercenarybasicMovement() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_battleTest_basicMercenary", "c_battleTests_basicMercenaryMercenaryDies");
+        Position pos = getEntities(res, "mercenary").get(0).getPosition();
+        Position expectedPosition = pos.translateBy(Direction.LEFT);
+
+        //   0 1 2 3
+        // 0 x W W W
+        // 1 P x M W
+        // 2 x W W W
+        res = dmc.tick(Direction.LEFT);
+        assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
+    }
+
+    @Test
+    public void testMercenarybasicMovement2() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_mercenaryTest_BasicMovement", "c_battleTests_basicMercenaryMercenaryDies");
+        Position pos = getEntities(res, "mercenary").get(0).getPosition();
+        Position expectedPosition = pos.translateBy(Direction.UP);
+
+        res = dmc.tick(Direction.UP);
+        assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
+        
+    }
+
+
         
 //     @Test
 //     @DisplayName("Test surrounding entities are removed when placing a bomb next to an active switch with config file bomb radius set to 2")
