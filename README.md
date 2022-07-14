@@ -36,6 +36,7 @@ This specification is broken into four parts:
 - Tue 12 Jul 8pm - If a spider is stuck between two boulders in its movement path, it should remain still
 - Tue 12 Jul 10pm - Improve wording of effects of bows in battles
 - Wed 13 Jul 9am - Fix the typo in the example battle test
+- Thu 14 Jul 6am - Add image for green portal
 
 ## 1. Aims
 
