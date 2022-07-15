@@ -23,7 +23,8 @@ public class BuildableTests {
         assertEquals(10, bow.getAttackBonus());
         assertEquals(10, bow.getDurability());
 
-        assertEquals(new ItemResponse("bow1", "bow"), bow.getItemResponse());
+        assertEquals("bow1", bow.getItemResponse().getId());
+        assertEquals("bow", bow.getItemResponse().getType());
 
     }
 
@@ -37,7 +38,8 @@ public class BuildableTests {
         assertEquals(10, shield.getDefenseBonus());
         assertEquals(10, shield.getDurability());
 
-        assertEquals(new ItemResponse("shield1", "shield"), shield.getItemResponse());
+        assertEquals("shield1", shield.getItemResponse().getId());
+        assertEquals("shield", shield.getItemResponse().getType());
         
     }
 
