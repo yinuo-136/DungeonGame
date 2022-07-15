@@ -264,6 +264,13 @@ public class DungeonInfo {
     }
 
     /*
+     * Returns number of inventory items of a specific type
+     */
+    public int getNumInvItemType(String type){
+        return getInvItemIdsListByType(type).size();
+    }
+
+    /*
      * Adds a InvItem to the Item List
      */
     public void addInvItem(InvItem item){
@@ -307,5 +314,5 @@ public class DungeonInfo {
         s.setDungeonInfo(this);
         entityMap.put(id, s);
     }
-    
+
 }
