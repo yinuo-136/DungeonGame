@@ -6,36 +6,34 @@ import dungeonmania.response.models.ItemResponse;
 
 public class Shield implements InvItem,Buildable {
     private String id;
-    private String type = "shield";
+    private static String type = "shield";
 
-    private int sheildBonus;
+    private int defenseBonus;
     private int durability;
 
-    public Shield(String id, int sheildBonus, int durability){
-        //TODO
+    public Shield(String id, int defenseBonus, int durability){
+        this.id = id;
+        this.defenseBonus = defenseBonus;
+        this.durability = durability;
     }
 
     public String getId() {
-        //TODO
-        return null;
+        return id;
     }
     public String getType() {
-        //TODO
-        return null;
+        return type;
     }
 
     public int getDefenseBonus() {
-        //TODO
-        return 0;
+        return defenseBonus;
     }
 
     public int getDurability() {
-        //TODO
-        return 0;
+        return durability;
     }
 
     public void setDurability(int durability) {
-        //TODO
+        this.durability = durability;
     }
 
     public void craft() throws InvalidActionException {
@@ -43,6 +41,10 @@ public class Shield implements InvItem,Buildable {
     }
 
     public Boolean isItemDestroyed() {
+        if (durability > 0) {
+            return true;
+        }
+        
         return false;
     }
     
@@ -53,7 +55,6 @@ public class Shield implements InvItem,Buildable {
 
     @Override
     public ItemResponse getItemResponse(){
-        //TODO
-        return null;
+        return new ItemResponse(this.id, type);
     }
 }
