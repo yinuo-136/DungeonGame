@@ -65,6 +65,26 @@ public class BuildableTests {
     }
 
     @Test
+    @DisplayName("Test Bow Use() Method")
+    public void testBowUse(){
+        Bow bow = new Bow("bow1", 10);
+
+        bow.use();
+
+        assertEquals(9, bow.getDurability());
+    }
+
+    @Test
+    @DisplayName("Test Shield Use() Method")
+    public void testShieldUse(){
+        Shield shield = new Shield("shield1", 10, 10);
+
+        shield.use();
+
+        assertEquals(9, shield.getDurability());
+    }
+
+    @Test
     @DisplayName("Test invalid craft request")
     public void testInvalidCraft() {
         assertThrows(IllegalArgumentException.class,
