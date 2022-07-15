@@ -1,5 +1,7 @@
 package dungeonmania.buildableEntity;
 
+import java.util.List;
+
 import dungeonmania.DungeonInfo;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.inventoryItem.InvItem;
@@ -33,7 +35,20 @@ public class Bow implements InvItem, Buildable {
     }
 
     public void craft(DungeonInfo info) throws InvalidActionException {
-        //TODO
+        List<String> woodIdList = info.getInvItemIdsListByType("wood");
+        List<String> arrowIdList = info.getInvItemIdsListByType("arrow");
+
+        if ((woodIdList.size()<1) || (arrowIdList.size()<3) ) {
+            throw new InvalidActionException("Insufficient Materials to craft bow!");
+        }
+
+        //Remove one wood from inventory
+        info.removeInvItemById(woodIdList.get(0));
+
+        //Remove three arrows from inventory
+        info.removeInvItemById(arrowIdList.get(0));
+        info.removeInvItemById(arrowIdList.get(1));
+        info.removeInvItemById(arrowIdList.get(2));
     }
 
     public Boolean isItemDestroyed() {
