@@ -1,5 +1,6 @@
 package dungeonmania.player;
 
+import dungeonmania.inventoryItem.Potion.Potion;
 import dungeonmania.util.Position;
 
 public class NormalState implements PlayerState {
@@ -30,6 +31,14 @@ public class NormalState implements PlayerState {
     }
 
     public void tickPotionTime() {
+        Potion potion = player.pullPotion();
+        // if there are potion in the queue and the player is not in the influence of any potion then activate the potion
+        if (player.getPlayerState().getStateName() == "Normal") {
+            if (potion != null) {
+                potion.takeAction();
+                return;
+            }
+        }
         return;
     }
     
