@@ -65,14 +65,14 @@ public class Battle {
         ItemResponse sword_response = null;
         ItemResponse shield_response = null;
         List <ItemResponse> itemsUsed = new ArrayList<>();
-        if (bow_id != null) {
-            bow_response = new ItemResponse(bow_id, "Bow");
-            itemsUsed.add(bow_response);
-        }
-        if (shield_id != null) {
-            shield_response = new ItemResponse(shield_id, "Shield");
-            itemsUsed.add(shield_response);
-        }
+        // if (bow_id != null) {
+        //     bow_response = new ItemResponse(bow_id, "Bow");
+        //     itemsUsed.add(bow_response);
+        // }
+        // if (shield_id != null) {
+        //     shield_response = new ItemResponse(shield_id, "Shield");
+        //     itemsUsed.add(shield_response);
+        // }
         if (sword_id != null) {
             sword_response = new ItemResponse(sword_id, "Sword");
             itemsUsed.add(sword_response);
@@ -88,7 +88,7 @@ public class Battle {
         */
         // rounds continue until player or enemy dies
         while (current_player_health > 0 && current_enemy_health > 0){
-            current_enemy_health = enemy.getHealth() - ((bow_multiplication * (player.getAttack() + sword_attack)) / 5)
+            current_enemy_health = enemy.getHealth() - ((bow_multiplication * (player.getAttack() + sword_attack)) / 5);
             current_player_health = player.getHealth() - ((enemy.getDamage() - shield_defense) / 10);
             player.setHealth(current_player_health);
             enemy.setHealth(current_enemy_health);

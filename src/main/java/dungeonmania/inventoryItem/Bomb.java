@@ -33,6 +33,7 @@ public class Bomb implements InvItem {
         PlacedBomb bomb = new PlacedBomb(info.getPlayer().getPos(), this.id, this.radius);
         info.getItemList().remove(this);
         info.getEntityMap().put(this.id, bomb);
+        info.addTick(bomb);
     }
 
     @Override

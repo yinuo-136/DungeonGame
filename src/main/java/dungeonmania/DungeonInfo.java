@@ -39,6 +39,7 @@ public class DungeonInfo {
     private HashMap<String, Integer> configMap = new HashMap<>(); // the config file map
     private List<InvItem> itemList = new ArrayList<>(); // the item list
     private List<BattleResponse> battleList = new ArrayList<>(); // battle response list
+    private List<Tick> tickList = new ArrayList<>(); // tickable entities list
     private int entityCounter = 0;
 
     //store all entities into map
@@ -289,5 +290,18 @@ public class DungeonInfo {
 
     public List<BattleResponse> getBattleResponses() {
         return battleList;
+    }
+
+    public void addTick(Tick tickableEntity) {
+        tickList.add(tickableEntity);
+    }
+
+    public List<Tick> getTickList() {
+        return tickList;
+    }
+
+    public void runTicks() {
+        for (Tick tickableEntity : tickList)
+            tickableEntity.tick();
     }
 }

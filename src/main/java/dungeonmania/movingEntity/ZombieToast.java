@@ -14,7 +14,7 @@ import dungeonmania.util.Position;
 public class ZombieToast extends Entity implements Moving {
     private String id;
     private double health;
-    private int damage;
+    private double damage;
     private Position position;
     private String type = "zombie_toast";
     private MercenaryMovingStrategy currentState = new RandomStrategy();
@@ -63,7 +63,7 @@ public class ZombieToast extends Entity implements Moving {
     }
 
     @Override
-    public int getDamage() {
+    public double getDamage() {
         return damage;
     }
 

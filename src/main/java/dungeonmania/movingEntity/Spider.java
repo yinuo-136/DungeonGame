@@ -10,7 +10,7 @@ import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class Spider extends Entity implements Moving {
-    private static int damage;
+    private static double damage;
     private static int SpawnRate;
     private static int timeToSpawn;
     private static double classHealth;
@@ -100,7 +100,7 @@ public class Spider extends Entity implements Moving {
     }
 
     @Override
-    public int getDamage() {
+    public double getDamage() {
         return damage;
     }
 

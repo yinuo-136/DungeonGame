@@ -17,7 +17,7 @@ public class Player extends Entity {
     private String id;
     private String type = "player";
 
-    private int attack;
+    private double attack;
     private Position position;
     private double health;
 
@@ -45,8 +45,12 @@ public class Player extends Entity {
      * 
      * @return Attack - Integer
      */
-    public int getAttack(){
+    public double getAttack(){
         return attack; 
+    }
+
+    public void setAttack (int attack) {
+        this.attack = attack;
     }
 
     /**

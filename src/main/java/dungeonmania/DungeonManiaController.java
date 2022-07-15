@@ -1,6 +1,7 @@
 package dungeonmania;
 
 import dungeonmania.exceptions.InvalidActionException;
+import dungeonmania.inventoryItem.Bomb;
 import dungeonmania.inventoryItem.InvItem;
 import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.DungeonResponse;
@@ -125,7 +126,21 @@ public class DungeonManiaController {
         if (info.isItemInList(itemUsedId) == false){
             throw new InvalidActionException("not in the player's inventory");
         }
-
+        List <InvItem> items = info.getItemList();
+        switch(itemUsedId) {
+            case "bomb" :
+                for (InvItem item : items) {
+                    if (item instanceof Bomb){
+                        Bomb bomb = (Bomb) item;
+                        bomb.use();
+                        break;
+                    }
+                }
+                break;
+        }
+        info.runTicks();
+        info.moveAllMovingEntity();
+        info.Spawn();
         return this.getDungeonResponseModel();
     }
 
@@ -136,6 +151,7 @@ public class DungeonManiaController {
         DungeonInfo info = infoMap.get(this.dungeonId);
         //trigger player movement
         info.movePLayer(movementDirection);
+        info.runTicks();
         info.moveAllMovingEntity();
         info.Spawn();
         return this.getDungeonResponseModel();
