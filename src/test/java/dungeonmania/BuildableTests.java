@@ -158,4 +158,51 @@ public class BuildableTests {
         assertTrue(succeed);
     }
 
+    @Test
+    @DisplayName("Trying Crafting Bow twice")
+    public void testBowDoubleCraft() throws IllegalArgumentException, InvalidActionException{
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.newGame("build_bow", "simple");
+        controller.tick(dungeonmania.util.Direction.RIGHT);
+        controller.tick(dungeonmania.util.Direction.RIGHT);
+        controller.tick(dungeonmania.util.Direction.RIGHT);
+        controller.tick(dungeonmania.util.Direction.RIGHT);
+        DungeonResponse response = controller.build("bow");
+        List<ItemResponse> inventory = response.getInventory();
+        boolean succeed = false;
+        for (ItemResponse item : inventory) {
+            if (item.getType() == "bow")
+                succeed = true;
+        }
+        assertTrue(succeed);
+
+        assertThrows(InvalidActionException.class,
+            () -> {
+                controller.build("bow");
+            });
+    }
+
+    @Test
+    @DisplayName("Trying Crafting Shield Twice")
+    public void testShieldDoubleCraft() throws IllegalArgumentException, InvalidActionException{
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.newGame("build_shield", "simple");
+        controller.tick(dungeonmania.util.Direction.RIGHT);
+        controller.tick(dungeonmania.util.Direction.RIGHT);
+        controller.tick(dungeonmania.util.Direction.RIGHT);
+        DungeonResponse response = controller.build("shield");
+        List<ItemResponse> inventory = response.getInventory();
+        boolean succeed = false;
+        for (ItemResponse item : inventory) {
+            if (item.getType() == "shield")
+                succeed = true;
+        }
+        assertTrue(succeed);
+
+        assertThrows(InvalidActionException.class,
+            () -> {
+                controller.build("shield");
+            });
+    }
+
 }
