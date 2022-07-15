@@ -43,7 +43,7 @@ public class Bow implements InvItem, Buildable {
         //TODO
     }
 
-    public Boolean checkItemDestroyed() {
+    public Boolean isItemDestroyed() {
         return false;
     }
     
