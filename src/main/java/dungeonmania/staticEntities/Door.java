@@ -2,8 +2,6 @@ package dungeonmania.staticEntities;
 
 import java.util.List;
 
-import dungeonmania.Entity;
-import dungeonmania.collectableEntity.Key;
 import dungeonmania.inventoryItem.InvItem;
 import dungeonmania.inventoryItem.ItemKey;
 import dungeonmania.response.models.EntityResponse;

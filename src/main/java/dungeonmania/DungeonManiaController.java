@@ -141,6 +141,8 @@ public class DungeonManiaController {
         info.runTicks();
         info.moveAllMovingEntity();
         info.Spawn();
+        info.getPlayer().tickPlayerState();
+
         return this.getDungeonResponseModel();
     }
 
@@ -152,6 +154,7 @@ public class DungeonManiaController {
         //trigger player movement
         info.movePLayer(movementDirection);
         info.runTicks();
+        info.getPlayer().tickPlayerState();
         info.moveAllMovingEntity();
         info.Spawn();
         return this.getDungeonResponseModel();

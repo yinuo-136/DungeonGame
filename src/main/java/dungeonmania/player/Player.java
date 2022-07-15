@@ -1,13 +1,15 @@
 package dungeonmania.player;
 
+import java.util.LinkedList;
 import java.util.List;
-
+import java.util.Queue;
 import dungeonmania.Battle;
 import dungeonmania.Entity;
 import dungeonmania.collectableEntity.CollectableEntity;
 import dungeonmania.collectableEntity.Key;
 import dungeonmania.movingEntity.Moving;
 import dungeonmania.response.models.BattleResponse;
+import dungeonmania.inventoryItem.Potion.Potion;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.staticEntities.staticEntity;
 import dungeonmania.util.Direction;
@@ -17,9 +19,12 @@ public class Player extends Entity {
     private String id;
     private String type = "player";
 
-    private double attack;
-    private Position position;
-    private double health;
+    protected double attack;
+    protected Position position;
+    protected double health;
+
+    private PlayerState playerState = new NormalState(this);
+    private Queue<Potion> potionUsedqueue = new LinkedList<Potion>();
 
     /**
      * Creates a Player Object at a sepcificied location with default health and attack values.
@@ -46,7 +51,7 @@ public class Player extends Entity {
      * @return Attack - Integer
      */
     public double getAttack(){
-        return attack; 
+        return playerState.getAttack(); 
     }
 
     public void setAttack (int attack) {
@@ -59,7 +64,7 @@ public class Player extends Entity {
      * @return Health - Integer
      */
     public double getHealth(){ 
-        return health;
+        return playerState.getHealth();
     }
     
     /**
@@ -90,7 +95,7 @@ public class Player extends Entity {
      * @return Position - Position
      */
     public Position getPos(){
-        return position;
+        return playerState.getPosition();
     }
 
     /**
@@ -199,6 +204,21 @@ public class Player extends Entity {
         return response;
     }
 
+    public PlayerState getPlayerState() {
+        return playerState;
+    }
 
+    public void setPlayerState(PlayerState playerState) {
+        this.playerState = playerState;
+    }
     
+    public void addPotion(Potion potion){
+        potionUsedqueue.add(potion);
+    }
+    public Potion pullPotion(){
+        return potionUsedqueue.poll();
+    }
+    public void tickPlayerState(){
+        playerState.tickPotionTime();
+    }
 }

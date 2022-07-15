@@ -23,11 +23,7 @@ public class Bomb implements InvItem {
     public String getType() {
         return type;
     }
-
-    public void setDungeonInfo(DungeonInfo info) {
-        this.info = info;
-    }
-
+    
     @Override
     public void use() {
         PlacedBomb bomb = new PlacedBomb(info.getPlayer().getPos(), this.id, this.radius);
@@ -41,5 +37,8 @@ public class Bomb implements InvItem {
         return new ItemResponse(id, type);
         
     }
+
+    @Override
+    public void setDungeonInfo(DungeonInfo dungeonInfo) {}
     
 }
