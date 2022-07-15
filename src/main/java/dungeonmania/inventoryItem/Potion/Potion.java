@@ -8,4 +8,5 @@ public interface Potion {
     public void setDuration(int duration);
     public void setConfig();
     public void setDungeonInfo(DungeonInfo dungeonInfo);
+    public void takeAction();
 }

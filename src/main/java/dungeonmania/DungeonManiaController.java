@@ -127,6 +127,8 @@ public class DungeonManiaController {
             throw new InvalidActionException("not in the player's inventory");
         }
 
+        info.getPlayer().tickPlayerState();
+
         return this.getDungeonResponseModel();
     }
 
@@ -137,6 +139,7 @@ public class DungeonManiaController {
         DungeonInfo info = infoMap.get(this.dungeonId);
         //trigger player movement
         info.movePLayer(movementDirection);
+        info.getPlayer().tickPlayerState();
         info.moveAllMovingEntity();
         info.Spawn();
         return this.getDungeonResponseModel();

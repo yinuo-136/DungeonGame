@@ -1,6 +1,8 @@
 package dungeonmania.inventoryItem.Potion;
 import dungeonmania.DungeonInfo;
 import dungeonmania.inventoryItem.InvItem;
+import dungeonmania.player.InvisibleState;
+import dungeonmania.player.Player;
 import dungeonmania.response.models.ItemResponse;
 
 public class InvisibilityPotion implements Potion, InvItem {
@@ -24,7 +26,8 @@ public class InvisibilityPotion implements Potion, InvItem {
 
     @Override
     public void use() {
-        // TODO Auto-generated method stub
+        Player player = dungeonInfo.getPlayer();
+        player.addPotion(this);
     }
 
     @Override
@@ -41,5 +44,10 @@ public class InvisibilityPotion implements Potion, InvItem {
     @Override
     public void setDungeonInfo(DungeonInfo dungeonInfo) {
         this.dungeonInfo = dungeonInfo;
+    }
+    @Override
+    public void takeAction() {
+        Player player = dungeonInfo.getPlayer();
+        player.setPlayerState(new InvisibleState(player));
     }
 }

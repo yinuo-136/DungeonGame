@@ -1,10 +1,14 @@
 package dungeonmania.player;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 import dungeonmania.Entity;
 import dungeonmania.collectableEntity.CollectableEntity;
 import dungeonmania.collectableEntity.Key;
+import dungeonmania.inventoryItem.Potion.Potion;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.staticEntities.staticEntity;
 import dungeonmania.util.Direction;
@@ -19,6 +23,7 @@ public class Player extends Entity {
     protected double health;
 
     private PlayerState playerState = new NormalState(this);
+    private Queue<Potion> potionUsedqueue = new LinkedList<Potion>();
 
     /**
      * Creates a Player Object at a sepcificied location with default health and attack values.
@@ -189,4 +194,13 @@ public class Player extends Entity {
         this.playerState = playerState;
     }
     
+    public void addPotion(Potion potion){
+        potionUsedqueue.add(potion);
+    }
+    public Potion pullPotion(){
+        return potionUsedqueue.poll();
+    }
+    public void tickPlayerState(){
+        playerState.tickPotionTime();
+    }
 }
