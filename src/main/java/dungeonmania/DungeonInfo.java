@@ -4,6 +4,8 @@ import java.io.ObjectInputFilter.Config;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -233,6 +235,33 @@ public class DungeonInfo {
         }
 
         return false;
+    }
+
+    /*
+     * Returns the list of item id's by a specified item type
+     */
+    public List<String> getInvItemIdsListByType(String type){
+        List<ItemResponse> list = getListItemResponse();
+        return list.stream().filter(obj -> obj.getType().equals(type)).map(ItemResponse::getId).collect(Collectors.toList());
+    }
+    
+    /*
+     * Remove a specified item from inventory by it's id
+     */
+    public void removeInvItemById(String id){
+        for (InvItem i: itemList) {
+            i.getItemResponse().getId().equals(id);
+            itemList.remove(i);
+            break;
+        }
+
+    }
+
+    /*
+     * Adds a InvItem to the Item List
+     */
+    public void addInvItem(InvItem item){
+        itemList.add(item);
     }
 
     public void Spawn(){
