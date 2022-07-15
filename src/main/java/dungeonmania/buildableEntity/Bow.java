@@ -7,36 +7,34 @@ import dungeonmania.response.models.ItemResponse;
 public class Bow implements InvItem, Buildable {
 
     private String id;
-    private String type = "bow";
+    private static String type = "bow";
 
     private int attackBonus;
     private int durability;
 
     public Bow(String id, int attackBonus, int durability){
-        //TODO
+        this.id = id;
+        this.attackBonus = attackBonus;
+        this.durability = durability;
     }
 
     public String getId() {
-        //TODO
-        return null;
+        return id;
     }
     public String getType() {
-        //TODO
-        return null;
+        return type;
     }
 
     public int getAttackBonus() {
-        //TODO
-        return 0;
+        return attackBonus;
     }
 
     public int getDurability() {
-        //TODO
-        return 0;
+        return durability;
     }
 
     public void setDurability(int durability) {
-        //TODO
+        this.durability = durability;
     }
 
     public void craft() throws InvalidActionException {
@@ -44,6 +42,10 @@ public class Bow implements InvItem, Buildable {
     }
 
     public Boolean isItemDestroyed() {
+        if (durability > 0) {
+            return true;
+        }
+        
         return false;
     }
     
@@ -54,7 +56,6 @@ public class Bow implements InvItem, Buildable {
 
     @Override
     public ItemResponse getItemResponse(){
-        //TODO
-        return null;
+        return new ItemResponse(this.id, type);
     }
 }
