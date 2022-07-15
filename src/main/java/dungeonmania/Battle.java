@@ -8,7 +8,6 @@ import javax.annotation.processing.RoundEnvironment;
 import dungeonmania.inventoryItem.InvItem;
 import dungeonmania.inventoryItem.Sword;
 import dungeonmania.movingEntity.Moving;
-import dungeonmania.movingEntity.MovingEntity;
 import dungeonmania.player.Player;
 import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.ItemResponse;
@@ -48,18 +47,18 @@ public class Battle {
                 sword.setDurability(sword.getDurability() - 1);
                 sword_id = sword.getId();
             }
-            if (item instanceof Shield) {
-                Shield shield = (Shield) item;
-                shield_defense = shield.getDefense();
-                shield.setDurability(shield.getDurability() - 1);
-                shield_id = shield.getId;
-            }
-            if (item instanceof Bow) {
-                Bow bow = (Bow) item;
-                bow_multiplication = 2;
-                bow_id = bow.getId;
-                bow.setDurability(bow.getDurability() - 1);
-            }
+            // if (item instanceof Shield) {
+            //     Shield shield = (Shield) item;
+            //     shield_defense = shield.getDefense();
+            //     shield.setDurability(shield.getDurability() - 1);
+            //     shield_id = shield.getId;
+            // }
+            // if (item instanceof Bow) {
+            //     Bow bow = (Bow) item;
+            //     bow_multiplication = 2;
+            //     bow_id = bow.getId;
+            //     bow.setDurability(bow.getDurability() - 1);
+            // }
         }
         // Items that will be used in battle
         ItemResponse bow_response = null;
