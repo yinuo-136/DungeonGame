@@ -14,9 +14,11 @@ public class Player extends Entity {
     private String id;
     private String type = "player";
 
-    private int attack;
-    private Position position;
-    private double health;
+    protected int attack;
+    protected Position position;
+    protected double health;
+
+    private PlayerState playerState = new NormalState(this);
 
     /**
      * Creates a Player Object at a sepcificied location with default health and attack values.
@@ -43,7 +45,7 @@ public class Player extends Entity {
      * @return Attack - Integer
      */
     public int getAttack(){
-        return attack; 
+        return playerState.getAttack(); 
     }
 
     /**
@@ -52,7 +54,7 @@ public class Player extends Entity {
      * @return Health - Integer
      */
     public double getHealth(){ 
-        return health;
+        return playerState.getHealth();
     }
     
     /**
@@ -83,7 +85,7 @@ public class Player extends Entity {
      * @return Position - Position
      */
     public Position getPos(){
-        return position;
+        return playerState.getPosition();
     }
 
     /**
@@ -179,6 +181,12 @@ public class Player extends Entity {
         return response;
     }
 
+    public PlayerState getPlayerState() {
+        return playerState;
+    }
 
+    public void setPlayerState(PlayerState playerState) {
+        this.playerState = playerState;
+    }
     
 }
