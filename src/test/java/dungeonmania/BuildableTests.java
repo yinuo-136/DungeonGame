@@ -16,11 +16,10 @@ public class BuildableTests {
     @Test
     @DisplayName("Test Bow Unit")
     public void testBowUnit() {
-        Bow bow = new Bow("bow1", 10, 10);
+        Bow bow = new Bow("bow1", 10);
 
         assertEquals("bow1", bow.getId());
         assertEquals("bow", bow.getType());
-        assertEquals(10, bow.getAttackBonus());
         assertEquals(10, bow.getDurability());
 
         assertEquals("bow1", bow.getItemResponse().getId());
@@ -46,7 +45,7 @@ public class BuildableTests {
     @Test
     @DisplayName("Test Bow Destroyed")
     public void testBowDestroyed() {
-        Bow bow = new Bow("bow1", 10, 10);
+        Bow bow = new Bow("bow1", 10);
 
         bow.setDurability(0);
 
@@ -92,7 +91,7 @@ public class BuildableTests {
     }
 
     @Test
-    @DisplayName("Test crafting bow without required items")
+    @DisplayName("Test crafting shield without required items")
     public void testInsufficientItemForShield() {
         assertThrows(InvalidActionException.class,
             () -> {
