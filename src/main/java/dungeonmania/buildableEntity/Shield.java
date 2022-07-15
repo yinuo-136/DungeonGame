@@ -1,5 +1,6 @@
 package dungeonmania.buildableEntity;
 
+import dungeonmania.DungeonInfo;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.inventoryItem.InvItem;
 import dungeonmania.response.models.ItemResponse;
@@ -36,7 +37,7 @@ public class Shield implements InvItem,Buildable {
         this.durability = durability;
     }
 
-    public void craft() throws InvalidActionException {
+    public void craft(DungeonInfo info) throws InvalidActionException {
         //TODO
     }
 

@@ -1,5 +1,6 @@
 package dungeonmania.buildableEntity;
 
+import dungeonmania.DungeonInfo;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.inventoryItem.InvItem;
 import dungeonmania.response.models.ItemResponse;
@@ -9,12 +10,10 @@ public class Bow implements InvItem, Buildable {
     private String id;
     private static String type = "bow";
 
-    private int attackBonus;
     private int durability;
 
-    public Bow(String id, int attackBonus, int durability){
+    public Bow(String id, int durability){
         this.id = id;
-        this.attackBonus = attackBonus;
         this.durability = durability;
     }
 
@@ -25,10 +24,6 @@ public class Bow implements InvItem, Buildable {
         return type;
     }
 
-    public int getAttackBonus() {
-        return attackBonus;
-    }
-
     public int getDurability() {
         return durability;
     }
@@ -37,7 +32,7 @@ public class Bow implements InvItem, Buildable {
         this.durability = durability;
     }
 
-    public void craft() throws InvalidActionException {
+    public void craft(DungeonInfo info) throws InvalidActionException {
         //TODO
     }
 
