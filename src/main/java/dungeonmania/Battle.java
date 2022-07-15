@@ -28,7 +28,9 @@ public class Battle {
         RoundResponse round_response = null;
         double previous_player_health = player.getHealth();
         double initial_player_health = player.getHealth();
+        double current_player_health = player.getHealth();
         double previous_enemy_health = enemy.getHealth();
+        double current_enemy_health = enemy.getHealth();
         double initial_enemy_health = enemy.getHealth();
         ArrayList<RoundResponse> rounds = new ArrayList<>();
         int bow_multiplication = 1;
@@ -86,10 +88,12 @@ public class Battle {
         }
         */
         // rounds continue until player or enemy dies
-        while (player.getHealth() > 0 && enemy.getHealth() > 0){
-            player.setHealth(player.getHealth() - ((enemy.getDamage() - shield_defense) / 10));
-            enemy.setHealth(enemy.getHealth() - ((bow_multiplication * (player.getAttack() + sword_attack)) / 5));
-            round_response = new RoundResponse(previous_player_health - player.getHealth(), previous_enemy_health, itemsUsed    );
+        while (current_player_health > 0 && current_enemy_health > 0){
+            current_enemy_health = enemy.getHealth() - ((bow_multiplication * (player.getAttack() + sword_attack)) / 5)
+            current_player_health = player.getHealth() - ((enemy.getDamage() - shield_defense) / 10);
+            player.setHealth(current_player_health);
+            enemy.setHealth(current_enemy_health);
+            round_response = new RoundResponse(previous_player_health - player.getHealth(), previous_enemy_health, itemsUsed);
             rounds.add(round_response);
             previous_enemy_health = enemy.getHealth();
             previous_player_health = player.getHealth();
