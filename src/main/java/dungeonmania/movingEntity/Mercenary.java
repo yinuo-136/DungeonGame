@@ -64,10 +64,12 @@ public class Mercenary extends Entity implements Moving {
         return health;
     }  
 
+    @Override
     public void setHealth(double health) {
         this.health = health;
     }
 
+    @Override
     public int getDamage() {
         return damage;
     }
@@ -79,6 +81,7 @@ public class Mercenary extends Entity implements Moving {
         return false;
     }
 
+    @Override
     public String getId() {
         return id;
     }

@@ -78,6 +78,7 @@ public class Spider extends Entity implements Moving {
         return health;
     }
 
+    @Override
     public void setHealth(double health) {
         this.health = health;
     }
@@ -87,6 +88,7 @@ public class Spider extends Entity implements Moving {
         return type;
     }
     
+    @Override
     public String getId() {
         return id;
     }

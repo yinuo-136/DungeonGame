@@ -2,9 +2,12 @@ package dungeonmania.player;
 
 import java.util.List;
 
+import dungeonmania.Battle;
 import dungeonmania.Entity;
 import dungeonmania.collectableEntity.CollectableEntity;
 import dungeonmania.collectableEntity.Key;
+import dungeonmania.movingEntity.Moving;
+import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.staticEntities.staticEntity;
 import dungeonmania.util.Direction;
@@ -119,6 +122,7 @@ public class Player extends Entity {
         Position p = null;
         Position checkPosition = position.translateBy(direction);
         List<Entity> checkEntity = dungeonInfo.getEntitiesByPosition(checkPosition);
+        BattleResponse response = null;
         for (Entity e : checkEntity){
             if (e instanceof staticEntity){
                 staticEntity se = (staticEntity) e;
@@ -149,6 +153,18 @@ public class Player extends Entity {
 
             }
         }
+        //After move to the cell, check for any moving entities and if there is, start battle
+        checkEntity = dungeonInfo.getEntitiesByPosition(this.position);
+        for(Entity e : checkEntity){
+            if (e instanceof Moving) {
+                Moving movingEntity = (Moving) e;
+                Battle battle = new Battle(this, movingEntity, dungeonInfo);
+                response = battle.start();
+                dungeonInfo.addBattleResponse(response);
+                break;
+            }
+        }
+
         
     }
     
