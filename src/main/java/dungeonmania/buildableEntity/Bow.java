@@ -62,7 +62,7 @@ public class Bow implements InvItem, Buildable {
     
     @Override
     public void use() {
-        //TODO
+        durability--;
     }
 
     @Override

@@ -73,7 +73,7 @@ public class Shield implements InvItem,Buildable {
     
     @Override
     public void use() {
-        //TODO
+        durability--;
     }
 
     @Override
