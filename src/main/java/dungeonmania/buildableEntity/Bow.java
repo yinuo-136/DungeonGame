@@ -43,10 +43,10 @@ public class Bow implements InvItem, Buildable {
 
     public Boolean isItemDestroyed() {
         if (durability > 0) {
-            return true;
+            return false;
         }
         
-        return false;
+        return true;
     }
     
     @Override
