@@ -16,9 +16,10 @@ public class InvisibleState implements PlayerState {
     private Player player;
     private Position position;
 
-    public InvisibleState(Player player) {
+    public InvisibleState(Player player, int potionTime) {
         this.player = player;
-        //this.potionTime = potionTime;
+        this.potionTime = potionTime;
+
         List<Mercenary> allMencenary = player.getDungeonInfo().getAllMencenary();
         for (Mercenary mencenary : allMencenary) {
             mencenary.setStrategy(new RandomStrategy());
@@ -53,6 +54,7 @@ public class InvisibleState implements PlayerState {
         potionTime--;
         if (potionTime < 0) {
             List<Mercenary> allMencenary = player.getDungeonInfo().getAllMencenary();
+            // return all mencenary to its original state
             for (Mercenary mencenary : allMencenary) {
                 if (mencenary.getBribed()) {
                     mencenary.setStrategy(new BribedStrategy());

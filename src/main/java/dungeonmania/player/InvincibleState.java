@@ -10,9 +10,9 @@ public class InvincibleState implements PlayerState {
     private int potionTime;
     private Player player;
 
-    public InvincibleState(Player player) {
+    public InvincibleState(Player player, int potionTime) {
         this.player = player;
-        //this.potionTime = ;
+        this.potionTime = potionTime;
     }
 
     public String getStateName() {

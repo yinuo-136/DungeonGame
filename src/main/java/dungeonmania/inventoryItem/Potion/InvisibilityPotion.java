@@ -48,6 +48,6 @@ public class InvisibilityPotion implements Potion, InvItem {
     @Override
     public void takeAction() {
         Player player = dungeonInfo.getPlayer();
-        player.setPlayerState(new InvisibleState(player));
+        player.setPlayerState(new InvisibleState(player, duration));
     }
 }
