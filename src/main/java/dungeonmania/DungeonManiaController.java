@@ -1,5 +1,6 @@
 package dungeonmania;
 
+import dungeonmania.buildableEntity.BuildableFactory;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.inventoryItem.InvItem;
 import dungeonmania.response.models.BattleResponse;
@@ -145,7 +146,12 @@ public class DungeonManiaController {
      * /game/build
      */
     public DungeonResponse build(String buildable) throws IllegalArgumentException, InvalidActionException {
-        return null;
+        DungeonInfo info = infoMap.get(this.dungeonId);
+        BuildableFactory builder = new BuildableFactory();
+        
+        builder.build(buildable, info);
+
+        return this.getDungeonResponseModel();
     }
 
     /**
