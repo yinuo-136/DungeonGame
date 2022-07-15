@@ -1,17 +1,28 @@
 package dungeonmania.player;
 
+import java.util.List;
+
 import dungeonmania.inventoryItem.Potion.Potion;
+import dungeonmania.movingEntity.BribedStrategy;
+import dungeonmania.movingEntity.Mercenary;
+import dungeonmania.movingEntity.Moving;
+import dungeonmania.movingEntity.NotBribedStrategy;
+import dungeonmania.movingEntity.RandomStrategy;
 import dungeonmania.util.Position;
 
 public class InvisibleState implements PlayerState {
     
-    private Position position = null;
     private int potionTime;
     private Player player;
+    private Position position;
 
     public InvisibleState(Player player) {
         this.player = player;
         //this.potionTime = potionTime;
+        List<Mercenary> allMencenary = player.getDungeonInfo().getAllMencenary();
+        for (Mercenary mencenary : allMencenary) {
+            mencenary.setStrategy(new RandomStrategy());
+        }
     }
 
 
@@ -28,6 +39,8 @@ public class InvisibleState implements PlayerState {
     }
 
     public Position getPosition() {
+        // player in invisibleState will have layer of 0
+        position = new Position(player.getPos().getX(), player.getPos().getY(), 1);
         return position;
     }
 
@@ -39,6 +52,14 @@ public class InvisibleState implements PlayerState {
     public void tickPotionTime() {
         potionTime--;
         if (potionTime < 0) {
+            List<Mercenary> allMencenary = player.getDungeonInfo().getAllMencenary();
+            for (Mercenary mencenary : allMencenary) {
+                if (mencenary.getBribed()) {
+                    mencenary.setStrategy(new BribedStrategy());
+                } else {
+                    mencenary.setStrategy(new NotBribedStrategy());
+                }
+            }
             Potion potion = player.pullPotion();
             if (potion != null) {
                 potion.takeAction();

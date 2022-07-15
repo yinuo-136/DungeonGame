@@ -26,10 +26,6 @@ public class DijkstraAlgoPathFinder {
             return null;
         }
         Position playerPos = movingEntity.getDungeonInfo().getPlayer().getPos();
-        // if player is invisible, return null
-        if (playerPos == null) {
-            return null;
-        }
         int playerX = playerPos.getX();
         int playerY = playerPos.getY();
         int diffPlayerXToEntity = playerX - movingEntity.getPos().getX();

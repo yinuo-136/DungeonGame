@@ -19,6 +19,7 @@ public class Mercenary extends Entity implements Moving {
     private int costToBribe;
     private int bribeRadius;
     private String type = "mercenary";
+    private boolean bribed = false;
 
     public Mercenary(Position position, String id) {
         this.position = position;
@@ -53,6 +54,7 @@ public class Mercenary extends Entity implements Moving {
         if (bribeAmount >= costToBribe) {
             currentState = new BribedStrategy();
             damage = bribedDamage;
+            bribed = true;
             return true;
         }
         return false;
@@ -102,5 +104,15 @@ public class Mercenary extends Entity implements Moving {
         return dungeonInfo.getEntitiesStringByPosition(pos);
     }
     
-    
+    public void setStrategy(MercenaryMovingStrategy strategy) {
+        this.currentState = strategy;
+    }
+
+    public MercenaryMovingStrategy getCurrentState() {
+        return currentState;
+    }
+
+    public Boolean getBribed() {
+        return bribed;
+    }
 }

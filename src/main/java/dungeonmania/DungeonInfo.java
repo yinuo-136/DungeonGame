@@ -221,6 +221,15 @@ public class DungeonInfo {
         }
         return list;
     }
+    public List<Mercenary> getAllMencenary(){
+        List<Mercenary> list = new ArrayList<>();
+        for (Entity e : entityMap.values()){
+            if (e.getType() == "mercenary"){
+                list.add((Mercenary) e);
+            }
+        }
+        return list;
+    }
 
     public void initSpawnConfig(){
         //in this stage, only spider needs to be init
