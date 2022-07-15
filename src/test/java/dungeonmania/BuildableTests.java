@@ -130,6 +130,9 @@ public class BuildableTests {
         controller.tick(dungeonmania.util.Direction.RIGHT);
         controller.tick(dungeonmania.util.Direction.RIGHT);
         controller.tick(dungeonmania.util.Direction.RIGHT);
+
+        assertTrue(controller.getDungeonResponseModel().getBuildables().contains("bow"));
+
         DungeonResponse response = controller.build("bow");
         List<ItemResponse> inventory = response.getInventory();
         boolean succeed = false;
@@ -168,6 +171,9 @@ public class BuildableTests {
         controller.tick(dungeonmania.util.Direction.RIGHT);
         controller.tick(dungeonmania.util.Direction.RIGHT);
         controller.tick(dungeonmania.util.Direction.RIGHT);
+
+        assertTrue(controller.getDungeonResponseModel().getBuildables().contains("shield"));
+
         DungeonResponse response = controller.build("shield");
         List<ItemResponse> inventory = response.getInventory();
         boolean succeed = false;
@@ -200,6 +206,8 @@ public class BuildableTests {
             () -> {
                 controller.build("bow");
             });
+
+            assertEquals(controller.getDungeonResponseModel().getBuildables().size(), 0);
     }
 
     @Test
@@ -223,6 +231,9 @@ public class BuildableTests {
             () -> {
                 controller.build("shield");
             });
+
+            assertEquals(controller.getDungeonResponseModel().getBuildables().size(), 0);
     }
+    
 
 }
