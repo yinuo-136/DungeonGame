@@ -15,6 +15,10 @@ public class Bow implements InvItem, Buildable {
     private int durability;
     private DungeonInfo dungeonInfo;
 
+    public Bow(){
+        
+    }
+
     public Bow(String id, int durability){
         this.id = id;
         this.durability = durability;
@@ -50,6 +54,14 @@ public class Bow implements InvItem, Buildable {
         dungeonInfo.removeInvItemById(arrowIdList.get(0));
         dungeonInfo.removeInvItemById(arrowIdList.get(1));
         dungeonInfo.removeInvItemById(arrowIdList.get(2));
+    }
+
+    public Boolean checkCraftable(){
+        if ((dungeonInfo.getNumInvItemType("wood")<1) || (dungeonInfo.getNumInvItemType("arrow")<3) ) {
+           return false;
+        }
+
+        return true;
     }
 
     public Boolean isItemDestroyed() {

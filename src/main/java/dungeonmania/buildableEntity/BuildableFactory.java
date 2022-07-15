@@ -7,6 +7,7 @@ import dungeonmania.inventoryItem.InvItem;
 import java.util.List;
 
 public class BuildableFactory {
+
     public void build(String buildable, DungeonInfo info) throws IllegalArgumentException, InvalidActionException {
         Buildable buildableItem;
         int idCounter = 0;
@@ -44,4 +45,5 @@ public class BuildableFactory {
         buildableItem.craft();
         info.addInvItem((InvItem) buildableItem);
     }
+
 }

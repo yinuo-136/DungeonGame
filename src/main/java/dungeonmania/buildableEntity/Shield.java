@@ -15,6 +15,10 @@ public class Shield implements InvItem,Buildable {
     private int durability;
     private DungeonInfo dungeonInfo;
 
+    public Shield(){
+
+    }
+
     public Shield(String id, int defenseBonus, int durability){
         this.id = id;
         this.defenseBonus = defenseBonus;
@@ -61,6 +65,15 @@ public class Shield implements InvItem,Buildable {
             dungeonInfo.removeInvItemById(treasureIdList.get(0));
         }
         
+    }
+
+    public Boolean checkCraftable(){
+        if ((dungeonInfo.getNumInvItemType("wood")<2) || 
+            (dungeonInfo.getNumInvItemType("treasure")<1) && (dungeonInfo.getNumInvItemType("key")<1)) {
+           return false;
+        }
+
+        return true;
     }
 
     public Boolean isItemDestroyed() {
