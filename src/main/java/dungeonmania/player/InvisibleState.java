@@ -38,7 +38,7 @@ public class InvisibleState implements PlayerState {
     // Reduce the potion duration time by 1. then pull the potion from the queue and activate it or return to normal state if no potion in the queue.
     public void tickPotionTime() {
         potionTime--;
-        if (potionTime <= 0) {
+        if (potionTime < 0) {
             Potion potion = player.pullPotion();
             if (potion != null) {
                 potion.takeAction();
