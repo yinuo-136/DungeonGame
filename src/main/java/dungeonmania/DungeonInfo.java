@@ -10,6 +10,9 @@ import java.util.stream.Collectors;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import dungeonmania.buildableEntity.Bow;
+import dungeonmania.buildableEntity.Buildable;
+import dungeonmania.buildableEntity.Shield;
 import dungeonmania.collectableEntity.CollectableEntity;
 import dungeonmania.collectableEntity.Key;
 import dungeonmania.inventoryItem.Bomb;
@@ -313,6 +316,28 @@ public class DungeonInfo {
         Spider s = new Spider(p, id);
         s.setDungeonInfo(this);
         entityMap.put(id, s);
+    }
+
+    /*
+     * Returns list of currently craftable items
+     */
+    public List<String> getCurrentBuildables() {
+        List<String> buildables = new ArrayList<String>();
+
+        Buildable bow = new Bow();
+        bow.setDungeonInfo(this);
+        Buildable shield = new Shield();
+        shield.setDungeonInfo(this);
+
+        if (bow.checkCraftable()) {
+            buildables.add("bow");
+        }
+
+        if (shield.checkCraftable()) {
+            buildables.add("shield");
+        }
+
+        return buildables;
     }
 
 }
