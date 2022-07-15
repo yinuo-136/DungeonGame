@@ -4,7 +4,7 @@ import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.inventoryItem.InvItem;
 import dungeonmania.response.models.ItemResponse;
 
-public class Bow implements InvItem {
+public class Bow implements InvItem, Buildable {
 
     private String id;
     private String type = "bow";
@@ -39,7 +39,7 @@ public class Bow implements InvItem {
         //TODO
     }
 
-    public static void craft() throws InvalidActionException {
+    public void craft() throws InvalidActionException {
         //TODO
     }
 
