@@ -24,7 +24,7 @@ public class Shield implements InvItem,Buildable {
         return null;
     }
 
-    public int getSheildBonus() {
+    public int getDefenseBonus() {
         //TODO
         return 0;
     }
