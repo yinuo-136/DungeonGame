@@ -1,5 +1,6 @@
 package dungeonmania.inventoryItem;
 
+import dungeonmania.DungeonInfo;
 import dungeonmania.response.models.ItemResponse;
 
 public class Sword implements InvItem {
@@ -45,7 +46,7 @@ public class Sword implements InvItem {
     @Override
     public ItemResponse getItemResponse() {
         return new ItemResponse(id, type);
-        
     }
-    
+    @Override
+    public void setDungeonInfo(DungeonInfo dungeonInfo) {}
 }

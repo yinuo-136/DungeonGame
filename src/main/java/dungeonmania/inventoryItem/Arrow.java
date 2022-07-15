@@ -1,5 +1,6 @@
 package dungeonmania.inventoryItem;
 
+import dungeonmania.DungeonInfo;
 import dungeonmania.response.models.ItemResponse;
 
 public class Arrow implements InvItem {
@@ -30,5 +31,7 @@ public class Arrow implements InvItem {
         return new ItemResponse(id, type);
         
     }
+    @Override
+    public void setDungeonInfo(DungeonInfo dungeonInfo) {}
     
 }
