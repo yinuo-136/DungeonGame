@@ -13,6 +13,7 @@ public class Bow implements InvItem, Buildable {
     private static String type = "bow";
 
     private int durability;
+    private DungeonInfo dungeonInfo;
 
     public Bow(String id, int durability){
         this.id = id;
@@ -34,21 +35,21 @@ public class Bow implements InvItem, Buildable {
         this.durability = durability;
     }
 
-    public void craft(DungeonInfo info) throws InvalidActionException {
-        List<String> woodIdList = info.getInvItemIdsListByType("wood");
-        List<String> arrowIdList = info.getInvItemIdsListByType("arrow");
+    public void craft() throws InvalidActionException {
+        List<String> woodIdList = dungeonInfo.getInvItemIdsListByType("wood");
+        List<String> arrowIdList = dungeonInfo.getInvItemIdsListByType("arrow");
 
         if ((woodIdList.size()<1) || (arrowIdList.size()<3) ) {
             throw new InvalidActionException("Insufficient Materials to craft bow!");
         }
 
         //Remove one wood from inventory
-        info.removeInvItemById(woodIdList.get(0));
+        dungeonInfo.removeInvItemById(woodIdList.get(0));
 
         //Remove three arrows from inventory
-        info.removeInvItemById(arrowIdList.get(0));
-        info.removeInvItemById(arrowIdList.get(1));
-        info.removeInvItemById(arrowIdList.get(2));
+        dungeonInfo.removeInvItemById(arrowIdList.get(0));
+        dungeonInfo.removeInvItemById(arrowIdList.get(1));
+        dungeonInfo.removeInvItemById(arrowIdList.get(2));
     }
 
     public Boolean isItemDestroyed() {
@@ -67,5 +68,10 @@ public class Bow implements InvItem, Buildable {
     @Override
     public ItemResponse getItemResponse(){
         return new ItemResponse(this.id, type);
+    }
+
+    @Override
+    public void setDungeonInfo(DungeonInfo dungeonInfo) {
+        this.dungeonInfo = dungeonInfo;
     }
 }

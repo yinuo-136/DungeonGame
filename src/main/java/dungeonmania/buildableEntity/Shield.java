@@ -13,6 +13,7 @@ public class Shield implements InvItem,Buildable {
 
     private int defenseBonus;
     private int durability;
+    private DungeonInfo dungeonInfo;
 
     public Shield(String id, int defenseBonus, int durability){
         this.id = id;
@@ -39,10 +40,10 @@ public class Shield implements InvItem,Buildable {
         this.durability = durability;
     }
 
-    public void craft(DungeonInfo info) throws InvalidActionException {
-        List<String> woodIdList = info.getInvItemIdsListByType("wood");
-        List<String> treasureIdList = info.getInvItemIdsListByType("treasure");
-        List<String> keyIdList = info.getInvItemIdsListByType("key");
+    public void craft() throws InvalidActionException {
+        List<String> woodIdList = dungeonInfo.getInvItemIdsListByType("wood");
+        List<String> treasureIdList = dungeonInfo.getInvItemIdsListByType("treasure");
+        List<String> keyIdList = dungeonInfo.getInvItemIdsListByType("key");
          
 
         if ((woodIdList.size()<2) || ((treasureIdList.size()<1) && (keyIdList.size()<1)) ) {
@@ -50,14 +51,14 @@ public class Shield implements InvItem,Buildable {
         }
 
         //Remove one wood from inventory
-        info.removeInvItemById(woodIdList.get(0));
-        info.removeInvItemById(woodIdList.get(1));
+        dungeonInfo.removeInvItemById(woodIdList.get(0));
+        dungeonInfo.removeInvItemById(woodIdList.get(1));
 
         //Remove Treasure or Key from Inventory (Give priority to Treasure)
         if (treasureIdList.size() < 1) {
-            info.removeInvItemById(keyIdList.get(0));
+            dungeonInfo.removeInvItemById(keyIdList.get(0));
         } else {
-            info.removeInvItemById(treasureIdList.get(0));
+            dungeonInfo.removeInvItemById(treasureIdList.get(0));
         }
         
     }
@@ -79,4 +80,10 @@ public class Shield implements InvItem,Buildable {
     public ItemResponse getItemResponse(){
         return new ItemResponse(this.id, type);
     }
+
+    @Override
+    public void setDungeonInfo(DungeonInfo dungeonInfo) {
+        this.dungeonInfo = dungeonInfo;
+    }
+
 }

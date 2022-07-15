@@ -40,7 +40,8 @@ public class BuildableFactory {
                 throw new IllegalArgumentException("Invalid Build Request!");
         }
 
-        buildableItem.craft(info);
+        buildableItem.setDungeonInfo(info);
+        buildableItem.craft();
         info.addInvItem((InvItem) buildableItem);
     }
 }
