@@ -1,5 +1,6 @@
 package dungeonmania.inventoryItem;
 
+import dungeonmania.DungeonInfo;
 import dungeonmania.response.models.ItemResponse;
 
 public class ItemKey implements InvItem {
@@ -38,5 +39,8 @@ public class ItemKey implements InvItem {
     public int getKey() {
         return key;
     }
+    
+    @Override
+    public void setDungeonInfo(DungeonInfo dungeonInfo) {}
     
 }

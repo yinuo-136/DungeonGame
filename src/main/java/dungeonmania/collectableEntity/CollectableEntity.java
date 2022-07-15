@@ -49,9 +49,11 @@ public class CollectableEntity extends Entity{
         switch(this.type){
             case "invincibility_potion":
                 newItem = new InvincibilityPotion(dungeonInfo.getConfigMap().get("invincibility_potion_duration"), this.id);
+                newItem.setDungeonInfo(dungeonInfo);
                 break;
             case "invisibility_potion":
                 newItem = new InvisibilityPotion(dungeonInfo.getConfigMap().get("invisibility_potion_duration"), id);
+                newItem.setDungeonInfo(dungeonInfo);
                 break;
             case "arrow":
                 newItem = new Arrow(id);
