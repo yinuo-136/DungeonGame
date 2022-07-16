@@ -18,12 +18,12 @@ public class andGoal implements Goal{
             return "";
         }
         if (firstGoal instanceof exitGoal && secGoal.evalGoal() != "") {
-            return ":exit and " + secGoal.evalGoal();
+            return "(" + ":exit and " + secGoal.evalGoal() + ")";
         }
         if (secGoal instanceof exitGoal && firstGoal.evalGoal() != "") {
-            return firstGoal.evalGoal() + " and :exit";
+            return "(" + firstGoal.evalGoal() + " and :exit" + ")";
         }
-        return firstGoal.evalGoal() + " and " + secGoal.evalGoal();
+        return "(" + firstGoal.evalGoal() + " and " + secGoal.evalGoal() + ")";
     }
     
     

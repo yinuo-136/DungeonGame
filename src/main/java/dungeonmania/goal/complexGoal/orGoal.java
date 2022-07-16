@@ -13,7 +13,9 @@ public class orGoal implements Goal{
 
     @Override
     public String evalGoal() {
-        
+        if (firstGoal.evalGoal().equals("") || secGoal.evalGoal().equals("")){
+            return "";
+        }
         return firstGoal.evalGoal() + secGoal.evalGoal();
     }
     

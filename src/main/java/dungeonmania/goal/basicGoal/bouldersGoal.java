@@ -1,7 +1,10 @@
 package dungeonmania.goal.basicGoal;
 
 import dungeonmania.DungeonInfo;
+import dungeonmania.Entity;
 import dungeonmania.goal.Goal;
+import dungeonmania.staticEntities.Boulder;
+import dungeonmania.staticEntities.FloorSwitch;
 
 public class bouldersGoal implements Goal{
     private DungeonInfo dungeonInfo;
@@ -12,7 +15,15 @@ public class bouldersGoal implements Goal{
 
     @Override
     public String evalGoal() {
-        return ":boulders";
+        for (Entity e : dungeonInfo.getEntityMap().values()) {
+            if (e instanceof FloorSwitch) {
+                FloorSwitch f = (FloorSwitch) e;
+                if (f.isTriggered() == false) {
+                    return ":boulders";
+                }
+            }
+        }
+        return "";
     }
     
 }

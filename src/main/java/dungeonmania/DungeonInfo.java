@@ -353,11 +353,11 @@ public class DungeonInfo {
                 case "exit":
                     return new exitGoal(this);
                 case "enemies":
-                    return new enemiesGoal(this);
+                    return new enemiesGoal(this, getSpecificConfig("enemy_goal"));
                 case "boulders":
                     return new bouldersGoal(this);
                 case "treasure":
-                    return new treasureGoal(this);
+                    return new treasureGoal(this, getSpecificConfig("treasure_goal"));
             }
         //get the subgoal
         JSONArray subGoals = jsonGoals.getJSONArray("subgoals");
