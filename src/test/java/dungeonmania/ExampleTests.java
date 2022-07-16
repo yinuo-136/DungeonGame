@@ -183,6 +183,7 @@ public class ExampleTests {
             enemyHealth += round.getDeltaEnemyHealth();
             playerHealth += round.getDeltaCharacterHealth();
         }
+    }
 
         
     @Test
@@ -270,35 +271,35 @@ public class ExampleTests {
         return controller.tick(Direction.RIGHT);
     }
 
-    private void assertBattleCalculations(String enemyType, BattleResponse battle, boolean enemyDies, String configFilePath) {
-        List<RoundResponse> rounds = battle.getRounds();
-        double playerHealth = Double.parseDouble(getValueFromConfigFile("player_health", configFilePath));
-        double enemyHealth = Double.parseDouble(getValueFromConfigFile(enemyType + "_attack", configFilePath));
-        double playerAttack = Double.parseDouble(getValueFromConfigFile("player_attack", configFilePath));
-        double enemyAttack = Double.parseDouble(getValueFromConfigFile(enemyType + "_attack", configFilePath));
+    // private void assertBattleCalculations(String enemyType, BattleResponse battle, boolean enemyDies, String configFilePath) {
+    //     List<RoundResponse> rounds = battle.getRounds();
+    //     double playerHealth = Double.parseDouble(getValueFromConfigFile("player_health", configFilePath));
+    //     double enemyHealth = Double.parseDouble(getValueFromConfigFile(enemyType + "_attack", configFilePath));
+    //     double playerAttack = Double.parseDouble(getValueFromConfigFile("player_attack", configFilePath));
+    //     double enemyAttack = Double.parseDouble(getValueFromConfigFile(enemyType + "_attack", configFilePath));
 
-        for (RoundResponse round : rounds) {
-            assertEquals(round.getDeltaCharacterHealth(), -(enemyAttack / 10));
-            assertEquals(round.getDeltaEnemyHealth(), -(playerAttack / 5));
-            enemyHealth += round.getDeltaEnemyHealth();
-            playerHealth += round.getDeltaCharacterHealth();
-        }
+    //     for (RoundResponse round : rounds) {
+    //         assertEquals(round.getDeltaCharacterHealth(), -(enemyAttack / 10), 0.001);
+    //         assertEquals(round.getDeltaEnemyHealth(), -(playerAttack / 5), 0.001);
+    //         enemyHealth += round.getDeltaEnemyHealth();
+    //         playerHealth += round.getDeltaCharacterHealth();
+    //     }
 
-        if (enemyDies) {
-            assertTrue(enemyHealth <= 0);
-        } else {
-            assertTrue(playerHealth <= 0);
-        }
-    }
-
-    // @Test
-    // @DisplayName("Test basic battle calculations - mercenary - player loses")
-    // public void testHealthBelowZeroMercenary() {
-    //    DungeonManiaController controller = new DungeonManiaController();
-    //    DungeonResponse postBattleResponse = genericMercenarySequence(controller, "c_battleTests_basicMercenaryPlayerDies");
-    //    BattleResponse battle = postBattleResponse.getBattles().get(0);
-    //    assertBattleCalculations("mercenary", battle, false, "c_battleTests_basicMercenaryPlayerDies");
+    //     if (enemyDies) {
+    //         assertTrue(enemyHealth <= 0);
+    //     } else {
+    //         assertTrue(playerHealth <= 0);
+    //     }
     // }
+
+    @Test
+    @DisplayName("Test basic battle calculations - mercenary - player loses")
+    public void testHealthBelowZeroMercenary() {
+       DungeonManiaController controller = new DungeonManiaController();
+       DungeonResponse postBattleResponse = genericMercenarySequence(controller, "c_battleTests_basicMercenaryPlayerDies");
+       BattleResponse battle = postBattleResponse.getBattles().get(0);
+       assertBattleCalculations("mercenary", battle, false, "c_battleTests_basicMercenaryPlayerDies");
+    }
 
 
     @Test
