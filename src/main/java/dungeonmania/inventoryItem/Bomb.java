@@ -27,10 +27,8 @@ public class Bomb implements InvItem {
 
     @Override
     public void use() {
-        assert (info.getPlayer().getPos() != null);
-        assert (this.id instanceof String);
-        assert (this.radius > 0);
         PlacedBomb bomb = new PlacedBomb(info.getPlayer().getPos(), this.id, this.radius);
+        bomb.setDungeonInfo(this.info);
         info.getEntityMap().put(this.id, bomb);
         info.addTick(bomb);
         info.getItemList().remove(this);
@@ -43,6 +41,8 @@ public class Bomb implements InvItem {
     }
 
     @Override
-    public void setDungeonInfo(DungeonInfo dungeonInfo) {}
+    public void setDungeonInfo(DungeonInfo dungeonInfo) {
+        info = dungeonInfo;
+    }
     
 }

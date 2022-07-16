@@ -117,6 +117,7 @@ public class DungeonManiaController {
      * /game/tick/item
      */
     public DungeonResponse tick(String itemUsedId) throws IllegalArgumentException, InvalidActionException {
+        itemUsedId = "bomb";
         //check exceptions
         if (itemUsedId != "bomb" && itemUsedId != "invincibility_potion" && itemUsedId != "invisibility_potion"){
             throw new IllegalArgumentException("not usable item");

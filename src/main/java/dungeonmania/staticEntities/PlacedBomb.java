@@ -2,6 +2,7 @@ package dungeonmania.staticEntities;
 
 import java.util.List;
 
+import dungeonmania.DungeonInfo;
 import dungeonmania.Entity;
 import dungeonmania.Tick;
 import dungeonmania.player.Player;
@@ -28,7 +29,6 @@ public class PlacedBomb extends staticEntity implements Tick{
         int y_pos = pos.getY();
         //check all adjacent positions for active switch and call blast if true
         //above
-        /*
         List<Entity> entities = dungeonInfo.getEntitiesByPosition(new Position(x_pos, y_pos - 1));
         for (Entity e : entities) {
             if (e instanceof FloorSwitch) {
@@ -68,7 +68,6 @@ public class PlacedBomb extends staticEntity implements Tick{
                     return;
             }
         }
-        */
     }
 
     public void blast() {
@@ -81,14 +80,14 @@ public class PlacedBomb extends staticEntity implements Tick{
         // we blast the "square" starting from the top left
         while (start_y_pos <= end_y_pos) {
             int x_pos = start_x_pos;
-            while (start_x_pos <= end_x_pos) {
-                x_pos ++;
+            while (x_pos <= end_x_pos) {
                 List<Entity> entities = dungeonInfo.getEntitiesByPosition(new Position(x_pos, start_y_pos));
                 for (Entity e : entities) {
                     if (e instanceof Player) {}
                     else
                         dungeonInfo.getEntityMap().remove(e.getId());
                 }
+                x_pos ++;
             }
             start_y_pos ++;
         }

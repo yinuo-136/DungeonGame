@@ -60,6 +60,7 @@ public class CollectableEntity extends Entity{
                 break;
             case "bomb":
                 newItem = new Bomb(id, dungeonInfo.getConfigMap().get("bomb_radius"));
+                newItem.setDungeonInfo(dungeonInfo);
                 break;
             case "sword":
                 newItem = new Sword(id, dungeonInfo.getConfigMap().get("sword_attack"), dungeonInfo.getConfigMap().get("sword_durability"));
