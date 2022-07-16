@@ -8,8 +8,17 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.google.gson.JsonObject;
+
 import dungeonmania.collectableEntity.CollectableEntity;
 import dungeonmania.collectableEntity.Key;
+import dungeonmania.goal.Goal;
+import dungeonmania.goal.basicGoal.bouldersGoal;
+import dungeonmania.goal.basicGoal.enemiesGoal;
+import dungeonmania.goal.basicGoal.exitGoal;
+import dungeonmania.goal.basicGoal.treasureGoal;
+import dungeonmania.goal.complexGoal.andGoal;
+import dungeonmania.goal.complexGoal.orGoal;
 import dungeonmania.inventoryItem.Bomb;
 import dungeonmania.inventoryItem.InvItem;
 import dungeonmania.inventoryItem.Sword;
@@ -37,6 +46,7 @@ public class DungeonInfo {
     private HashMap<String, Entity> entityMap = new HashMap<>(); // the entity map
     private HashMap<String, Integer> configMap = new HashMap<>(); // the config file map
     private List<InvItem> itemList = new ArrayList<>(); // the item list
+    private Goal dungeonGoal = null;
     private int entityCounter = 0;
 
     //store all entities into map
@@ -278,5 +288,42 @@ public class DungeonInfo {
         s.setDungeonInfo(this);
         entityMap.put(id, s);
     }
+
+    public void storeGoals(JSONObject jsonGoals) {
+        this.dungeonGoal = getGoalsFromJson(jsonGoals);
+    }
     
+    //recursive method to initalize the goal
+    public Goal getGoalsFromJson(JSONObject jsonGoals) {
+        //read the json
+        String superGoal = jsonGoals.getString("goal");
+        //base case
+        if (superGoal != "AND" && superGoal != "OR") {
+            switch (superGoal){
+                case "exit":
+                    return new exitGoal(this);
+                case "enemies":
+                    return new enemiesGoal(this);
+                case "boulders":
+                    return new bouldersGoal(this);
+                case "treasure":
+                    return new treasureGoal(this);
+            }
+        //get the subgoal
+        JSONArray subGoals = jsonGoals.getJSONArray("subgoals");
+        //case and
+        if (superGoal.equals("AND")) {
+            return new andGoal(getGoalsFromJson((JSONObject) subGoals.get(0)), getGoalsFromJson((JSONObject) subGoals.get(1)));
+        } else {
+            return new orGoal(getGoalsFromJson((JSONObject) subGoals.get(0)), getGoalsFromJson((JSONObject) subGoals.get(1)));
+        }
+        
+        }
+        //we will never get to this.
+        return null;
+    }
+
+    public String getGoalString() {
+        return dungeonGoal.evalGoal();
+    }
 }
