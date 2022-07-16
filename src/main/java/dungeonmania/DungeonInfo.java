@@ -4,10 +4,15 @@ import java.io.ObjectInputFilter.Config;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import dungeonmania.buildableEntity.Bow;
+import dungeonmania.buildableEntity.Buildable;
+import dungeonmania.buildableEntity.Shield;
 import dungeonmania.collectableEntity.CollectableEntity;
 import dungeonmania.collectableEntity.Key;
 import dungeonmania.inventoryItem.Bomb;
@@ -252,6 +257,40 @@ public class DungeonInfo {
         return false;
     }
 
+    /*
+     * Returns the list of item id's by a specified item type
+     */
+    public List<String> getInvItemIdsListByType(String type){
+        List<ItemResponse> list = getListItemResponse();
+        return list.stream().filter(obj -> obj.getType().equals(type)).map(ItemResponse::getId).collect(Collectors.toList());
+    }
+    
+    /*
+     * Remove a specified item from inventory by it's id
+     */
+    public void removeInvItemById(String id){
+        for (InvItem i: itemList) {
+            i.getItemResponse().getId().equals(id);
+            itemList.remove(i);
+            break;
+        }
+
+    }
+
+    /*
+     * Returns number of inventory items of a specific type
+     */
+    public int getNumInvItemType(String type){
+        return getInvItemIdsListByType(type).size();
+    }
+
+    /*
+     * Adds a InvItem to the Item List
+     */
+    public void addInvItem(InvItem item){
+        itemList.add(item);
+    }
+
     public void Spawn(){
         // spawn zombie
         List<ZombieToastSpawner> zl = new ArrayList<>();
@@ -310,4 +349,27 @@ public class DungeonInfo {
         for (Tick tickableEntity : tickList)
             tickableEntity.tick();
     }
+
+    /*
+     * Returns list of currently craftable items
+     */
+    public List<String> getCurrentBuildables() {
+        List<String> buildables = new ArrayList<String>();
+
+        Buildable bow = new Bow();
+        bow.setDungeonInfo(this);
+        Buildable shield = new Shield();
+        shield.setDungeonInfo(this);
+
+        if (bow.checkCraftable()) {
+            buildables.add("bow");
+        }
+
+        if (shield.checkCraftable()) {
+            buildables.add("shield");
+        }
+
+        return buildables;
+    }
+
 }
