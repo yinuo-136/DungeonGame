@@ -28,6 +28,7 @@ public class InvisibilityPotion implements Potion, InvItem {
     public void use() {
         Player player = dungeonInfo.getPlayer();
         player.addPotion(this);
+        dungeonInfo.getItemList().remove(this);
     }
 
     @Override
@@ -49,5 +50,15 @@ public class InvisibilityPotion implements Potion, InvItem {
     public void takeAction() {
         Player player = dungeonInfo.getPlayer();
         player.setPlayerState(new InvisibleState(player, duration));
+    }
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public String getType() {
+        return type;
     }
 }

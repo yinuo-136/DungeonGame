@@ -133,22 +133,25 @@ public class DungeonManiaController {
             //check exceptions
             throw new IllegalArgumentException("not usable item");
         }
-        List <InvItem> items = info.getItemList();
-        switch(itemUsedId) {
-            case "bomb" :
-                for (InvItem item : items) {
-                    if (item instanceof Bomb){
-                        Bomb bomb = (Bomb) item;
-                        bomb.use();
-                        break;
-                    }
-                }
-                break;
-        }
+        InvItem item = info.getItemById(itemUsedId);
+        item.use();
+        // List <InvItem> items = info.getItemList();
+        // switch(itemUsedId) {
+        //     case "bomb" :
+        //         for (InvItem item : items) {
+        //             if (item instanceof Bomb){
+        //                 Bomb bomb = (Bomb) item;
+        //                 bomb.use();
+        //                 break;
+        //             }
+        //         }
+        //         break;
+        // }
         info.runTicks();
+        info.getPlayer().tickPlayerState();
         info.moveAllMovingEntity();
         info.Spawn();
-        info.getPlayer().tickPlayerState();
+        
 
         return this.getDungeonResponseModel();
     }

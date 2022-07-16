@@ -188,6 +188,12 @@ public class ExampleTests {
         assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
         //consume the potion
         res = dmc.tick(invinciblePotionId);
+        assertEquals(pos, getEntities(res, "mercenary").get(0).getPosition());
+
+        res = dmc.tick(Direction.LEFT);
+        Position expectedPosition2 = pos.translateBy(Direction.RIGHT);
+        assertEquals(expectedPosition2, getEntities(res, "mercenary").get(0).getPosition());
+
     }
 
         

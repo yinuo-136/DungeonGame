@@ -246,6 +246,15 @@ public class DungeonInfo {
         }
         return list;
     }
+    public List<ZombieToast> getAllZombie(){
+        List<ZombieToast> list = new ArrayList<>();
+        for (Entity e : entityMap.values()){
+            if (e.getType() == "zombie_toast"){
+                list.add((ZombieToast) e);
+            }
+        }
+        return list;
+    }
 
     public void initSpawnConfig(){
         //in this stage, only spider needs to be init
@@ -262,8 +271,16 @@ public class DungeonInfo {
                 return true;
             }
         }
-
         return false;
+    }
+
+    public InvItem getItemById(String id) {
+        for (InvItem i : itemList){
+            if(i.getId().equals(id)){
+                return i;
+            }
+        }
+        return null;
     }
 
     public boolean isItemAllowed(String id, List<String> allowedList){

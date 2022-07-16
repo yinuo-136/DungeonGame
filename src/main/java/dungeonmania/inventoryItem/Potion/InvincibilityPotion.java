@@ -29,6 +29,7 @@ public class InvincibilityPotion implements Potion, InvItem {
     public void use() {
         Player player = dungeonInfo.getPlayer();
         player.addPotion(this);
+        dungeonInfo.getItemList().remove(this);
     }
 
     @Override
@@ -51,5 +52,14 @@ public class InvincibilityPotion implements Potion, InvItem {
         player.setPlayerState(new InvincibleState(player, duration));
     }
     
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public String getType() {
+        return type;
+    }
     
 }
