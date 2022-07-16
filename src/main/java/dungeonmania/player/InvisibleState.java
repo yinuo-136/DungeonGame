@@ -19,7 +19,7 @@ public class InvisibleState implements PlayerState {
         return "Invisible";
     }
 
-    public int getAttack() {
+    public double getAttack() {
         return player.attack;
     }
 

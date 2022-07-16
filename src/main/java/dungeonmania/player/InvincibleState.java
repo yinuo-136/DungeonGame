@@ -5,7 +5,7 @@ import dungeonmania.util.Position;
 
 public class InvincibleState implements PlayerState {
 
-    private int attack = Integer.MAX_VALUE;
+    private double attack = Double.MAX_VALUE;
     private double health = Double.MAX_VALUE;
     private int potionTime;
     private Player player;
@@ -19,7 +19,7 @@ public class InvincibleState implements PlayerState {
         return "Invincible";
     }
 
-    public int getAttack() {
+    public double getAttack() {
         return attack;
     }
 

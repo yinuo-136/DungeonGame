@@ -2,12 +2,15 @@ package dungeonmania.inventoryItem;
 
 import dungeonmania.DungeonInfo;
 import dungeonmania.response.models.ItemResponse;
+import dungeonmania.staticEntities.PlacedBomb;
+import dungeonmania.util.Position;
 
 public class Bomb implements InvItem {
 
     private String id;
     private String type = "bomb";
     private int radius;
+    private DungeonInfo info;
 
     public Bomb(String id, int radius) {
         this.id = id;
@@ -22,11 +25,13 @@ public class Bomb implements InvItem {
         return type;
     }
 
-
     @Override
     public void use() {
-        // TODO Auto-generated method stub
-        
+        PlacedBomb bomb = new PlacedBomb(info.getPlayer().getPos(), this.id, this.radius);
+        bomb.setDungeonInfo(this.info);
+        info.getEntityMap().put(this.id, bomb);
+        info.addTick(bomb);
+        info.getItemList().remove(this);
     }
 
     @Override
@@ -36,6 +41,8 @@ public class Bomb implements InvItem {
     }
 
     @Override
-    public void setDungeonInfo(DungeonInfo dungeonInfo) {}
+    public void setDungeonInfo(DungeonInfo dungeonInfo) {
+        info = dungeonInfo;
+    }
     
 }
