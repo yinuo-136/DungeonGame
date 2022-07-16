@@ -20,8 +20,15 @@ public class Key extends CollectableEntity{
     
     @Override
     public void pickup(){
-        //add this to item list
+        //check if there is already a key in the inventory
         List<InvItem> items = dungeonInfo.getItemList();
+        for (InvItem i : items){
+            if (i.getItemResponse().getType() == "key") {
+                return;
+            }
+        }
+
+        //add this to item list
         InvItem newItem = new ItemKey(id, key);
         items.add(newItem);
 

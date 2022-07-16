@@ -54,7 +54,7 @@ public class Player extends Entity {
         return playerState.getAttack(); 
     }
 
-    public void setAttack (int attack) {
+    public void setAttack (double attack) {
         this.attack = attack;
     }
 
