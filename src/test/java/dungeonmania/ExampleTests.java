@@ -19,10 +19,12 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.inventoryItem.InvItem;
 import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
+import dungeonmania.response.models.ItemResponse;
 import dungeonmania.response.models.RoundResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
@@ -172,15 +174,20 @@ public class ExampleTests {
     }
 
     @Test
-    public void testInvinsiblePotion(){
+    public void testInvinsiblePotion() throws IllegalArgumentException, InvalidActionException{
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_potionTest_basicInvincible", "c_movementTest_testMovementDown");
         Position pos = getEntities(res, "mercenary").get(0).getPosition();
         Position expectedPosition = pos.translateBy(Direction.LEFT);
 
-        res = dmc.tick(Direction.LEFT);
+        res = dmc.tick(Direction.RIGHT);
         assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
-        //List<InvItem> invItemList = getPlayer(res).getInfo().getItemList();
+        // make sure the player have picked up the potion
+        String invinciblePotionId = getInventory(res, "invincibility_potion").get(0).getId();
+        //make sure the mercenary working property, so it get closer to the player
+        assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
+        //consume the potion
+        res = dmc.tick(invinciblePotionId);
     }
 
         
