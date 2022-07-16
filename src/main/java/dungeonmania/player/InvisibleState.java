@@ -1,17 +1,31 @@
 package dungeonmania.player;
 
+import java.util.List;
+
 import dungeonmania.inventoryItem.Potion.Potion;
+import dungeonmania.movingEntity.BribedStrategy;
+import dungeonmania.movingEntity.Mercenary;
+import dungeonmania.movingEntity.Moving;
+import dungeonmania.movingEntity.NotBribedStrategy;
+import dungeonmania.movingEntity.RandomStrategy;
 import dungeonmania.util.Position;
 
 public class InvisibleState implements PlayerState {
     
-    private Position position = null;
     private int potionTime;
     private Player player;
+    private Position position;
+    private String potionId;
 
-    public InvisibleState(Player player) {
+    public InvisibleState(Player player, int potionTime, String potionId) {
         this.player = player;
-        //this.potionTime = potionTime;
+        this.potionTime = potionTime;
+        this.potionId = potionId;
+
+        List<Mercenary> allMencenary = player.getDungeonInfo().getAllMencenary();
+        for (Mercenary mencenary : allMencenary) {
+            mencenary.setStrategy(new RandomStrategy());
+        }
     }
 
 
@@ -28,7 +42,7 @@ public class InvisibleState implements PlayerState {
     }
 
     public Position getPosition() {
-        return position;
+        return player.position;
     }
 
     public int getPotionTime() {
@@ -39,6 +53,15 @@ public class InvisibleState implements PlayerState {
     public void tickPotionTime() {
         potionTime--;
         if (potionTime < 0) {
+            List<Mercenary> allMencenary = player.getDungeonInfo().getAllMencenary();
+            // return all mencenary to its original state
+            for (Mercenary mencenary : allMencenary) {
+                if (mencenary.getBribed()) {
+                    mencenary.setStrategy(new BribedStrategy());
+                } else {
+                    mencenary.setStrategy(new NotBribedStrategy());
+                }
+            }
             Potion potion = player.pullPotion();
             if (potion != null) {
                 potion.takeAction();
@@ -48,4 +71,7 @@ public class InvisibleState implements PlayerState {
         }
     }
     
+    public String getPotionId() {
+        return potionId;
+    }
 }

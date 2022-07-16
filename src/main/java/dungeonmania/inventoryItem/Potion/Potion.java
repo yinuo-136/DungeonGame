@@ -9,4 +9,6 @@ public interface Potion {
     public void setConfig();
     public void setDungeonInfo(DungeonInfo dungeonInfo);
     public void takeAction();
+    public String getId();
+    public String getType();
 }

@@ -7,4 +7,5 @@ public interface InvItem {
     public void use();
     public ItemResponse getItemResponse();
     public void setDungeonInfo(DungeonInfo dungeonInfo);
+    public String getId();
 }
