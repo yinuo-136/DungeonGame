@@ -12,7 +12,7 @@ public class Mercenary extends Entity implements Moving {
     private String id;
     private Position position;
     private double health;
-    private int damage;
+    private double damage;
     private static int bribedDamage;
     private static int bribedDefence;
     private MercenaryMovingStrategy currentState = new NotBribedStrategy();
@@ -65,11 +65,13 @@ public class Mercenary extends Entity implements Moving {
         return health;
     }  
 
+    @Override
     public void setHealth(double health) {
         this.health = health;
     }
 
-    public int getDamage() {
+    @Override
+    public double getDamage() {
         return damage;
     }
 
@@ -80,6 +82,7 @@ public class Mercenary extends Entity implements Moving {
         return false;
     }
 
+    @Override
     public String getId() {
         return id;
     }

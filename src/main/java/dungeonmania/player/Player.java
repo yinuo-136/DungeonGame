@@ -1,13 +1,14 @@
 package dungeonmania.player;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-
+import dungeonmania.Battle;
 import dungeonmania.Entity;
 import dungeonmania.collectableEntity.CollectableEntity;
 import dungeonmania.collectableEntity.Key;
+import dungeonmania.movingEntity.Moving;
+import dungeonmania.response.models.BattleResponse;
 import dungeonmania.inventoryItem.Potion.Potion;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.staticEntities.staticEntity;
@@ -18,7 +19,7 @@ public class Player extends Entity {
     private String id;
     private String type = "player";
 
-    protected int attack;
+    protected double attack;
     protected Position position;
     protected double health;
 
@@ -49,8 +50,12 @@ public class Player extends Entity {
      * 
      * @return Attack - Integer
      */
-    public int getAttack(){
+    public double getAttack(){
         return playerState.getAttack(); 
+    }
+
+    public void setAttack (int attack) {
+        this.attack = attack;
     }
 
     /**
@@ -126,6 +131,7 @@ public class Player extends Entity {
         Position p = null;
         Position checkPosition = position.translateBy(direction);
         List<Entity> checkEntity = dungeonInfo.getEntitiesByPosition(checkPosition);
+        BattleResponse response = null;
         for (Entity e : checkEntity){
             if (e instanceof staticEntity){
                 staticEntity se = (staticEntity) e;
@@ -156,6 +162,18 @@ public class Player extends Entity {
 
             }
         }
+        //After move to the cell, check for any moving entities and if there is, start battle
+        checkEntity = dungeonInfo.getEntitiesByPosition(this.position);
+        for(Entity e : checkEntity){
+            if (e instanceof Moving) {
+                Moving movingEntity = (Moving) e;
+                Battle battle = new Battle(this, movingEntity, dungeonInfo);
+                response = battle.start();
+                dungeonInfo.addBattleResponse(response);
+                break;
+            }
+        }
+
         
     }
     
@@ -202,5 +220,10 @@ public class Player extends Entity {
     }
     public void tickPlayerState(){
         playerState.tickPotionTime();
+    }
+    public Boolean isInvincible() {
+        if (playerState.getStateName() == "Invincible")
+            return true;
+        return false;
     }
 }

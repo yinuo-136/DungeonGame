@@ -1,6 +1,8 @@
 package dungeonmania;
 
+import dungeonmania.buildableEntity.BuildableFactory;
 import dungeonmania.exceptions.InvalidActionException;
+import dungeonmania.inventoryItem.Bomb;
 import dungeonmania.inventoryItem.InvItem;
 import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.DungeonResponse;
@@ -109,23 +111,38 @@ public class DungeonManiaController {
         DungeonInfo info = infoMap.get(this.dungeonId);
         List<EntityResponse> entityResponses = info.getListEntityResponse();
         List<ItemResponse> itemResponses = info.getListItemResponse();
-        return new DungeonResponse(dungeonId, dungeonName, entityResponses, itemResponses, new ArrayList<BattleResponse>(), new ArrayList<String>(), ":exit");
+        List<String> buildables = info.getCurrentBuildables();
+        return new DungeonResponse(dungeonId, dungeonName, entityResponses, itemResponses, new ArrayList<BattleResponse>(), buildables, ":exit");
     }
 
     /**
      * /game/tick/item
      */
     public DungeonResponse tick(String itemUsedId) throws IllegalArgumentException, InvalidActionException {
+        itemUsedId = "bomb";
         //check exceptions
         if (itemUsedId != "bomb" && itemUsedId != "invincibility_potion" && itemUsedId != "invisibility_potion"){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("not usable item");
         }
-
         DungeonInfo info = infoMap.get(this.dungeonId);
         if (info.isItemInList(itemUsedId) == false){
             throw new InvalidActionException("not in the player's inventory");
         }
-
+        List <InvItem> items = info.getItemList();
+        switch(itemUsedId) {
+            case "bomb" :
+                for (InvItem item : items) {
+                    if (item instanceof Bomb){
+                        Bomb bomb = (Bomb) item;
+                        bomb.use();
+                        break;
+                    }
+                }
+                break;
+        }
+        info.runTicks();
+        info.moveAllMovingEntity();
+        info.Spawn();
         info.getPlayer().tickPlayerState();
 
         return this.getDungeonResponseModel();
@@ -138,6 +155,7 @@ public class DungeonManiaController {
         DungeonInfo info = infoMap.get(this.dungeonId);
         //trigger player movement
         info.movePLayer(movementDirection);
+        info.runTicks();
         info.getPlayer().tickPlayerState();
         info.moveAllMovingEntity();
         info.Spawn();
@@ -148,7 +166,12 @@ public class DungeonManiaController {
      * /game/build
      */
     public DungeonResponse build(String buildable) throws IllegalArgumentException, InvalidActionException {
-        return null;
+        DungeonInfo info = infoMap.get(this.dungeonId);
+        BuildableFactory builder = new BuildableFactory();
+        
+        builder.build(buildable, info);
+
+        return this.getDungeonResponseModel();
     }
 
     /**
