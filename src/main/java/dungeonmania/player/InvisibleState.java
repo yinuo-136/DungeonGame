@@ -15,10 +15,12 @@ public class InvisibleState implements PlayerState {
     private int potionTime;
     private Player player;
     private Position position;
+    private String potionId;
 
-    public InvisibleState(Player player, int potionTime) {
+    public InvisibleState(Player player, int potionTime, String potionId) {
         this.player = player;
         this.potionTime = potionTime;
+        this.potionId = potionId;
 
         List<Mercenary> allMencenary = player.getDungeonInfo().getAllMencenary();
         for (Mercenary mencenary : allMencenary) {
@@ -69,4 +71,7 @@ public class InvisibleState implements PlayerState {
         }
     }
     
+    public String getPotionId() {
+        return potionId;
+    }
 }

@@ -42,4 +42,7 @@ public class NormalState implements PlayerState {
         return;
     }
     
+    public String getPotionId() {
+        return "NoPotionUsed";
+    }
 }

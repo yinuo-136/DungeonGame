@@ -17,10 +17,12 @@ public class InvincibleState implements PlayerState {
     private double health = Double.MAX_VALUE;
     private int potionTime;
     private Player player;
+    private String potionId;
 
-    public InvincibleState(Player player, int potionTime) {
+    public InvincibleState(Player player, int potionTime, String PotionId) {
         this.player = player;
         this.potionTime = potionTime;
+        this.potionId = potionId;
 
         List<Mercenary> allMencenary = player.getDungeonInfo().getAllMencenary();
         for (Mercenary mencenary : allMencenary) {
@@ -77,6 +79,10 @@ public class InvincibleState implements PlayerState {
             }
             player.setPlayerState(new NormalState(player));
         }
+    }
+
+    public String getPotionId() {
+        return potionId;
     }
 
 }

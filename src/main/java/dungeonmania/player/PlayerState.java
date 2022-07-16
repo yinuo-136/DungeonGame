@@ -9,4 +9,5 @@ public interface PlayerState {
     public Position getPosition();
     public int getPotionTime();
     public void tickPotionTime();
+    public String getPotionId();
 }
