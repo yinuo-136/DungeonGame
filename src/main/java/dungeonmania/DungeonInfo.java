@@ -255,14 +255,24 @@ public class DungeonInfo {
         Spider.setTimeToSpawn(getSpecificConfig("spider_spawn_rate"));
     }
 
-    public boolean isItemInList(String type){
+    public boolean isItemInList(String id){
         List<ItemResponse> list = getListItemResponse();
         for (ItemResponse i : list){
-            if(i.getType().equals(type)){
+            if(i.getId().equals(id)){
                 return true;
             }
         }
 
+        return false;
+    }
+
+    public boolean isItemAllowed(String id, List<String> allowedList){
+        List<ItemResponse> list = getListItemResponse();
+        for (ItemResponse i : list){
+            if(i.getId().equals(id) && allowedList.contains(i.getType())){
+                return true;
+            }
+        }
         return false;
     }
 

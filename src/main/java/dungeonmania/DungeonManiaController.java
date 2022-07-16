@@ -14,6 +14,7 @@ import dungeonmania.util.Position;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -119,14 +120,18 @@ public class DungeonManiaController {
      * /game/tick/item
      */
     public DungeonResponse tick(String itemUsedId) throws IllegalArgumentException, InvalidActionException {
-        itemUsedId = "bomb";
+        //itemUsedId = "bomb";
+        List<String> allowedItemTypes = Arrays.asList("bomb", "invincibility_potion", "invisibility_potion");
         //check exceptions
-        if (itemUsedId != "bomb" && itemUsedId != "invincibility_potion" && itemUsedId != "invisibility_potion"){
-            throw new IllegalArgumentException("not usable item");
-        }
+        // if (itemUsedId != "bomb" && itemUsedId != "invincibility_potion" && itemUsedId != "invisibility_potion"){
+        //     throw new IllegalArgumentException("not usable item");
+        // }
         DungeonInfo info = infoMap.get(this.dungeonId);
         if (info.isItemInList(itemUsedId) == false){
             throw new InvalidActionException("not in the player's inventory");
+        } else if (!info.isItemAllowed(itemUsedId, allowedItemTypes)) {
+            //check exceptions
+            throw new IllegalArgumentException("not usable item");
         }
         List <InvItem> items = info.getItemList();
         switch(itemUsedId) {
