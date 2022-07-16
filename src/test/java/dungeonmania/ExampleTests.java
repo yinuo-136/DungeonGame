@@ -19,6 +19,7 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import dungeonmania.inventoryItem.InvItem;
 import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
@@ -170,6 +171,17 @@ public class ExampleTests {
         
     }
 
+    @Test
+    public void testInvinsiblePotion(){
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_potionTest_basicInvincible", "c_movementTest_testMovementDown");
+        Position pos = getEntities(res, "mercenary").get(0).getPosition();
+        Position expectedPosition = pos.translateBy(Direction.LEFT);
+
+        res = dmc.tick(Direction.LEFT);
+        assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
+        //List<InvItem> invItemList = getPlayer(res).getInfo().getItemList();
+    }
 
         
 //     @Test
