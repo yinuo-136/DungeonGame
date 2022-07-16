@@ -221,4 +221,9 @@ public class Player extends Entity {
     public void tickPlayerState(){
         playerState.tickPotionTime();
     }
+    public Boolean isInvincible() {
+        if (playerState.getStateName() == "Invincible")
+            return true;
+        return false;
+    }
 }

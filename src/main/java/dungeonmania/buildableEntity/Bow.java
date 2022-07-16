@@ -75,6 +75,8 @@ public class Bow implements InvItem, Buildable {
     @Override
     public void use() {
         durability--;
+        if (isItemDestroyed()) 
+            dungeonInfo.removeInvItemById(id);
     }
 
     @Override

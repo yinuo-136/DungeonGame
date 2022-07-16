@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.annotation.processing.RoundEnvironment;
 
+import dungeonmania.buildableEntity.Bow;
+import dungeonmania.buildableEntity.Shield;
 import dungeonmania.inventoryItem.InvItem;
 import dungeonmania.inventoryItem.Sword;
 import dungeonmania.movingEntity.Moving;
@@ -32,67 +34,48 @@ public class Battle {
         double current_enemy_health = enemy.getHealth();
         double initial_enemy_health = enemy.getHealth();
         ArrayList<RoundResponse> rounds = new ArrayList<>();
-        int bow_multiplication = 1;
-        int shield_defense = 0;
-        int sword_attack = 0;
-        String bow_id = null;
-        String shield_id = null;
-        String sword_id = null;
+        double bow_multiplication = 1;
+        double shield_defense = 0;
+        double sword_attack = 0;
+        List <ItemResponse> itemsUsed = new ArrayList<>();
+        // invincible player immediately wins battle
+        // waiting for invincible potion implementation
+        if (player.isInvincible()) {
+            itemsUsed.add(new ItemResponse("needs to be changed", "invincibility_potion"));
+            rounds.add(new RoundResponse( 0, -1 * enemy.getHealth(), itemsUsed));
+            this.info.getEntityMap().remove(enemy.getId());
+            return new BattleResponse(enemy.getClass().getSimpleName(), rounds, initial_player_health, initial_enemy_health);
+        }
         // Check for the existence of battle items and store some info
         List<InvItem> itemList = info.getItemList();
         for (InvItem item : itemList) {
             if (item instanceof Sword) {
                 Sword sword = (Sword) item;
                 sword_attack = sword.getAttackBonus();
-                sword.setDurability(sword.getDurability() - 1);
-                sword_id = sword.getId();
+                itemsUsed.add(new ItemResponse(sword.getId(), "Sword"));  
+                sword.use();
             }
-            // if (item instanceof Shield) {
-            //     Shield shield = (Shield) item;
-            //     shield_defense = shield.getDefense();
-            //     shield.setDurability(shield.getDurability() - 1);
-            //     shield_id = shield.getId;
-            // }
-            // if (item instanceof Bow) {
-            //     Bow bow = (Bow) item;
-            //     bow_multiplication = 2;
-            //     bow_id = bow.getId;
-            //     bow.setDurability(bow.getDurability() - 1);
-            // }
+            if (item instanceof Shield) {
+                Shield shield = (Shield) item;
+                shield_defense = shield.getDefenseBonus();
+                itemsUsed.add(new ItemResponse(shield.getId(), "Shield"));  
+                shield.use();
+            }
+            if (item instanceof Bow) {
+                Bow bow = (Bow) item;
+                bow_multiplication = 2;
+                itemsUsed.add(new ItemResponse(bow.getId(), "Bow"));  
+                bow.use();    
+            }
         }
-        // Items that will be used in battle
-        ItemResponse bow_response = null;
-        ItemResponse sword_response = null;
-        ItemResponse shield_response = null;
-        List <ItemResponse> itemsUsed = new ArrayList<>();
-        // if (bow_id != null) {
-        //     bow_response = new ItemResponse(bow_id, "Bow");
-        //     itemsUsed.add(bow_response);
-        // }
-        // if (shield_id != null) {
-        //     shield_response = new ItemResponse(shield_id, "Shield");
-        //     itemsUsed.add(shield_response);
-        // }
-        if (sword_id != null) {
-            sword_response = new ItemResponse(sword_id, "Sword");
-            itemsUsed.add(sword_response);
-        }
-        
-        // invincible player immediately wins battle
-        // waiting for invincible potion implementation
-        /*
-        if (player.isInvincible()) {
-            for ()
-            rounds.add(new RoundResponse(previous_player_health - player.getHealth(), previous_enemy_health, new ArrayList<ItemResponse>()))
-        }
-        */
+
         // rounds continue until player or enemy dies
         while (current_player_health > 0 && current_enemy_health > 0){
             current_enemy_health = enemy.getHealth() - ((bow_multiplication * (player.getAttack() + sword_attack)) / 5);
             current_player_health = player.getHealth() - ((enemy.getDamage() - shield_defense) / 10);
             player.setHealth(current_player_health);
             enemy.setHealth(current_enemy_health);
-            round_response = new RoundResponse(previous_player_health - player.getHealth(), previous_enemy_health, itemsUsed);
+            round_response = new RoundResponse(player.getHealth() - previous_player_health, enemy.getHealth() - previous_enemy_health , itemsUsed);
             rounds.add(round_response);
             previous_enemy_health = enemy.getHealth();
             previous_player_health = player.getHealth();

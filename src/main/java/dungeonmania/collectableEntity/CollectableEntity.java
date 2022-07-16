@@ -64,6 +64,7 @@ public class CollectableEntity extends Entity{
                 break;
             case "sword":
                 newItem = new Sword(id, dungeonInfo.getConfigMap().get("sword_attack"), dungeonInfo.getConfigMap().get("sword_durability"));
+                newItem.setDungeonInfo(dungeonInfo);
                 break;
             case "treasure":
                 newItem = new Treasure(id);
