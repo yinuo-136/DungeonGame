@@ -40,9 +40,7 @@ public class InvisibleState implements PlayerState {
     }
 
     public Position getPosition() {
-        // player in invisibleState will have layer of 0
-        position = new Position(player.getPos().getX(), player.getPos().getY(), 1);
-        return position;
+        return player.position;
     }
 
     public int getPotionTime() {
