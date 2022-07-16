@@ -10,6 +10,7 @@ public class Sword implements InvItem {
 
     private int attackBonus;
     private int durability;
+    private DungeonInfo info;
 
     public Sword(String id, int attackBonus, int durability) {
         this.id = id;
@@ -39,8 +40,9 @@ public class Sword implements InvItem {
 
     @Override
     public void use() {
-        // TODO Auto-generated method stub
-        
+        durability --;
+        if (durability <= 0) 
+            info.removeInvItemById(id);
     }
 
     @Override
@@ -48,5 +50,7 @@ public class Sword implements InvItem {
         return new ItemResponse(id, type);
     }
     @Override
-    public void setDungeonInfo(DungeonInfo dungeonInfo) {}
+    public void setDungeonInfo(DungeonInfo dungeonInfo) {
+        info = dungeonInfo;
+    }
 }

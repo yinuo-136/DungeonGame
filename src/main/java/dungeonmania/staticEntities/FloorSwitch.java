@@ -1,6 +1,5 @@
 package dungeonmania.staticEntities;
 
-import dungeonmania.Entity;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;

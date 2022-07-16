@@ -14,7 +14,7 @@ public class NormalState implements PlayerState {
         return "Normal";
     }
 
-    public int getAttack() {
+    public double getAttack() {
         return player.attack;
     }
 

@@ -25,6 +25,7 @@ import dungeonmania.movingEntity.Moving;
 import dungeonmania.movingEntity.Spider;
 import dungeonmania.movingEntity.ZombieToast;
 import dungeonmania.player.Player;
+import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.response.models.ItemResponse;
 import dungeonmania.staticEntities.Boulder;
@@ -42,6 +43,8 @@ public class DungeonInfo {
     private HashMap<String, Entity> entityMap = new HashMap<>(); // the entity map
     private HashMap<String, Integer> configMap = new HashMap<>(); // the config file map
     private List<InvItem> itemList = new ArrayList<>(); // the item list
+    private List<BattleResponse> battleList = new ArrayList<>(); // battle response list
+    private List<Tick> tickList = new ArrayList<>(); // tickable entities list
     private int entityCounter = 0;
 
     //store all entities into map
@@ -212,8 +215,16 @@ public class DungeonInfo {
     }
 
     public void moveAllMovingEntity(){
-        for (Moving e : getAllMovingEntity()){
-            e.move();
+        for (Moving m : getAllMovingEntity()){
+            m.move();
+            for(Entity e : getEntitiesByPosition(m.getPos())){
+                if (e instanceof Player) {
+                    Player player = (Player) e;
+                    Battle battle = new Battle(player, m, this);
+                    addBattleResponse(battle.start());
+                    break;
+                }
+            }
         }
     }
 
@@ -316,6 +327,27 @@ public class DungeonInfo {
         Spider s = new Spider(p, id);
         s.setDungeonInfo(this);
         entityMap.put(id, s);
+    }
+    
+    public void addBattleResponse(BattleResponse response) {
+        battleList.add(response);
+    }
+
+    public List<BattleResponse> getBattleResponses() {
+        return battleList;
+    }
+
+    public void addTick(Tick tickableEntity) {
+        tickList.add(tickableEntity);
+    }
+
+    public List<Tick> getTickList() {
+        return tickList;
+    }
+
+    public void runTicks() {
+        for (Tick tickableEntity : tickList)
+            tickableEntity.tick();
     }
 
     /*
