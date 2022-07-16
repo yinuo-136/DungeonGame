@@ -10,11 +10,20 @@ import java.util.stream.Collectors;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.google.gson.JsonObject;
+
 import dungeonmania.buildableEntity.Bow;
 import dungeonmania.buildableEntity.Buildable;
 import dungeonmania.buildableEntity.Shield;
 import dungeonmania.collectableEntity.CollectableEntity;
 import dungeonmania.collectableEntity.Key;
+import dungeonmania.goal.Goal;
+import dungeonmania.goal.basicGoal.bouldersGoal;
+import dungeonmania.goal.basicGoal.enemiesGoal;
+import dungeonmania.goal.basicGoal.exitGoal;
+import dungeonmania.goal.basicGoal.treasureGoal;
+import dungeonmania.goal.complexGoal.andGoal;
+import dungeonmania.goal.complexGoal.orGoal;
 import dungeonmania.inventoryItem.Bomb;
 import dungeonmania.inventoryItem.InvItem;
 import dungeonmania.inventoryItem.Sword;
@@ -43,6 +52,7 @@ public class DungeonInfo {
     private HashMap<String, Entity> entityMap = new HashMap<>(); // the entity map
     private HashMap<String, Integer> configMap = new HashMap<>(); // the config file map
     private List<InvItem> itemList = new ArrayList<>(); // the item list
+    private Goal dungeonGoal = null;
     private List<BattleResponse> battleList = new ArrayList<>(); // battle response list
     private List<Tick> tickList = new ArrayList<>(); // tickable entities list
     private int entityCounter = 0;
@@ -73,7 +83,7 @@ public class DungeonInfo {
                newEntity.setConfig();
                break;
                
-               case "spider":
+            case "spider":
                newEntity = new Spider(new Position(x, y), id);
                newEntity.setDungeonInfo(info);
                newEntity.setConfig();
@@ -364,7 +374,44 @@ public class DungeonInfo {
         s.setDungeonInfo(this);
         entityMap.put(id, s);
     }
+
+    public void storeGoals(JSONObject jsonGoals) {
+        this.dungeonGoal = getGoalsFromJson(jsonGoals);
+    }
     
+    //recursive method to initalize the goal
+    public Goal getGoalsFromJson(JSONObject jsonGoals) {
+        //read the json
+        String superGoal = jsonGoals.getString("goal");
+        //base case
+        if (superGoal != "AND" && superGoal != "OR") {
+            switch (superGoal){
+                case "exit":
+                    return new exitGoal(this);
+                case "enemies":
+                    return new enemiesGoal(this, getSpecificConfig("enemy_goal"));
+                case "boulders":
+                    return new bouldersGoal(this);
+                case "treasure":
+                    return new treasureGoal(this, getSpecificConfig("treasure_goal"));
+            }
+        //get the subgoal
+        JSONArray subGoals = jsonGoals.getJSONArray("subgoals");
+        //case and
+        if (superGoal.equals("AND")) {
+            return new andGoal(getGoalsFromJson((JSONObject) subGoals.get(0)), getGoalsFromJson((JSONObject) subGoals.get(1)));
+        } else {
+            return new orGoal(getGoalsFromJson((JSONObject) subGoals.get(0)), getGoalsFromJson((JSONObject) subGoals.get(1)));
+        }
+        
+        }
+        //we will never get to this.
+        return null;
+    }
+
+    public String getGoalString() {
+        return dungeonGoal.evalGoal();
+    }
     public void addBattleResponse(BattleResponse response) {
         battleList.add(response);
     }
