@@ -28,6 +28,7 @@ public class PlacedBomb extends staticEntity implements Tick{
         int y_pos = pos.getY();
         //check all adjacent positions for active switch and call blast if true
         //above
+        /*
         List<Entity> entities = dungeonInfo.getEntitiesByPosition(new Position(x_pos, y_pos - 1));
         for (Entity e : entities) {
             if (e instanceof FloorSwitch) {
@@ -67,6 +68,7 @@ public class PlacedBomb extends staticEntity implements Tick{
                     return;
             }
         }
+        */
     }
 
     public void blast() {

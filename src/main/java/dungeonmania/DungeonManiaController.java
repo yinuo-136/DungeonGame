@@ -119,9 +119,8 @@ public class DungeonManiaController {
     public DungeonResponse tick(String itemUsedId) throws IllegalArgumentException, InvalidActionException {
         //check exceptions
         if (itemUsedId != "bomb" && itemUsedId != "invincibility_potion" && itemUsedId != "invisibility_potion"){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("not usable item");
         }
-
         DungeonInfo info = infoMap.get(this.dungeonId);
         if (info.isItemInList(itemUsedId) == false){
             throw new InvalidActionException("not in the player's inventory");
