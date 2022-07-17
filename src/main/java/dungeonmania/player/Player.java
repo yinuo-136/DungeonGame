@@ -18,6 +18,7 @@ import dungeonmania.util.Position;
 public class Player extends Entity {
     private String id;
     private String type = "player";
+    private int enemiesMet = 0; 
 
     protected double attack;
     protected Position position;
@@ -180,7 +181,18 @@ public class Player extends Entity {
 
         
     }
+
     
+    public int getEnemiesMet() {
+        return enemiesMet;
+    }
+
+    
+
+    public void setEnemiesMet(int enemiesMet) {
+        this.enemiesMet = enemiesMet;
+    }
+
     /**
      * Checks if the player is currently alive or dead.
      * 

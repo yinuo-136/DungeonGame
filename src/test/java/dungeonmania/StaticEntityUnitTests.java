@@ -17,6 +17,7 @@ import dungeonmania.staticEntities.PlacedBomb;
 import dungeonmania.staticEntities.Portal;
 import dungeonmania.staticEntities.Wall;
 import dungeonmania.staticEntities.ZombieToastSpawner;
+import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class StaticEntityUnitTests {
@@ -66,6 +67,10 @@ public class StaticEntityUnitTests {
     @DisplayName("Portal test")
     public void testPortal(){
         Portal p = new Portal(new Position(10, 10), "red", "1");
+        p.setConfig();
+        p.getId();
+        p.getType();
+        assertEquals(p.boulderMoveIn(new Position(1, 1)), p.getPos());
         assertEquals(new Position(10, 10), p.getPos());
         assertEquals("red", p.getColour());
     }
@@ -75,6 +80,19 @@ public class StaticEntityUnitTests {
     public void testZombieToastSpawner(){
         ZombieToastSpawner z = new ZombieToastSpawner(new Position(10, 10), "1");
         assertEquals(new Position(10, 10), z.getPos());
+        z.getId();
+        assertEquals(z.boulderMoveIn(new Position(1, 2)), new Position(1, 2));
+    }
+
+    @Test
+    @DisplayName("placed bomb test alternative")
+    public void testPlacedBomb1() {
+        PlacedBomb b = new PlacedBomb(new Position(10, 10), "1", 2);
+        b.setConfig();
+        b.getRadius();
+        assertEquals(b.getType(), "bomb");
+        assertEquals(b.boulderMoveIn(new Position(1, 1)), new Position(1, 1));
+        assertEquals(b.playerMoveIn(new Position(1, 1), Direction.UP), new Position(1, 1));
     }
 
     @Test

@@ -325,4 +325,91 @@ public class ExampleTests {
        assertBattleCalculations("mercenary", battle, true, "c_battleTests_basicMercenaryMercenaryDies");
     }
 
+
+    @Test
+    @DisplayName("Test zomie Spawner geatures")
+    public void testZombieSpawner() {
+        DungeonManiaController controller = new DungeonManiaController();
+        //no wall
+        DungeonResponse res = controller.newGame("zombies", "bomb_radius_2");
+
+        res = controller.tick(Direction.RIGHT);
+        assertEquals(1, getEntities(res, "zombie_toast").size());
+
+        controller = new DungeonManiaController();
+        res = controller.newGame("zombies", "c_battleTests_basicMercenaryMercenaryDies");
+
+        res = controller.tick(Direction.DOWN);
+        assertEquals(0, getEntities(res, "zombie_toast").size());
+        //up wall
+        controller = new DungeonManiaController();
+        res = controller.newGame("zombie1", "bomb_radius_2");
+
+        res = controller.tick(Direction.DOWN);
+        assertEquals(1, getEntities(res, "zombie_toast").size());
+
+        //down wall
+        controller = new DungeonManiaController();
+        res = controller.newGame("zombie2", "bomb_radius_2");
+
+        res = controller.tick(Direction.DOWN);
+        assertEquals(1, getEntities(res, "zombie_toast").size());
+
+        //left wall
+        controller = new DungeonManiaController();
+        res = controller.newGame("zombie3", "bomb_radius_2");
+
+        res = controller.tick(Direction.DOWN);
+        assertEquals(1, getEntities(res, "zombie_toast").size());
+
+        //all walls
+        controller = new DungeonManiaController();
+        res = controller.newGame("zombie4", "bomb_radius_2");
+
+        res = controller.tick(Direction.DOWN);
+        assertEquals(0, getEntities(res, "zombie_toast").size());
+
+        controller = new DungeonManiaController();
+        res = controller.newGame("zombie4", "spawn");
+
+        res = controller.tick(Direction.DOWN);
+        assertEquals(0, getEntities(res, "zombie_toast").size());
+    }
+
+    @Test
+    @DisplayName("test portal features")
+    public void testPortalFeature(){
+        DungeonManiaController controller = new DungeonManiaController();
+        
+        DungeonResponse res = controller.newGame("portals", "bomb_radius_2"); 
+        EntityResponse player = getPlayer(res).get();
+        Position p = player.getPosition();
+        res = controller.tick(Direction.RIGHT);
+        assertNotEquals(p.translateBy(Direction.RIGHT), getPlayer(res).get().getPosition());
+
+        //check up wall
+        res = controller.newGame("portal1", "bomb_radius_2"); 
+        p = getPlayer(res).get().getPosition();
+        res = controller.tick(Direction.RIGHT);
+        assertNotEquals(p.translateBy(Direction.RIGHT), getPlayer(res).get().getPosition()); 
+
+        //check down wall
+        res = controller.newGame("portal2", "bomb_radius_2"); 
+        p = getPlayer(res).get().getPosition();
+        res = controller.tick(Direction.RIGHT);
+        assertNotEquals(p.translateBy(Direction.RIGHT), getPlayer(res).get().getPosition());
+
+        //check left wall
+        res = controller.newGame("portal3", "bomb_radius_2"); 
+        p = getPlayer(res).get().getPosition();
+        res = controller.tick(Direction.RIGHT);
+        assertNotEquals(p.translateBy(Direction.RIGHT), getPlayer(res).get().getPosition());
+
+        //check all walls
+        //check down wall
+        res = controller.newGame("portal4", "bomb_radius_2"); 
+        p = getPlayer(res).get().getPosition();
+        res = controller.tick(Direction.RIGHT);
+        assertEquals(p, getPlayer(res).get().getPosition());
+    }
 }
