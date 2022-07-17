@@ -416,4 +416,23 @@ public class ExampleTests {
         Position expectedPosition2 = expectedPosition.translateBy(Direction.LEFT);
         assertEquals(expectedPosition2, getEntities(res, "mercenary").get(0).getPosition());
     }
+
+
+    @Test
+    public void destoryZombieToastSpawner() {
+        // test destroy zombie toast spawner with error handling
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_testZombieToastSpawner", "bomb_radius_2");
+        String zombieToastSpawnerId = getEntities(res, "zombie_toast_spawner").get(0).getId();
+        dmc.getSkin();
+        dmc.getLocalisation();
+        assertThrows(InvalidActionException.class, () -> dmc.interact(zombieToastSpawnerId));
+        res = dmc.tick(Direction.RIGHT);
+        assertThrows(InvalidActionException.class, () -> dmc.interact(zombieToastSpawnerId));
+        res = dmc.tick(Direction.DOWN);
+        res = dmc.tick(Direction.UP);
+        assertDoesNotThrow(() -> dmc.interact(zombieToastSpawnerId));
+        dmc.dungeons();
+        dmc.configs();
+    }
 }
