@@ -11,6 +11,7 @@ import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.response.models.ItemResponse;
+import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class ItemTests {
@@ -20,7 +21,7 @@ public class ItemTests {
         // pick up invincibility potion
         DungeonManiaController controller = new DungeonManiaController();
         controller.newGame("advanced", "simple");
-        controller.tick(dungeonmania.util.Direction.RIGHT);
+        controller.tick(Direction.RIGHT);
         // use invincibility potion
         DungeonResponse response = controller.tick("invincibility_potion");
         List<ItemResponse> inventory = response.getInventory();
@@ -33,10 +34,10 @@ public class ItemTests {
         // pick up and use invincibility potion before invisibility potion
         DungeonManiaController controller = new DungeonManiaController();
         controller.newGame("advanced", "simple");
-        controller.tick(dungeonmania.util.Direction.RIGHT);
+        controller.tick(Direction.RIGHT);
         controller.tick("invincibility_potion");
         // pick up and use invincibility potion
-        controller.tick(dungeonmania.util.Direction.RIGHT);
+        controller.tick(Direction.RIGHT);
         DungeonResponse response = controller.tick("invisibility_potion");
         List<ItemResponse> inventory = response.getInventory();
         assertTrue(inventory.size() == 0);
@@ -48,8 +49,8 @@ public class ItemTests {
         // pick up the bomb
         DungeonManiaController controller = new DungeonManiaController();
         controller.newGame("bombs", "simple");
-        controller.tick(dungeonmania.util.Direction.DOWN);
-        controller.tick(dungeonmania.util.Direction.RIGHT);
+        controller.tick(Direction.DOWN);
+        controller.tick(Direction.RIGHT);
         // placing the bomb
         DungeonResponse response = controller.tick("bomb");
         List<ItemResponse> inventory = response.getInventory();
@@ -62,10 +63,10 @@ public class ItemTests {
         // push the boulder to activate switch
         DungeonManiaController controller = new DungeonManiaController();
         controller.newGame("bombs", "simple");
-        controller.tick(dungeonmania.util.Direction.RIGHT);
+        controller.tick(Direction.RIGHT);
         // pick up the bomb and place it at 4,3 which is adjacent to active switch
-        controller.tick(dungeonmania.util.Direction.DOWN);
-        controller.tick(dungeonmania.util.Direction.RIGHT);
+        controller.tick(Direction.DOWN);
+        controller.tick(Direction.RIGHT);
         DungeonResponse response = controller.tick("bomb");
         List<EntityResponse> entities = response.getEntities();
         List<Position> bombRadius = new ArrayList<>();
@@ -97,15 +98,15 @@ public class ItemTests {
         // pick up bomb and place at 4,3 adjacent to unactive switch
         DungeonManiaController controller = new DungeonManiaController();
         controller.newGame("bombs", "simple");
-        controller.tick(dungeonmania.util.Direction.DOWN);
-        controller.tick(dungeonmania.util.Direction.RIGHT);
-        controller.tick(dungeonmania.util.Direction.RIGHT);
+        controller.tick(Direction.DOWN);
+        controller.tick(Direction.RIGHT);
+        controller.tick(Direction.RIGHT);
         DungeonResponse response = controller.tick("bomb");
         // activate switch
-        controller.tick(dungeonmania.util.Direction.LEFT);
-        controller.tick(dungeonmania.util.Direction.LEFT);
-        controller.tick(dungeonmania.util.Direction.UP);
-        controller.tick(dungeonmania.util.Direction.RIGHT);
+        controller.tick(Direction.LEFT);
+        controller.tick(Direction.LEFT);
+        controller.tick(Direction.UP);
+        controller.tick(Direction.RIGHT);
         List<EntityResponse> entities = response.getEntities();
         List<Position> bombRadius = new ArrayList<>();
         // bomb placed at 4,3
@@ -136,10 +137,10 @@ public class ItemTests {
         // push the boulder to activate switch
         DungeonManiaController controller = new DungeonManiaController();
         controller.newGame("bombs", "bomb_radius_2");
-        controller.tick(dungeonmania.util.Direction.RIGHT);
+        controller.tick(Direction.RIGHT);
         // pick up the bomb and place it at 4,3 which is adjacent to active switch
-        controller.tick(dungeonmania.util.Direction.DOWN);
-        controller.tick(dungeonmania.util.Direction.RIGHT);
+        controller.tick(Direction.DOWN);
+        controller.tick(Direction.RIGHT);
         DungeonResponse response = controller.tick("bomb");
         List<EntityResponse> entities = response.getEntities();
         List<Position> bombRadius = new ArrayList<>();
