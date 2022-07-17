@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import static dungeonmania.TestUtils.getPlayer;
@@ -285,27 +286,6 @@ public class ExampleTests {
         return controller.tick(Direction.RIGHT);
     }
 
-    // private void assertBattleCalculations(String enemyType, BattleResponse battle, boolean enemyDies, String configFilePath) {
-    //     List<RoundResponse> rounds = battle.getRounds();
-    //     double playerHealth = Double.parseDouble(getValueFromConfigFile("player_health", configFilePath));
-    //     double enemyHealth = Double.parseDouble(getValueFromConfigFile(enemyType + "_attack", configFilePath));
-    //     double playerAttack = Double.parseDouble(getValueFromConfigFile("player_attack", configFilePath));
-    //     double enemyAttack = Double.parseDouble(getValueFromConfigFile(enemyType + "_attack", configFilePath));
-
-    //     for (RoundResponse round : rounds) {
-    //         assertEquals(round.getDeltaCharacterHealth(), -(enemyAttack / 10));
-    //         assertEquals(round.getDeltaEnemyHealth(), -(playerAttack / 5));
-    //         enemyHealth += round.getDeltaEnemyHealth();
-    //         playerHealth += round.getDeltaCharacterHealth();
-    //     }
-
-    //     if (enemyDies) {
-    //         assertTrue(enemyHealth <= 0);
-    //     } else {
-    //         assertTrue(playerHealth <= 0);
-    //     }
-    // }
-
     @Test
     @DisplayName("Test basic battle calculations - mercenary - player loses")
     public void testHealthBelowZeroMercenary() {
@@ -411,5 +391,48 @@ public class ExampleTests {
         p = getPlayer(res).get().getPosition();
         res = controller.tick(Direction.RIGHT);
         assertEquals(p, getPlayer(res).get().getPosition());
+    }
+
+    @Test
+    public void testInteractError() {
+        // test error for interact when given wrong input
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_mercenaryTest_bribe", "c_bribe_notEnoughAmount");
+        Position pos = getEntities(res, "mercenary").get(0).getPosition();
+        Position expectedPosition = pos.translateBy(Direction.LEFT);
+        // assert InvalidActionException for interact merenary as range is not enough
+        String mercenaryId = getEntities(res, "mercenary").get(0).getId();
+        assertThrows(InvalidActionException.class, () -> dmc.interact(mercenaryId));
+
+        assertThrows(IllegalArgumentException.class, () -> dmc.interact("null"));
+        assertThrows(IllegalArgumentException.class, () -> dmc.interact("1"));
+
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
+
+        // assert InvalidActionException for interact merenary as money not enough
+        assertThrows(InvalidActionException.class, () -> dmc.interact(mercenaryId));
+        res = dmc.tick(Direction.LEFT);
+        Position expectedPosition2 = expectedPosition.translateBy(Direction.LEFT);
+        assertEquals(expectedPosition2, getEntities(res, "mercenary").get(0).getPosition());
+    }
+
+
+    @Test
+    public void destoryZombieToastSpawner() {
+        // test destroy zombie toast spawner with error handling
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_testZombieToastSpawner", "bomb_radius_2");
+        String zombieToastSpawnerId = getEntities(res, "zombie_toast_spawner").get(0).getId();
+        dmc.getSkin();
+        dmc.getLocalisation();
+        assertThrows(InvalidActionException.class, () -> dmc.interact(zombieToastSpawnerId));
+        res = dmc.tick(Direction.RIGHT);
+        assertThrows(InvalidActionException.class, () -> dmc.interact(zombieToastSpawnerId));
+        res = dmc.tick(Direction.DOWN);
+        res = dmc.tick(Direction.UP);
+        assertDoesNotThrow(() -> dmc.interact(zombieToastSpawnerId));
+        dmc.dungeons();
+        dmc.configs();
     }
 }
