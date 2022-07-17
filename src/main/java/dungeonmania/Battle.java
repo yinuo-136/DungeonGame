@@ -81,10 +81,13 @@ public class Battle {
             previous_player_health = player.getHealth();
         }
         // remove any dead entities
-        if (player.getHealth() <= 0)
-            this.info.getEntityMap().remove(player.getId());
         if (enemy.getHealth() <= 0)
             this.info.getEntityMap().remove(enemy.getId());
+            
+        info.getPlayer().setEnemiesMet(info.getPlayer().getEnemiesMet() + 1);
+        
+        if (player.getHealth() <= 0)
+        this.info.getEntityMap().remove(player.getId());
         // return battle response
         return new BattleResponse(enemy.getClass().getSimpleName(), rounds, initial_player_health, initial_enemy_health);
     }
