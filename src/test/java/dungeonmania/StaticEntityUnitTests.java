@@ -70,6 +70,7 @@ public class StaticEntityUnitTests {
         p.setConfig();
         p.getId();
         p.getType();
+        assertEquals(p.boulderMoveIn(new Position(1, 1)), p.getPos());
         assertEquals(new Position(10, 10), p.getPos());
         assertEquals("red", p.getColour());
     }

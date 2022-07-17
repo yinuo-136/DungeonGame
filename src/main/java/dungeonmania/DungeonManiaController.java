@@ -229,7 +229,6 @@ public class DungeonManiaController {
             removeTreasure(amount);
         }
         
-        System.out.println("1");
         return this.getDungeonResponseModel();
     }
 

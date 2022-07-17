@@ -468,6 +468,37 @@ public class ExampleTests {
     @Test
     @DisplayName("test portal features")
     public void testPortalFeature(){
+        DungeonManiaController controller = new DungeonManiaController();
         
+        DungeonResponse res = controller.newGame("portals", "bomb_radius_2"); 
+        EntityResponse player = getPlayer(res).get();
+        Position p = player.getPosition();
+        res = controller.tick(Direction.RIGHT);
+        assertNotEquals(p.translateBy(Direction.RIGHT), getPlayer(res).get().getPosition());
+
+        //check up wall
+        res = controller.newGame("portal1", "bomb_radius_2"); 
+        p = getPlayer(res).get().getPosition();
+        res = controller.tick(Direction.RIGHT);
+        assertNotEquals(p.translateBy(Direction.RIGHT), getPlayer(res).get().getPosition()); 
+
+        //check down wall
+        res = controller.newGame("portal2", "bomb_radius_2"); 
+        p = getPlayer(res).get().getPosition();
+        res = controller.tick(Direction.RIGHT);
+        assertNotEquals(p.translateBy(Direction.RIGHT), getPlayer(res).get().getPosition());
+
+        //check left wall
+        res = controller.newGame("portal3", "bomb_radius_2"); 
+        p = getPlayer(res).get().getPosition();
+        res = controller.tick(Direction.RIGHT);
+        assertNotEquals(p.translateBy(Direction.RIGHT), getPlayer(res).get().getPosition());
+
+        //check all walls
+        //check down wall
+        res = controller.newGame("portal4", "bomb_radius_2"); 
+        p = getPlayer(res).get().getPosition();
+        res = controller.tick(Direction.RIGHT);
+        assertEquals(p, getPlayer(res).get().getPosition());
     }
 }
