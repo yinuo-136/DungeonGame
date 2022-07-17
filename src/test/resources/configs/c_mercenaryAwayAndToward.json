@@ -6,7 +6,7 @@
     "bribe_amount": 1,
     "bribe_radius": 1,
     "enemy_goal": 1,
-    "invincibility_potion_duration": 6,
+    "invincibility_potion_duration": 8,
     "invisibility_potion_duration": 1,
     "mercenary_attack": 5,
     "mercenary_health": 5,

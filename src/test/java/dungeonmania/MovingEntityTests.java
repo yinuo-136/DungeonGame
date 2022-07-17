@@ -92,6 +92,65 @@ public class MovingEntityTests {
     }
 
     @Test
+    @DisplayName("Test spiders stuck in between boulder")
+    public void SpiderBetweenTwoBoulder(){
+        // B x B
+        // x S x
+        // x x x
+
+        DungeonManiaController dmc;
+        dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_spiderTest_spiderStuckTwoBoulder", "c_spiderTest_basicMovement");
+        Position pos = getEntities(res, "spider").get(0).getPosition();
+
+        Position expectedPosition = pos.translateBy(Direction.UP);
+        res = dmc.tick(Direction.DOWN);
+        assertEquals(expectedPosition, getEntities(res, "spider").get(0).getPosition());
+
+        //   4 5 6
+        // 4 B S B
+        // 5 x x x
+        // 6 x x x
+        // spider move counterclockwise cause boulder
+        Position expectedPosition2 = new Position(5, 4);
+        res = dmc.tick(Direction.DOWN);
+        assertEquals(expectedPosition2, getEntities(res, "spider").get(0).getPosition());
+        
+        res = dmc.tick(Direction.UP);
+        assertEquals(expectedPosition2, getEntities(res, "spider").get(0).getPosition());
+    }
+
+    @Test
+    @DisplayName("Test spiders in between boulder")
+    public void SpiderBetweenTwoBoulder2(){
+        // x x B
+        // B S x
+        // x x x
+
+        DungeonManiaController dmc;
+        dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_spiderTest_spiderTwoBoulder", "c_spiderTest_basicMovement");
+        Position pos = getEntities(res, "spider").get(0).getPosition();
+
+        Position expectedPosition = pos.translateBy(Direction.UP);
+        res = dmc.tick(Direction.DOWN);
+        assertEquals(expectedPosition, getEntities(res, "spider").get(0).getPosition());
+
+        //   4 5 6
+        // 4 x S B
+        // 5 B x x
+        // 6 x x x
+        // spider move counterclockwise cause boulder
+        Position expectedPosition2 = new Position(4, 4);
+        res = dmc.tick(Direction.DOWN);
+        assertEquals(expectedPosition2, getEntities(res, "spider").get(0).getPosition());
+
+        Position expectedPosition3 = new Position(5, 4);
+        res = dmc.tick(Direction.UP);
+        assertEquals(expectedPosition3, getEntities(res, "spider").get(0).getPosition());
+    }
+
+    @Test
     public void testZombieBasicMovement() {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_zombieTest_BasicMovement", "c_spiderTest_basicMovement");
@@ -180,23 +239,44 @@ public class MovingEntityTests {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_mercenaryAwayAndToward", "c_mercenaryAwayAndToward");
         Position pos = getEntities(res, "mercenary").get(0).getPosition();
-        Position expectedPosition = pos.translateBy(Direction.LEFT);
+        Position expectedPosition = pos.translateBy(Direction.DOWN);
         res = dmc.tick(Direction.RIGHT);
         String invinciblePotionId = getInventory(res, "invincibility_potion").get(0).getId();
         //make sure the mercenary working property, so it get closer to the player
         assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
         //consume the potion
         res = assertDoesNotThrow(() -> dmc.tick(invinciblePotionId));
-
+        for (int i = 0; i < 2; i++) {
+            res = dmc.tick(Direction.RIGHT);
+            res = dmc.tick(Direction.LEFT);
+        }
         for (int i = 0; i < 4; i++) {
             res = dmc.tick(Direction.UP);
         }
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             res = dmc.tick(Direction.RIGHT);
             res = dmc.tick(Direction.LEFT);
         }
         res = dmc.tick(Direction.RIGHT);
-        assertEquals(new Position(0, 1), getEntities(res, "mercenary").get(0).getPosition());
+        assertEquals(new Position(1, 2), getEntities(res, "mercenary").get(0).getPosition());
 
+    }
+    @Test 
+    public void testMercenaryPlayerUnreachable(){
+        //test if mercenary will not move toward player if it is unreachable
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_mercenaryPlayerUnreachable", "c_mercenaryAwayAndToward");
+        Position pos = getEntities(res, "mercenary").get(0).getPosition();
+        Position expectedPosition = pos;
+        res = dmc.tick(Direction.LEFT);
+        String invinciblePotionId = getInventory(res, "invincibility_potion").get(0).getId();
+        //make sure the mercenary working property, so it dont move
+        assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
+        //consume the potion
+        res = assertDoesNotThrow(() -> dmc.tick(invinciblePotionId));
+        res = dmc.tick(Direction.LEFT);
+        assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());        
     }
 }
