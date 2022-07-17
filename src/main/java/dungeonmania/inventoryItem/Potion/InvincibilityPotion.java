@@ -25,6 +25,7 @@ public class InvincibilityPotion implements Potion, InvItem {
         this.duration = duration;
     }
 
+    // For the player to use the potion, place the potion into a queue.
     @Override
     public void use() {
         Player player = dungeonInfo.getPlayer();
@@ -46,6 +47,10 @@ public class InvincibilityPotion implements Potion, InvItem {
     public void setDungeonInfo(DungeonInfo dungeonInfo) {
         this.dungeonInfo = dungeonInfo;
     }
+
+    /**
+     * This method is used to set the player's invincibility state to true.
+     */
     @Override
     public void takeAction() {
         Player player = dungeonInfo.getPlayer();

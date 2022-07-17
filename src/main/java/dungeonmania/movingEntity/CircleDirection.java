@@ -24,6 +24,11 @@ public class CircleDirection implements SpiderMovingState{
     }
 
 
+    /**
+     * spider will move in a circle around its swapn position
+     * change to anticlockwise if it hit boulder
+     * dont move if it is between two boulder
+     */
     @Override
     public void move() {
         List<Position> adjacentPositions = spider.getSpawnPosition().getAdjacentPositions();

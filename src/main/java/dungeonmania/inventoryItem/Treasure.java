@@ -14,8 +14,6 @@ public class Treasure implements InvItem {
 
     @Override
     public void use() {
-        // TODO Auto-generated method stub
-        
     }
 
     @Override

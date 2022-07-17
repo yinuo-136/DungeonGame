@@ -14,6 +14,9 @@ public class RunAwayStrategy implements MercenaryMovingStrategy {
         return "RunAway";
     }
 
+    /**
+     * move the entity to the next position away from the direction of player
+     */
     @Override
     public void move(Entity movingEntity) {
         DijkstraAlgoPathFinder pathFinder = new DijkstraAlgoPathFinder();

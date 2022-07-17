@@ -12,6 +12,9 @@ public class RandomStrategy implements MercenaryMovingStrategy {
     private List<String> movingConstrintItemList = Arrays.asList("wall", "boulder");
 
 
+    /**
+     * move the entity to a random direction that would not be a obstacle
+     */
     public void move(Moving entity) {
         Random rand = new Random();
         Direction randDirection = directions.get(rand.nextInt(directions.size()));

@@ -35,18 +35,9 @@ public class Spider extends Entity implements Moving {
     public void move() {
         currentState.move();
     }
-    
-    @Override
-    public void attack(Player player) {
-        while(player.isAlive() || this.isAlive()) {
-            player.setHealth(player.getHealth() - damage);
-            this.setHealth(this.getHealth() - player.getAttack());
-        }
-    }
 
     @Override
     public Position getPos() {
-        // TODO Auto-generated method stub
         return position;
     }
     
@@ -60,13 +51,6 @@ public class Spider extends Entity implements Moving {
 
     public Position getSpawnPosition() {
         return spawnPosition;
-    }
-
-    public boolean isAlive() {
-        if (this.getHealth() > 0){
-            return true;
-        }
-        return false;
     }
 
     public SpiderMovingState getCurrentState() {
@@ -130,6 +114,10 @@ public class Spider extends Entity implements Moving {
         Spider.timeToSpawn = timeToSpawn;
     }
 
+    /**
+     * 
+     * @return true if the spider is spawn
+     */
     public static boolean spawn() {
         if (SpawnRate == 0) {
             return false;
@@ -143,6 +131,9 @@ public class Spider extends Entity implements Moving {
         return false;
     }
 
+    /**
+     * @return the position of the spider spawned
+     */
     public static Position generateSpawnPos(Position p) {
         Random r = new Random();
         int x = r.ints(-10, 10).findFirst().getAsInt();

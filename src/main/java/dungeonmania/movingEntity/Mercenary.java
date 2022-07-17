@@ -20,7 +20,6 @@ public class Mercenary extends Entity implements Moving {
     private int bribeRadius;
     private String type = "mercenary";
     private boolean bribed = false;
-    private Position playerLastPosition;
 
     public Mercenary(Position position, String id) {
         this.position = position;
@@ -36,15 +35,6 @@ public class Mercenary extends Entity implements Moving {
 
     public void move() {
         currentState.move(this);
-        playerLastPosition = getDungeonInfo().getPlayer().getPos();
-    }
-    
-    @Override
-    public void attack(Player player) {
-        while(player.isAlive() || this.isAlive()) {
-            player.setHealth(player.getHealth() - (this.damage / 10));
-            this.setHealth(this.getHealth() - (player.getAttack() / 5));
-        }
     }
 
     @Override
@@ -52,6 +42,11 @@ public class Mercenary extends Entity implements Moving {
         return position;
     }
 
+    /**
+     * 
+     * @param bribeAmount
+     * @return true if the mercenary was bribed, false otherwise.
+     */
     public boolean bribe(int bribeAmount) {
         if (bribeAmount >= costToBribe) {
             currentState = new BribedStrategy();
@@ -76,14 +71,7 @@ public class Mercenary extends Entity implements Moving {
     public double getDamage() {
         return damage;
     }
-
-    public boolean isAlive() {
-        if (this.getHealth() > 0){
-            return true;
-        }
-        return false;
-    }
-
+    
     @Override
     public String getId() {
         return id;
