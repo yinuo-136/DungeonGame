@@ -35,14 +35,6 @@ public class Spider extends Entity implements Moving {
     public void move() {
         currentState.move();
     }
-    
-    @Override
-    public void attack(Player player) {
-        while(player.isAlive() || this.isAlive()) {
-            player.setHealth(player.getHealth() - damage);
-            this.setHealth(this.getHealth() - player.getAttack());
-        }
-    }
 
     @Override
     public Position getPos() {
@@ -59,13 +51,6 @@ public class Spider extends Entity implements Moving {
 
     public Position getSpawnPosition() {
         return spawnPosition;
-    }
-
-    public boolean isAlive() {
-        if (this.getHealth() > 0){
-            return true;
-        }
-        return false;
     }
 
     public SpiderMovingState getCurrentState() {

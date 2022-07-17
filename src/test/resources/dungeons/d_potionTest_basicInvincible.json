@@ -74,6 +74,11 @@
             "type": "wall",
             "x": 0,
             "y": 2
+        },
+        {
+            "type": "zombie_toast",
+            "x": 10,
+            "y": 10
         }
     ],
     "goal-condition": {"goal": "exit"}

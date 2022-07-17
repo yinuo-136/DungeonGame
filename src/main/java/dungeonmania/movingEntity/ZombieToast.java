@@ -35,14 +35,14 @@ public class ZombieToast extends Entity implements Moving {
         currentState.move(this);
     }
 
-    @Override
-    public void attack(Player player) {
-        while(player.isAlive() || this.isAlive()) {
-            player.setHealth(player.getHealth() - damage);
-            this.setHealth(this.getHealth() - player.getAttack());
-        }
-        // then remove the player or the enemy depend on who died first.
-    }
+    // @Override
+    // public void attack(Player player) {
+    //     while(player.isAlive() || this.isAlive()) {
+    //         player.setHealth(player.getHealth() - damage);
+    //         this.setHealth(this.getHealth() - player.getAttack());
+    //     }
+    //     // then remove the player or the enemy depend on who died first.
+    // }
 
     @Override
     public Position getPos() {
@@ -64,12 +64,12 @@ public class ZombieToast extends Entity implements Moving {
         return damage;
     }
 
-    public boolean isAlive() {
-        if (this.getHealth() > 0){
-            return true;
-        }
-        return false;
-    }
+    // public boolean isAlive() {
+    //     if (this.getHealth() > 0){
+    //         return true;
+    //     }
+    //     return false;
+    // }
 
     @Override
     public String getId() {

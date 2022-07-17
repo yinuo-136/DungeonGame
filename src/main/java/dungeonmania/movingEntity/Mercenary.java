@@ -36,14 +36,6 @@ public class Mercenary extends Entity implements Moving {
     public void move() {
         currentState.move(this);
     }
-    
-    @Override
-    public void attack(Player player) {
-        while(player.isAlive() || this.isAlive()) {
-            player.setHealth(player.getHealth() - (this.damage / 10));
-            this.setHealth(this.getHealth() - (player.getAttack() / 5));
-        }
-    }
 
     @Override
     public Position getPos() {
@@ -79,14 +71,7 @@ public class Mercenary extends Entity implements Moving {
     public double getDamage() {
         return damage;
     }
-
-    public boolean isAlive() {
-        if (this.getHealth() > 0){
-            return true;
-        }
-        return false;
-    }
-
+    
     @Override
     public String getId() {
         return id;
