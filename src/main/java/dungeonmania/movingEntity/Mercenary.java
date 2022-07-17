@@ -50,6 +50,11 @@ public class Mercenary extends Entity implements Moving {
         return position;
     }
 
+    /**
+     * 
+     * @param bribeAmount
+     * @return true if the mercenary was bribed, false otherwise.
+     */
     public boolean bribe(int bribeAmount) {
         if (bribeAmount >= costToBribe) {
             currentState = new BribedStrategy();

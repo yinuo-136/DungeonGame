@@ -166,8 +166,6 @@ public class ExampleTests {
         assertEquals(true, getEntities(res, "mercenary").isEmpty());
     }
 
-
-
     @Test
     public void testMercenaryBribedDontBattleNDontOverlap() throws IllegalArgumentException, InvalidActionException{
         DungeonManiaController dmc = new DungeonManiaController();

@@ -22,6 +22,10 @@ public class ReverseDirection implements SpiderMovingState{
         spider.setCurrentState(new ReverseDirection(spider));        
     }
 
+    /**
+     * spider will move in a reverse circle around its swapn position
+     * change to clockwise if it hit boulder
+     */
     @Override
     public void move() {
         List<Position> adjacentPositions = spider.getSpawnPosition().getAdjacentPositions();

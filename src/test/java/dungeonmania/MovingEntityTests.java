@@ -108,6 +108,7 @@ public class MovingEntityTests {
     }
     @Test
     public void testMercenarybasicMovement() {
+        // test if mercenary will approach player
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_battleTest_basicMercenary", "c_battleTests_basicMercenaryMercenaryDies");
         Position pos = getEntities(res, "mercenary").get(0).getPosition();
@@ -123,6 +124,7 @@ public class MovingEntityTests {
 
     @Test
     public void testMercenarybasicMovement2() {
+        // test if mercenary will approach if it is directly above player
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_mercenaryTest_BasicMovement", "c_battleTests_basicMercenaryMercenaryDies");
         Position pos = getEntities(res, "mercenary").get(0).getPosition();
@@ -135,6 +137,7 @@ public class MovingEntityTests {
     
     @Test
     public void testMercenaryBribed() throws IllegalArgumentException, InvalidActionException{
+        // test if mercenary can be bribe and its behaviour after bribed
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_mercenaryTest_bribe", "c_movementTest_testMovementDown");
         Position pos = getEntities(res, "mercenary").get(0).getPosition();
