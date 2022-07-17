@@ -247,6 +247,24 @@ public class DungeonInfo {
         }
         return list;
     }
+    public List<Mercenary> getAllMencenary(){
+        List<Mercenary> list = new ArrayList<>();
+        for (Entity e : entityMap.values()){
+            if (e.getType() == "mercenary"){
+                list.add((Mercenary) e);
+            }
+        }
+        return list;
+    }
+    public List<ZombieToast> getAllZombie(){
+        List<ZombieToast> list = new ArrayList<>();
+        for (Entity e : entityMap.values()){
+            if (e.getType() == "zombie_toast"){
+                list.add((ZombieToast) e);
+            }
+        }
+        return list;
+    }
 
     public void initSpawnConfig(){
         //in this stage, only spider needs to be init
@@ -256,14 +274,32 @@ public class DungeonInfo {
         Spider.setTimeToSpawn(getSpecificConfig("spider_spawn_rate"));
     }
 
-    public boolean isItemInList(String type){
+    public boolean isItemInList(String id){
         List<ItemResponse> list = getListItemResponse();
         for (ItemResponse i : list){
-            if(i.getType().equals(type)){
+            if(i.getId().equals(id)){
                 return true;
             }
         }
+        return false;
+    }
 
+    public InvItem getItemById(String id) {
+        for (InvItem i : itemList){
+            if(i.getId().equals(id)){
+                return i;
+            }
+        }
+        return null;
+    }
+
+    public boolean isItemAllowed(String id, List<String> allowedList){
+        List<ItemResponse> list = getListItemResponse();
+        for (ItemResponse i : list){
+            if(i.getId().equals(id) && allowedList.contains(i.getType())){
+                return true;
+            }
+        }
         return false;
     }
 

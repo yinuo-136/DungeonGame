@@ -25,4 +25,8 @@ public class Wood implements InvItem {
     @Override
     public void setDungeonInfo(DungeonInfo dungeonInfo) {}
     
+    @Override
+    public String getId() {
+        return id;
+    }
 }

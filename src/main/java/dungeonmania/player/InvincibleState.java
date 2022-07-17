@@ -1,6 +1,14 @@
 package dungeonmania.player;
 
+import java.util.List;
+
 import dungeonmania.inventoryItem.Potion.Potion;
+import dungeonmania.movingEntity.BribedStrategy;
+import dungeonmania.movingEntity.Mercenary;
+import dungeonmania.movingEntity.NotBribedStrategy;
+import dungeonmania.movingEntity.RandomStrategy;
+import dungeonmania.movingEntity.RunAwayStrategy;
+import dungeonmania.movingEntity.ZombieToast;
 import dungeonmania.util.Position;
 
 public class InvincibleState implements PlayerState {
@@ -9,10 +17,21 @@ public class InvincibleState implements PlayerState {
     private double health = Double.MAX_VALUE;
     private int potionTime;
     private Player player;
+    private String potionId;
 
-    public InvincibleState(Player player) {
+    public InvincibleState(Player player, int potionTime, String PotionId) {
         this.player = player;
-        //this.potionTime = ;
+        this.potionTime = potionTime;
+        this.potionId = potionId;
+
+        List<Mercenary> allMencenary = player.getDungeonInfo().getAllMencenary();
+        for (Mercenary mencenary : allMencenary) {
+            mencenary.setStrategy(new RunAwayStrategy());
+        }
+        List<ZombieToast> allZombie = player.getDungeonInfo().getAllZombie();
+        for (ZombieToast zombie : allZombie) {
+            zombie.setStrategy(new RunAwayStrategy());
+        }
     }
 
     public String getStateName() {
@@ -39,6 +58,20 @@ public class InvincibleState implements PlayerState {
     public void tickPotionTime() {
         potionTime--;
         if (potionTime < 0) {
+            List<Mercenary> allMencenary = player.getDungeonInfo().getAllMencenary();
+            // return all mencenary to its original state
+            for (Mercenary mencenary : allMencenary) {
+                if (mencenary.getBribed()) {
+                    mencenary.setStrategy(new BribedStrategy());
+                } else {
+                    mencenary.setStrategy(new NotBribedStrategy());
+                }
+            }
+            List<ZombieToast> allZombie = player.getDungeonInfo().getAllZombie();
+            for (ZombieToast zombie : allZombie) {
+                zombie.setStrategy(new RandomStrategy());
+            }
+            
             Potion potion = player.pullPotion();
             if (potion != null) {
                 potion.takeAction();
@@ -46,6 +79,10 @@ public class InvincibleState implements PlayerState {
             }
             player.setPlayerState(new NormalState(player));
         }
+    }
+
+    public String getPotionId() {
+        return potionId;
     }
 
 }

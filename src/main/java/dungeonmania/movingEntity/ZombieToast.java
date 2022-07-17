@@ -27,8 +27,6 @@ public class ZombieToast extends Entity implements Moving {
     public void setConfig(){
     }
 
-    
-
     public void setDamage(int damage) {
         this.damage = damage;
     }
@@ -96,6 +94,10 @@ public class ZombieToast extends Entity implements Moving {
     @Override
     public List<String> getEntitiesStringByPosition(Position pos) {
         return dungeonInfo.getEntitiesStringByPosition(pos);
+    }
+
+    public void setStrategy(MercenaryMovingStrategy strategy) {
+        this.currentState = strategy;
     }
     
 }

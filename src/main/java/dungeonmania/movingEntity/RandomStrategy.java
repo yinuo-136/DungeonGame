@@ -22,7 +22,7 @@ public class RandomStrategy implements MercenaryMovingStrategy {
         checkObstacle(entity, Direction.RIGHT)) { 
             return;
         }
-        // if the random direction is not a wall or a boulder, move the entity.
+        // if the random direction will not lead to a wall or a boulder, move the entity.
         while (checkObstacle(entity, randDirection)) {
             rand = new Random();
             randDirection = directions.get(rand.nextInt(directions.size()));

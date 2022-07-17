@@ -40,6 +40,9 @@ public class Battle {
         List <ItemResponse> itemsUsed = new ArrayList<>();
         // invincible player immediately wins battle
         // waiting for invincible potion implementation
+        if (player.getPlayerState().getStateName() == "Invisible"){
+            return new BattleResponse(enemy.getClass().getSimpleName(), rounds, initial_player_health, initial_enemy_health);
+        }
         if (player.isInvincible()) {
             itemsUsed.add(new ItemResponse("needs to be changed", "invincibility_potion"));
             rounds.add(new RoundResponse( 0, -1 * enemy.getHealth(), itemsUsed));

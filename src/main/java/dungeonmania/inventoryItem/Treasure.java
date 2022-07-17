@@ -27,4 +27,9 @@ public class Treasure implements InvItem {
     @Override
     public void setDungeonInfo(DungeonInfo dungeonInfo) {}
 
+    @Override
+    public String getId() {
+        return id;
+    }
+
 }
