@@ -49,7 +49,7 @@ public class Battle {
             return new BattleResponse(enemy.getClass().getSimpleName(), rounds, initial_player_health, initial_enemy_health);
         }
         if (player.isInvincible()) {
-            itemsUsed.add(new ItemResponse("needs to be changed", "invincibility_potion"));
+            itemsUsed.add(new ItemResponse(player.getPlayerState().getPotionId(), "invincibility_potion"));
             rounds.add(new RoundResponse( 0, -1 * enemy.getHealth(), itemsUsed));
             this.info.getEntityMap().remove(enemy.getId());
             return new BattleResponse(enemy.getClass().getSimpleName(), rounds, initial_player_health, initial_enemy_health);
@@ -60,20 +60,17 @@ public class Battle {
             if (item instanceof Sword) {
                 Sword sword = (Sword) item;
                 sword_attack = sword.getAttackBonus();
-                itemsUsed.add(new ItemResponse(sword.getId(), "Sword"));  
-                sword.use();
+                itemsUsed.add(new ItemResponse(sword.getId(), "Sword"));
             }
             if (item instanceof Shield) {
                 Shield shield = (Shield) item;
                 shield_defense = shield.getDefenseBonus();
                 itemsUsed.add(new ItemResponse(shield.getId(), "Shield"));  
-                shield.use();
             }
             if (item instanceof Bow) {
                 Bow bow = (Bow) item;
                 bow_multiplication = 2;
                 itemsUsed.add(new ItemResponse(bow.getId(), "Bow"));  
-                bow.use();    
             }
         }
 
@@ -93,6 +90,9 @@ public class Battle {
             this.info.getEntityMap().remove(player.getId());
         if (enemy.getHealth() <= 0)
             this.info.getEntityMap().remove(enemy.getId());
+        // use all the items once
+        for (ItemResponse response : itemsUsed) 
+            info.getItemById(response.getId()).use();
         // return battle response
         return new BattleResponse(enemy.getClass().getSimpleName(), rounds, initial_player_health, initial_enemy_health);
     }

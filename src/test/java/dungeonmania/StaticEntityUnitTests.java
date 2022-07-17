@@ -13,6 +13,7 @@ import dungeonmania.staticEntities.Boulder;
 import dungeonmania.staticEntities.Door;
 import dungeonmania.staticEntities.Exit;
 import dungeonmania.staticEntities.FloorSwitch;
+import dungeonmania.staticEntities.PlacedBomb;
 import dungeonmania.staticEntities.Portal;
 import dungeonmania.staticEntities.Wall;
 import dungeonmania.staticEntities.ZombieToastSpawner;
@@ -74,6 +75,13 @@ public class StaticEntityUnitTests {
     public void testZombieToastSpawner(){
         ZombieToastSpawner z = new ZombieToastSpawner(new Position(10, 10), "1");
         assertEquals(new Position(10, 10), z.getPos());
+    }
+
+    @Test
+    @DisplayName("PlacedBomb test")
+    public void testPlacedBomb(){
+        PlacedBomb b = new PlacedBomb(new Position(1, 1), "1", 1);
+        assertEquals(new Position(1, 1), b.getPos());
     }
 }
 
