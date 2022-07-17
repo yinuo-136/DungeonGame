@@ -27,7 +27,10 @@ public class Bomb implements InvItem {
 
     @Override
     public void use() {
-        PlacedBomb bomb = new PlacedBomb(info.getPlayer().getPos(), this.id, this.radius);
+        int x = info.getPlayer().getPos().getX();
+        int y = info.getPlayer().getPos().getY();
+        Position bomb_pos = new Position(x, y);
+        PlacedBomb bomb = new PlacedBomb(bomb_pos, this.id, this.radius);
         bomb.setDungeonInfo(this.info);
         info.getEntityMap().put(this.id, bomb);
         info.addTick(bomb);

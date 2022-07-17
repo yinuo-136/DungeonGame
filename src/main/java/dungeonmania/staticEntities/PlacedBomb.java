@@ -73,8 +73,8 @@ public class PlacedBomb extends staticEntity implements Tick{
     public void blast() {
         // blast everything within a square with the player being in the center
         // square has sides of length radius * 2 + 1
-        int start_x_pos = dungeonInfo.getPlayer().getPos().getX() - radius;
-        int start_y_pos = dungeonInfo.getPlayer().getPos().getY() - radius;
+        int start_x_pos = pos.getX() - radius;
+        int start_y_pos = pos.getY() - radius;
         int end_y_pos = start_y_pos + (2 * radius);
         int end_x_pos = start_x_pos + (2 * radius);
         // we blast the "square" starting from the top left
