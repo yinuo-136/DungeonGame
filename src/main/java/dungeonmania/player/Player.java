@@ -173,7 +173,8 @@ public class Player extends Entity {
                 Moving movingEntity = (Moving) e;
                 Battle battle = new Battle(this, movingEntity, dungeonInfo);
                 response = battle.start();
-                dungeonInfo.addBattleResponse(response);
+                if (response != null)
+                    dungeonInfo.addBattleResponse(response);
                 break;
             }
         }

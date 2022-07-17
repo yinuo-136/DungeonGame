@@ -231,7 +231,9 @@ public class DungeonInfo {
                 if (e instanceof Player) {
                     Player player = (Player) e;
                     Battle battle = new Battle(player, m, this);
-                    addBattleResponse(battle.start());
+                    BattleResponse response = battle.start();
+                    if (response != null)
+                        addBattleResponse(response);
                     break;
                 }
             }
