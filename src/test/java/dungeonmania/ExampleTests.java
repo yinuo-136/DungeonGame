@@ -146,6 +146,7 @@ public class ExampleTests {
         // make sure the mercenary still alive after the potion effect as there will be no battle
         pos = getEntities(res, "mercenary").get(0).getPosition();
         res = dmc.tick(Direction.RIGHT);
+        assertThrows(InvalidActionException.class, () -> dmc.tick(invisibilityPotionId));
     }
 
     @Test
