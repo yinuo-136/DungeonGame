@@ -42,7 +42,7 @@ public class Battle {
         // invincible player immediately wins battle
         // waiting for invincible potion implementation
         if (player.getPlayerState().getStateName() == "Invisible"){
-            return new BattleResponse(enemy.getClass().getSimpleName(), rounds, initial_player_health, initial_enemy_health);
+            return null;
         }
         if (enemy.getType() == "mercenary" && ((Mercenary) enemy).getBribed() == true) {
             // if the enemy is bribed, the player will not be able to attack the enemy
@@ -59,17 +59,17 @@ public class Battle {
         for (InvItem item : itemList) {
             if (item instanceof Sword) {
                 Sword sword = (Sword) item;
-                sword_attack = sword.getAttackBonus();
+                sword_attack += sword.getAttackBonus();
                 itemsUsed.add(new ItemResponse(sword.getId(), "Sword"));
             }
             if (item instanceof Shield) {
                 Shield shield = (Shield) item;
-                shield_defense = shield.getDefenseBonus();
+                shield_defense += shield.getDefenseBonus();
                 itemsUsed.add(new ItemResponse(shield.getId(), "Shield"));  
             }
             if (item instanceof Bow) {
                 Bow bow = (Bow) item;
-                bow_multiplication = 2;
+                bow_multiplication *= 2;
                 itemsUsed.add(new ItemResponse(bow.getId(), "Bow"));  
             }
         }
@@ -77,7 +77,10 @@ public class Battle {
         // rounds continue until player or enemy dies
         while (current_player_health > 0 && current_enemy_health > 0){
             current_enemy_health = enemy.getHealth() - ((bow_multiplication * (player.getAttack() + sword_attack)) / 5);
-            current_player_health = player.getHealth() - ((enemy.getDamage() - shield_defense) / 10);
+            double enemy_damage = enemy.getDamage() - shield_defense;
+            if (enemy_damage < 0)
+                enemy_damage = 0;
+            current_player_health = player.getHealth() - (enemy_damage / 10);
             player.setHealth(current_player_health);
             enemy.setHealth(current_enemy_health);
             round_response = new RoundResponse(player.getHealth() - previous_player_health, enemy.getHealth() - previous_enemy_health , itemsUsed);

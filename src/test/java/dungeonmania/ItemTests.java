@@ -163,13 +163,13 @@ public class ItemTests {
     }
 
     @Test
-    @DisplayName("Placing a bomb on an already active switch")
-    public void testPlacingBombOnActiveSwitch() throws IllegalArgumentException, InvalidActionException {
+    @DisplayName("Placing a bomb on an already active switch below it")
+    public void testPlacingBombOnActiveSwitchBelow() throws IllegalArgumentException, InvalidActionException {
         // push the boulder to activate switch
         DungeonManiaController controller = new DungeonManiaController();
         controller.newGame("bombs", "simple");
         controller.tick(Direction.RIGHT);
-        // pick up the bomb and place it at 4,3 which is adjacent to active switch
+        // pick up the bomb and place it at 4,3 which is below an active switch
         controller.tick(Direction.DOWN);
         DungeonResponse response = controller.tick(Direction.RIGHT);
         List<ItemResponse> inventory = response.getInventory();
@@ -205,7 +205,140 @@ public class ItemTests {
     }
 
     @Test
-    @DisplayName("Placing a bomb on an already active switch")
+    @DisplayName("Placing a bomb on an already active switch left of it")
+    public void testPlacingBombOnActiveSwitchleft() throws IllegalArgumentException, InvalidActionException {
+        // push the boulder to activate switch
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.newGame("d_battleTest_bombs", "simple");
+        controller.tick(Direction.RIGHT);
+        // pick up the bomb and place it at 3,2 which is left of an active switch
+        controller.tick(Direction.DOWN);
+        DungeonResponse response = controller.tick(Direction.RIGHT);
+        List<ItemResponse> inventory = response.getInventory();
+        String id = null;
+        for (ItemResponse item : inventory) {
+            if (item.getType() == "bomb")
+                id = item.getId();
+        }
+        controller.tick(Direction.LEFT);
+        controller.tick(Direction.UP);
+        // placing the bomb
+        response = controller.tick(id);
+        List<EntityResponse> entities = response.getEntities();
+        List<Position> bombRadius = new ArrayList<>();
+        // bomb placed at 3,2
+        // Everything in 1 radius should be gone except the player
+        // 1 radius means should be a 3 x 3 square with player being in the center
+        int y_coord = 1;
+        int i = 0;
+        int j = 0;
+        while (i < 3) {
+            int x_coord = 2;
+            while (j < 3) {
+                bombRadius.add(new Position(x_coord, y_coord));
+                x_coord ++;
+                j ++;
+            }
+            i ++;
+            y_coord ++;
+        }
+        for (EntityResponse e : entities) {
+            if (e.getType() != "player")
+                assertFalse(bombRadius.contains(e.getPosition()));
+        }
+    }
+
+    @Test
+    @DisplayName("Placing a bomb on an already active switch above it")
+    public void testPlacingBombOnActiveSwitchAbove() throws IllegalArgumentException, InvalidActionException {
+        // push the boulder to activate switch
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.newGame("d_battleTest_bombs", "simple");
+        controller.tick(Direction.RIGHT);
+        // pick up the bomb and place it at 4,1 which is above an active switch
+        controller.tick(Direction.DOWN);
+        DungeonResponse response = controller.tick(Direction.RIGHT);
+        List<ItemResponse> inventory = response.getInventory();
+        String id = null;
+        for (ItemResponse item : inventory) {
+            if (item.getType() == "bomb")
+                id = item.getId();
+        }
+        controller.tick(Direction.LEFT);
+        controller.tick(Direction.UP);
+        controller.tick(Direction.UP);
+        controller.tick(Direction.RIGHT);
+        // placing the bomb
+        response = controller.tick(id);
+        List<EntityResponse> entities = response.getEntities();
+        List<Position> bombRadius = new ArrayList<>();
+        // bomb placed at 4,1
+        // Everything in 1 radius should be gone except the player
+        // 1 radius means should be a 3 x 3 square with player being in the center
+        int y_coord = 0;
+        int i = 0;
+        int j = 0;
+        while (i < 3) {
+            int x_coord = 3;
+            while (j < 3) {
+                bombRadius.add(new Position(x_coord, y_coord));
+                x_coord ++;
+                j ++;
+            }
+            i ++;
+            y_coord ++;
+        }
+        for (EntityResponse e : entities) {
+            if (e.getType() != "player")
+                assertFalse(bombRadius.contains(e.getPosition()));
+        }
+    }
+
+    @Test
+    @DisplayName("Placing a bomb on an already active switch right of it")
+    public void testPlacingBombOnActiveSwitchRight() throws IllegalArgumentException, InvalidActionException {
+        // push the boulder to activate switch
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.newGame("d_battleTest_bombs", "simple");
+        controller.tick(Direction.RIGHT);
+        // pick up the bomb and place it at 5,2 which is right of an active switch
+        controller.tick(Direction.DOWN);
+        DungeonResponse response = controller.tick(Direction.RIGHT);
+        List<ItemResponse> inventory = response.getInventory();
+        String id = null;
+        for (ItemResponse item : inventory) {
+            if (item.getType() == "bomb")
+                id = item.getId();
+        }
+        controller.tick(Direction.RIGHT);
+        controller.tick(Direction.UP);
+        // placing the bomb
+        response = controller.tick(id);
+        List<EntityResponse> entities = response.getEntities();
+        List<Position> bombRadius = new ArrayList<>();
+        // bomb placed at 5,2
+        // Everything in 1 radius should be gone except the player
+        // 1 radius means should be a 3 x 3 square with player being in the center
+        int y_coord = 1;
+        int i = 0;
+        int j = 0;
+        while (i < 3) {
+            int x_coord = 4;
+            while (j < 3) {
+                bombRadius.add(new Position(x_coord, y_coord));
+                x_coord ++;
+                j ++;
+            }
+            i ++;
+            y_coord ++;
+        }
+        for (EntityResponse e : entities) {
+            if (e.getType() != "player")
+                assertFalse(bombRadius.contains(e.getPosition()));
+        }
+    }
+    @Test
+    @DisplayName("Placing a bomb on an inactive switch")
     public void testPlacingBombThenActivatingSwitch() throws IllegalArgumentException, InvalidActionException {
         // pick up bomb and place at 4,3 adjacent to unactive switch
         DungeonManiaController controller = new DungeonManiaController();
