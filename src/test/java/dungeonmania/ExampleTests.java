@@ -101,79 +101,6 @@ public class ExampleTests {
     }
 
     @Test
-    @DisplayName("Test reverse movement of spiders")
-    public void SpiderReverseMovement(){
-        // x x B
-        // x S x
-        // x x x
-
-        DungeonManiaController dmc;
-        dmc = new DungeonManiaController();
-        DungeonResponse res = dmc.newGame("d_spiderTest_ReverseMovement", "c_spiderTest_basicMovement");
-        Position pos = getEntities(res, "spider").get(0).getPosition();
-
-        Position expectedPosition = pos.translateBy(Direction.UP);
-        res = dmc.tick(Direction.DOWN);
-        assertEquals(expectedPosition, getEntities(res, "spider").get(0).getPosition());
-
-        //   4 5 6
-        // 4 x S B
-        // 5 x x x
-        // 6 x x x
-        // spider move counterclockwise cause boulder
-        Position expectedPosition2 = new Position(4, 4);
-        res = dmc.tick(Direction.DOWN);
-        assertEquals(expectedPosition2, getEntities(res, "spider").get(0).getPosition());
-
-        Position expectedPosition3 = new Position(4, 5);
-        res = dmc.tick(Direction.UP);
-        assertEquals(expectedPosition3, getEntities(res, "spider").get(0).getPosition());
-    }
-
-    @Test
-    public void testZombieBasicMovement() {
-        DungeonManiaController dmc = new DungeonManiaController();
-        DungeonResponse res = dmc.newGame("d_zombieTest_BasicMovement", "c_spiderTest_basicMovement");
-        Position pos = getEntities(res, "zombie_toast").get(0).getPosition();
-        Position expectedPosition = pos.translateBy(Direction.LEFT);
-
-        //   1 2 3
-        // 0 W W W
-        // 1 x Z W
-        // 2 W W W
-        res = dmc.tick(Direction.DOWN);
-        assertEquals(expectedPosition, getEntities(res, "zombie_toast").get(0).getPosition());
-
-    }
-
-    @Test
-    public void testMercenarybasicMovement() {
-        DungeonManiaController dmc = new DungeonManiaController();
-        DungeonResponse res = dmc.newGame("d_battleTest_basicMercenary", "c_battleTests_basicMercenaryMercenaryDies");
-        Position pos = getEntities(res, "mercenary").get(0).getPosition();
-        Position expectedPosition = pos.translateBy(Direction.LEFT);
-
-        //   0 1 2 3
-        // 0 x W W W
-        // 1 P x M W
-        // 2 x W W W
-        res = dmc.tick(Direction.LEFT);
-        assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
-    }
-
-    @Test
-    public void testMercenarybasicMovement2() {
-        DungeonManiaController dmc = new DungeonManiaController();
-        DungeonResponse res = dmc.newGame("d_mercenaryTest_BasicMovement", "c_battleTests_basicMercenaryMercenaryDies");
-        Position pos = getEntities(res, "mercenary").get(0).getPosition();
-        Position expectedPosition = pos.translateBy(Direction.UP);
-
-        res = dmc.tick(Direction.UP);
-        assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
-        
-    }
-
-    @Test
     public void testInvinsiblePotion() throws IllegalArgumentException, InvalidActionException{
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_potionTest_basicInvincible", "c_movementTest_testMovementDown");
@@ -217,6 +144,7 @@ public class ExampleTests {
         res = dmc.tick(Direction.RIGHT);
         // make sure the mercenary still alive after the potion effect as there will be no battle
         pos = getEntities(res, "mercenary").get(0).getPosition();
+        res = dmc.tick(Direction.RIGHT);
     }
 
     @Test
@@ -237,23 +165,6 @@ public class ExampleTests {
         res = dmc.tick(Direction.RIGHT);
         Position expectedPosition2 = pos.translateBy(Direction.RIGHT);
         assertEquals(true, getEntities(res, "mercenary").isEmpty());
-    }
-
-    @Test
-    public void testMercenaryBribed() throws IllegalArgumentException, InvalidActionException{
-        DungeonManiaController dmc = new DungeonManiaController();
-        DungeonResponse res = dmc.newGame("d_mercenaryTest_bribe", "c_movementTest_testMovementDown");
-        Position pos = getEntities(res, "mercenary").get(0).getPosition();
-        Position expectedPosition = pos.translateBy(Direction.LEFT);
-
-        res = dmc.tick(Direction.RIGHT);
-        assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
-
-        String mercenaryId = getEntities(res, "mercenary").get(0).getId();
-        res = assertDoesNotThrow(() -> dmc.interact(mercenaryId));
-        res = dmc.tick(Direction.LEFT);
-        Position expectedPosition2 = expectedPosition.translateBy(Direction.LEFT);
-        assertEquals(expectedPosition2, getEntities(res, "mercenary").get(0).getPosition());
     }
 
     @Test
@@ -414,4 +325,91 @@ public class ExampleTests {
        assertBattleCalculations("mercenary", battle, true, "c_battleTests_basicMercenaryMercenaryDies");
     }
 
+
+    @Test
+    @DisplayName("Test zomie Spawner geatures")
+    public void testZombieSpawner() {
+        DungeonManiaController controller = new DungeonManiaController();
+        //no wall
+        DungeonResponse res = controller.newGame("zombies", "bomb_radius_2");
+
+        res = controller.tick(Direction.RIGHT);
+        assertEquals(1, getEntities(res, "zombie_toast").size());
+
+        controller = new DungeonManiaController();
+        res = controller.newGame("zombies", "c_battleTests_basicMercenaryMercenaryDies");
+
+        res = controller.tick(Direction.DOWN);
+        assertEquals(0, getEntities(res, "zombie_toast").size());
+        //up wall
+        controller = new DungeonManiaController();
+        res = controller.newGame("zombie1", "bomb_radius_2");
+
+        res = controller.tick(Direction.DOWN);
+        assertEquals(1, getEntities(res, "zombie_toast").size());
+
+        //down wall
+        controller = new DungeonManiaController();
+        res = controller.newGame("zombie2", "bomb_radius_2");
+
+        res = controller.tick(Direction.DOWN);
+        assertEquals(1, getEntities(res, "zombie_toast").size());
+
+        //left wall
+        controller = new DungeonManiaController();
+        res = controller.newGame("zombie3", "bomb_radius_2");
+
+        res = controller.tick(Direction.DOWN);
+        assertEquals(1, getEntities(res, "zombie_toast").size());
+
+        //all walls
+        controller = new DungeonManiaController();
+        res = controller.newGame("zombie4", "bomb_radius_2");
+
+        res = controller.tick(Direction.DOWN);
+        assertEquals(0, getEntities(res, "zombie_toast").size());
+
+        controller = new DungeonManiaController();
+        res = controller.newGame("zombie4", "spawn");
+
+        res = controller.tick(Direction.DOWN);
+        assertEquals(0, getEntities(res, "zombie_toast").size());
+    }
+
+    @Test
+    @DisplayName("test portal features")
+    public void testPortalFeature(){
+        DungeonManiaController controller = new DungeonManiaController();
+        
+        DungeonResponse res = controller.newGame("portals", "bomb_radius_2"); 
+        EntityResponse player = getPlayer(res).get();
+        Position p = player.getPosition();
+        res = controller.tick(Direction.RIGHT);
+        assertNotEquals(p.translateBy(Direction.RIGHT), getPlayer(res).get().getPosition());
+
+        //check up wall
+        res = controller.newGame("portal1", "bomb_radius_2"); 
+        p = getPlayer(res).get().getPosition();
+        res = controller.tick(Direction.RIGHT);
+        assertNotEquals(p.translateBy(Direction.RIGHT), getPlayer(res).get().getPosition()); 
+
+        //check down wall
+        res = controller.newGame("portal2", "bomb_radius_2"); 
+        p = getPlayer(res).get().getPosition();
+        res = controller.tick(Direction.RIGHT);
+        assertNotEquals(p.translateBy(Direction.RIGHT), getPlayer(res).get().getPosition());
+
+        //check left wall
+        res = controller.newGame("portal3", "bomb_radius_2"); 
+        p = getPlayer(res).get().getPosition();
+        res = controller.tick(Direction.RIGHT);
+        assertNotEquals(p.translateBy(Direction.RIGHT), getPlayer(res).get().getPosition());
+
+        //check all walls
+        //check down wall
+        res = controller.newGame("portal4", "bomb_radius_2"); 
+        p = getPlayer(res).get().getPosition();
+        res = controller.tick(Direction.RIGHT);
+        assertEquals(p, getPlayer(res).get().getPosition());
+    }
 }

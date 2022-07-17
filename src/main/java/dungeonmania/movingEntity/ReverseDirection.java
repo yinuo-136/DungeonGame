@@ -22,13 +22,13 @@ public class ReverseDirection implements SpiderMovingState{
         spider.setCurrentState(new ReverseDirection(spider));        
     }
 
+    /**
+     * spider will move in a reverse circle around its swapn position
+     * change to clockwise if it hit boulder
+     */
     @Override
     public void move() {
         List<Position> adjacentPositions = spider.getSpawnPosition().getAdjacentPositions();
-        if (spider.getPos() == spider.getSpawnPosition()) {
-            spider.setPosition(spider.getPos().translateBy(Direction.UP));
-            return;
-        }
         int index = adjacentPositions.indexOf(spider.getPos());
         // if there the location doesnt have boulders in it, move to the next location
         // else change state to circle direction

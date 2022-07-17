@@ -89,10 +89,13 @@ public class Battle {
             previous_player_health = player.getHealth();
         }
         // remove any dead entities
-        if (player.getHealth() <= 0)
-            this.info.getEntityMap().remove(player.getId());
         if (enemy.getHealth() <= 0)
             this.info.getEntityMap().remove(enemy.getId());
+            
+        info.getPlayer().setEnemiesMet(info.getPlayer().getEnemiesMet() + 1);
+        
+        if (player.getHealth() <= 0)
+        this.info.getEntityMap().remove(player.getId());
         // use all the items once
         for (ItemResponse response : itemsUsed) 
             info.getItemById(response.getId()).use();

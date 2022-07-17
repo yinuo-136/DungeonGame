@@ -138,18 +138,6 @@ public class DungeonManiaController {
         }
         InvItem item = info.getItemById(itemUsedId);
         item.use();
-        // List <InvItem> items = info.getItemList();
-        // switch(itemUsedId) {
-        //     case "bomb" :
-        //         for (InvItem item : items) {
-        //             if (item instanceof Bomb){
-        //                 Bomb bomb = (Bomb) item;
-        //                 bomb.use();
-        //                 break;
-        //             }
-        //         }
-        //         break;
-        // }
         info.runTicks();
         info.getPlayer().tickPlayerState();
         info.moveAllMovingEntity();
@@ -229,7 +217,6 @@ public class DungeonManiaController {
             removeTreasure(amount);
         }
         
-        System.out.println("1");
         return this.getDungeonResponseModel();
     }
 
