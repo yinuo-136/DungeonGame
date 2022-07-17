@@ -153,4 +153,50 @@ public class MovingEntityTests {
         assertEquals(expectedPosition2, getEntities(res, "mercenary").get(0).getPosition());
     }
 
+    @Test
+    public void testZombieTrapInWall(){
+        //test zombie does not move if it is trapped in a wall
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_trapZombieWithWall", "c_spiderTest_basicMovement");
+        Position pos = getEntities(res, "zombie_toast").get(0).getPosition();
+        Position expectedPosition = pos;
+        res = dmc.tick(Direction.DOWN);
+        assertEquals(expectedPosition, getEntities(res, "zombie_toast").get(0).getPosition());
+    }
+
+    @Test
+    public void testMercenaryPlayerOutOfRange(){
+        //test if mercenary will not move if player is out of range
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_mercenaryTest_playerNotFound", "c_movementTest_testMovementDown");
+        Position pos = getEntities(res, "mercenary").get(0).getPosition();
+        Position expectedPosition = pos;
+        assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
+    }
+
+    @Test 
+    public void testMercenaryAwayAndToward(){
+        //test if mercenary will move away from player if the player is in invincible state and move towards player if it is not
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_mercenaryAwayAndToward", "c_mercenaryAwayAndToward");
+        Position pos = getEntities(res, "mercenary").get(0).getPosition();
+        Position expectedPosition = pos.translateBy(Direction.LEFT);
+        res = dmc.tick(Direction.RIGHT);
+        String invinciblePotionId = getInventory(res, "invincibility_potion").get(0).getId();
+        //make sure the mercenary working property, so it get closer to the player
+        assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
+        //consume the potion
+        res = assertDoesNotThrow(() -> dmc.tick(invinciblePotionId));
+
+        for (int i = 0; i < 4; i++) {
+            res = dmc.tick(Direction.UP);
+        }
+        for (int i = 0; i < 3; i++) {
+            res = dmc.tick(Direction.RIGHT);
+            res = dmc.tick(Direction.LEFT);
+        }
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(new Position(0, 1), getEntities(res, "mercenary").get(0).getPosition());
+
+    }
 }
