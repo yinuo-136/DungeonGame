@@ -361,4 +361,60 @@ public class ExampleTests {
        assertBattleCalculations("mercenary", battle, true, "c_battleTests_basicMercenaryMercenaryDies");
     }
 
+
+    @Test
+    @DisplayName("Test zomie Spawner geatures")
+    public void testZombieSpawner() {
+        DungeonManiaController controller = new DungeonManiaController();
+        //no wall
+        DungeonResponse res = controller.newGame("zombies", "bomb_radius_2");
+
+        res = controller.tick(Direction.RIGHT);
+        assertEquals(1, getEntities(res, "zombie_toast").size());
+
+        controller = new DungeonManiaController();
+        res = controller.newGame("zombies", "c_battleTests_basicMercenaryMercenaryDies");
+
+        res = controller.tick(Direction.DOWN);
+        assertEquals(0, getEntities(res, "zombie_toast").size());
+        //up wall
+        controller = new DungeonManiaController();
+        res = controller.newGame("zombie1", "bomb_radius_2");
+
+        res = controller.tick(Direction.DOWN);
+        assertEquals(1, getEntities(res, "zombie_toast").size());
+
+        //down wall
+        controller = new DungeonManiaController();
+        res = controller.newGame("zombie2", "bomb_radius_2");
+
+        res = controller.tick(Direction.DOWN);
+        assertEquals(1, getEntities(res, "zombie_toast").size());
+
+        //left wall
+        controller = new DungeonManiaController();
+        res = controller.newGame("zombie3", "bomb_radius_2");
+
+        res = controller.tick(Direction.DOWN);
+        assertEquals(1, getEntities(res, "zombie_toast").size());
+
+        //all walls
+        controller = new DungeonManiaController();
+        res = controller.newGame("zombie4", "bomb_radius_2");
+
+        res = controller.tick(Direction.DOWN);
+        assertEquals(0, getEntities(res, "zombie_toast").size());
+
+        controller = new DungeonManiaController();
+        res = controller.newGame("zombie4", "spawn");
+
+        res = controller.tick(Direction.DOWN);
+        assertEquals(0, getEntities(res, "zombie_toast").size());
+    }
+
+    @Test
+    @DisplayName("test portal features")
+    public void testPortalFeature(){
+        
+    }
 }

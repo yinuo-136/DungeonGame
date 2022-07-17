@@ -88,7 +88,8 @@ public class ZombieToastSpawner extends staticEntity {
         if (temp == null || temp.equals(up)){
             return up;
         }
-
+        
+        temp = null;
         //check down
         Position down = p.translateBy(Direction.DOWN);
         checkEntity = dungeonInfo.getEntitiesByPosition(down);
@@ -102,6 +103,7 @@ public class ZombieToastSpawner extends staticEntity {
             return down;
         }
 
+        temp = null;
         //check left
         Position left = p.translateBy(Direction.LEFT);
         checkEntity = dungeonInfo.getEntitiesByPosition(left);
@@ -115,6 +117,7 @@ public class ZombieToastSpawner extends staticEntity {
             return left;
         }
 
+        temp = null;
         //check right
         Position right = p.translateBy(Direction.RIGHT);
         checkEntity = dungeonInfo.getEntitiesByPosition(right);
