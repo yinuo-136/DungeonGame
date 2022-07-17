@@ -17,11 +17,18 @@ public class enemiesGoal implements Goal{
 
     @Override
     public String evalGoal() {
+        int counter = dungeonInfo.getPlayer().getEnemiesMet();
         for (Entity e : dungeonInfo.getEntityMap().values()) {
-            if (e instanceof Moving || e instanceof ZombieToastSpawner) {
+            if (e instanceof ZombieToastSpawner) {
                 return ":enemies";               
             }
+
         }
+
+        if (counter < enemy_goal) {
+            return ":enemies";
+        }
+
         return "";
     }
     
