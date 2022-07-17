@@ -35,6 +35,10 @@ public class CircleDirection implements SpiderMovingState{
         // if there the location doesnt have boulders in it, move to the next location
         // else change state to reverse direction
         if (spider.getEntitiesStringByPosition(adjacentPositions.get((index + 1) % adjacentPositions.size())).contains("boulder")) {
+            // if spider got stuck between two boulder, just dont move
+            if(spider.getEntitiesStringByPosition(adjacentPositions.get((index - 1) % adjacentPositions.size())).contains("boulder")) {
+                return;
+            }
             onCounterClockwise(spider);
             spider.move();
         } else {

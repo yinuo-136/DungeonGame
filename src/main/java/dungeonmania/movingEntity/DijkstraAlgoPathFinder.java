@@ -19,17 +19,13 @@ public class DijkstraAlgoPathFinder {
 
     public DijkstraAlgoPathFinder() {}
 
-    public Direction findNextPath(Entity movingEntity) {
+    public Direction findNextPath(Entity movingEntity, Position playerPos) {
         ArrayList<ArrayList<Integer>> graph = buildGraph(movingEntity);
         //early exit if there is no path to player
         if (graph == null) {
             return null;
         }
-        Position playerPos = movingEntity.getDungeonInfo().getPlayer().getPos();
-        // if player is invisible, return null
-        if (playerPos == null) {
-            return null;
-        }
+        //Position playerPos = movingEntity.getDungeonInfo().getPlayer().getPos();
         int playerX = playerPos.getX();
         int playerY = playerPos.getY();
         int diffPlayerXToEntity = playerX - movingEntity.getPos().getX();
@@ -110,11 +106,11 @@ public class DijkstraAlgoPathFinder {
             return null;
         }
         int y = topLeftCorner.getY();
-        while (y < topLeftCorner.getY() + range - 1) {
+        while (y < topLeftCorner.getY() + range -1) {
             x = topLeftCorner.getX();
             int y1 = 0;
             // scan all the vertex around the mercenary and build a graph
-            while (x < topLeftCorner.getX() + range - 1) {
+            while (x < topLeftCorner.getX() + range -1) {
                 // check if the position is a wall or a boulder, and positions on the right and bottom
                 if (!(e.getDungeonInfo().getEntitiesStringByPosition(new Position(x,y)).stream().anyMatch(element -> movingConstrintItemList.contains(element)))) {
                     List<String> right_pos_entites = e.getDungeonInfo().getEntitiesStringByPosition(new Position(x+1,y));
@@ -122,7 +118,7 @@ public class DijkstraAlgoPathFinder {
                     if (!right_pos_entites.stream().anyMatch(element -> movingConstrintItemList.contains(element))) {
                         addEdge(adj, x1*range+y1, x1*range+y1+1);
                     }
-                    List<String> bottom_pos_entites = e.getDungeonInfo().getEntitiesStringByPosition(new Position(x,y-1));
+                    List<String> bottom_pos_entites = e.getDungeonInfo().getEntitiesStringByPosition(new Position(x,y+1));
                     // if the bottom position is not a wall or a boulder, then add the edge to the graph.
                     if (!bottom_pos_entites.stream().anyMatch(element -> movingConstrintItemList.contains(element))) {
                         addEdge(adj, x1*range+y1, x1*range+y1+range);

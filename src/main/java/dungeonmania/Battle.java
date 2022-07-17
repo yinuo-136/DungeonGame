@@ -9,6 +9,7 @@ import dungeonmania.buildableEntity.Bow;
 import dungeonmania.buildableEntity.Shield;
 import dungeonmania.inventoryItem.InvItem;
 import dungeonmania.inventoryItem.Sword;
+import dungeonmania.movingEntity.Mercenary;
 import dungeonmania.movingEntity.Moving;
 import dungeonmania.player.Player;
 import dungeonmania.response.models.BattleResponse;
@@ -40,6 +41,13 @@ public class Battle {
         List <ItemResponse> itemsUsed = new ArrayList<>();
         // invincible player immediately wins battle
         // waiting for invincible potion implementation
+        if (player.getPlayerState().getStateName() == "Invisible"){
+            return new BattleResponse(enemy.getClass().getSimpleName(), rounds, initial_player_health, initial_enemy_health);
+        }
+        if (enemy.getType() == "mercenary" && ((Mercenary) enemy).getBribed() == true) {
+            // if the enemy is bribed, the player will not be able to attack the enemy
+            return new BattleResponse(enemy.getClass().getSimpleName(), rounds, initial_player_health, initial_enemy_health);
+        }
         if (player.isInvincible()) {
             itemsUsed.add(new ItemResponse("needs to be changed", "invincibility_potion"));
             rounds.add(new RoundResponse( 0, -1 * enemy.getHealth(), itemsUsed));

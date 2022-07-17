@@ -19,9 +19,12 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import dungeonmania.exceptions.InvalidActionException;
+import dungeonmania.inventoryItem.InvItem;
 import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
+import dungeonmania.response.models.ItemResponse;
 import dungeonmania.response.models.RoundResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
@@ -170,6 +173,107 @@ public class ExampleTests {
         
     }
 
+    @Test
+    public void testInvinsiblePotion() throws IllegalArgumentException, InvalidActionException{
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_potionTest_basicInvincible", "c_movementTest_testMovementDown");
+        Position pos = getEntities(res, "mercenary").get(0).getPosition();
+        Position expectedPosition = pos.translateBy(Direction.LEFT);
+
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
+        // make sure the player have picked up the potion
+        String invinciblePotionId = getInventory(res, "invincibility_potion").get(0).getId();
+        //make sure the mercenary working property, so it get closer to the player
+        assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
+        //consume the potion
+        res = dmc.tick(invinciblePotionId);
+        assertEquals(pos, getEntities(res, "mercenary").get(0).getPosition());
+
+        // make sure the mercenary run away from player for one round(duration of potion for this config)
+        res = dmc.tick(Direction.LEFT);
+        Position expectedPosition2 = pos.translateBy(Direction.RIGHT);
+        assertEquals(expectedPosition2, getEntities(res, "mercenary").get(0).getPosition());
+
+        //make sure the mercenary run toward the player after the potion effect is ended
+        res = dmc.tick(Direction.LEFT);
+        assertEquals(pos, getEntities(res, "mercenary").get(0).getPosition());
+    }
+    @Test
+    public void testInvisiblePotion() throws IllegalArgumentException, InvalidActionException {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_potionTest_basicInvisible", "c_movementTest_testMovementDown");
+        Position pos = getEntities(res, "mercenary").get(0).getPosition();
+        Position expectedPosition = pos.translateBy(Direction.LEFT);
+
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
+        // make sure the player have picked up the potion
+        String invisibilityPotionId = getInventory(res, "invisibility_potion").get(0).getId();
+        //make sure the mercenary working property, so it get closer to the player
+        assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
+        //consume the potion
+        res = dmc.tick(invisibilityPotionId);
+        res = dmc.tick(Direction.RIGHT);
+        // make sure the mercenary still alive after the potion effect as there will be no battle
+        pos = getEntities(res, "mercenary").get(0).getPosition();
+    }
+
+    @Test
+    public void testMercenaryBasicBattle(){
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_potionTest_basicInvincible", "c_movementTest_testMovementDown");
+        Position pos = getEntities(res, "mercenary").get(0).getPosition();
+        Position expectedPosition = pos.translateBy(Direction.LEFT);
+
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
+        // make sure the player have picked up the potion
+        String invinciblePotionId = getInventory(res, "invincibility_potion").get(0).getId();
+        //make sure the mercenary working property, so it get closer to the player
+        assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
+
+        // make sure the mercenary is dead when player and mercenary meet
+        res = dmc.tick(Direction.RIGHT);
+        Position expectedPosition2 = pos.translateBy(Direction.RIGHT);
+        assertEquals(true, getEntities(res, "mercenary").isEmpty());
+    }
+
+    @Test
+    public void testMercenaryBribed() throws IllegalArgumentException, InvalidActionException{
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_mercenaryTest_bribe", "c_movementTest_testMovementDown");
+        Position pos = getEntities(res, "mercenary").get(0).getPosition();
+        Position expectedPosition = pos.translateBy(Direction.LEFT);
+
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
+
+        String mercenaryId = getEntities(res, "mercenary").get(0).getId();
+        res = assertDoesNotThrow(() -> dmc.interact(mercenaryId));
+        res = dmc.tick(Direction.LEFT);
+        Position expectedPosition2 = expectedPosition.translateBy(Direction.LEFT);
+        assertEquals(expectedPosition2, getEntities(res, "mercenary").get(0).getPosition());
+    }
+
+    @Test
+    public void testMercenaryBribedDontBattleNDontOverlap() throws IllegalArgumentException, InvalidActionException{
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_mercenaryTest_bribe", "c_movementTest_testMovementDown");
+        Position pos = getEntities(res, "mercenary").get(0).getPosition();
+        Position expectedPosition = pos.translateBy(Direction.LEFT);
+
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
+
+        String mercenaryId = getEntities(res, "mercenary").get(0).getId();
+        res = assertDoesNotThrow(() -> dmc.interact(mercenaryId));
+        res = dmc.tick(Direction.RIGHT);
+        Position expectedPosition2 = expectedPosition.translateBy(Direction.LEFT);
+        assertEquals(expectedPosition2, getEntities(res, "mercenary").get(0).getPosition());
+    }
+
+    @Test
     private void assertBattleCalculations(String enemyType, BattleResponse battle, boolean enemyDies, String configFilePath) {
         List<RoundResponse> rounds = battle.getRounds();
         double playerHealth = Double.parseDouble(getValueFromConfigFile("player_health", configFilePath));
@@ -184,7 +288,6 @@ public class ExampleTests {
             playerHealth += round.getDeltaCharacterHealth();
         }
     }
-
         
     @Test
     @DisplayName("Test surrounding entities are removed when placing a bomb next to an active switch with config file bomb radius set to 2")
@@ -279,8 +382,8 @@ public class ExampleTests {
     //     double enemyAttack = Double.parseDouble(getValueFromConfigFile(enemyType + "_attack", configFilePath));
 
     //     for (RoundResponse round : rounds) {
-    //         assertEquals(round.getDeltaCharacterHealth(), -(enemyAttack / 10), 0.001);
-    //         assertEquals(round.getDeltaEnemyHealth(), -(playerAttack / 5), 0.001);
+    //         assertEquals(round.getDeltaCharacterHealth(), -(enemyAttack / 10));
+    //         assertEquals(round.getDeltaEnemyHealth(), -(playerAttack / 5));
     //         enemyHealth += round.getDeltaEnemyHealth();
     //         playerHealth += round.getDeltaCharacterHealth();
     //     }
