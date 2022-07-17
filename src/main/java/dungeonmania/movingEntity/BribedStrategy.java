@@ -10,6 +10,9 @@ public class BribedStrategy implements MercenaryMovingStrategy {
         return "Bribed";
     }
 
+    /**
+     * move the entity to the next position in the direction of player last position
+     */
     @Override
     public void move(Entity movingEntity) {
         DijkstraAlgoPathFinder pathFinder = new DijkstraAlgoPathFinder();
