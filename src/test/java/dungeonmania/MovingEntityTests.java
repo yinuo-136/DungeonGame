@@ -17,24 +17,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.tools.StandardJavaFileManager.PathFactory;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import dungeonmania.movingEntity.DijkstraAlgoPathFinder;
-import dungeonmania.movingEntity.Mercenary;
-import dungeonmania.movingEntity.Spider;
-import dungeonmania.movingEntity.ZombieToast;
-import dungeonmania.player.Player;
-import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.DungeonResponse;
-import dungeonmania.response.models.EntityResponse;
-import dungeonmania.response.models.RoundResponse;
-import dungeonmania.staticEntities.Wall;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
+import dungeonmania.exceptions.InvalidActionException;
 
 
 public class MovingEntityTests {
@@ -69,4 +60,94 @@ public class MovingEntityTests {
         assertEquals(3, path.get(1));
         assertEquals(path, pathFinder.printShortestDistance(adj, source, dest, v));
     }
+
+    @Test
+    @DisplayName("Test reverse movement of spiders")
+    public void SpiderReverseMovement(){
+        // x x B
+        // x S x
+        // x x x
+
+        DungeonManiaController dmc;
+        dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_spiderTest_ReverseMovement", "c_spiderTest_basicMovement");
+        Position pos = getEntities(res, "spider").get(0).getPosition();
+
+        Position expectedPosition = pos.translateBy(Direction.UP);
+        res = dmc.tick(Direction.DOWN);
+        assertEquals(expectedPosition, getEntities(res, "spider").get(0).getPosition());
+
+        //   4 5 6
+        // 4 x S B
+        // 5 x x x
+        // 6 x x x
+        // spider move counterclockwise cause boulder
+        Position expectedPosition2 = new Position(4, 4);
+        res = dmc.tick(Direction.DOWN);
+        assertEquals(expectedPosition2, getEntities(res, "spider").get(0).getPosition());
+
+        Position expectedPosition3 = new Position(4, 5);
+        res = dmc.tick(Direction.UP);
+        assertEquals(expectedPosition3, getEntities(res, "spider").get(0).getPosition());
+    }
+
+    @Test
+    public void testZombieBasicMovement() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_zombieTest_BasicMovement", "c_spiderTest_basicMovement");
+        Position pos = getEntities(res, "zombie_toast").get(0).getPosition();
+        Position expectedPosition = pos.translateBy(Direction.LEFT);
+
+        //   1 2 3
+        // 0 W W W
+        // 1 x Z W
+        // 2 W W W
+        res = dmc.tick(Direction.DOWN);
+        assertEquals(expectedPosition, getEntities(res, "zombie_toast").get(0).getPosition());
+
+    }
+    @Test
+    public void testMercenarybasicMovement() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_battleTest_basicMercenary", "c_battleTests_basicMercenaryMercenaryDies");
+        Position pos = getEntities(res, "mercenary").get(0).getPosition();
+        Position expectedPosition = pos.translateBy(Direction.LEFT);
+
+        //   0 1 2 3
+        // 0 x W W W
+        // 1 P x M W
+        // 2 x W W W
+        res = dmc.tick(Direction.LEFT);
+        assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
+    }
+
+    @Test
+    public void testMercenarybasicMovement2() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_mercenaryTest_BasicMovement", "c_battleTests_basicMercenaryMercenaryDies");
+        Position pos = getEntities(res, "mercenary").get(0).getPosition();
+        Position expectedPosition = pos.translateBy(Direction.UP);
+
+        res = dmc.tick(Direction.UP);
+        assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
+        
+    }
+    
+    @Test
+    public void testMercenaryBribed() throws IllegalArgumentException, InvalidActionException{
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_mercenaryTest_bribe", "c_movementTest_testMovementDown");
+        Position pos = getEntities(res, "mercenary").get(0).getPosition();
+        Position expectedPosition = pos.translateBy(Direction.LEFT);
+
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
+
+        String mercenaryId = getEntities(res, "mercenary").get(0).getId();
+        res = assertDoesNotThrow(() -> dmc.interact(mercenaryId));
+        res = dmc.tick(Direction.LEFT);
+        Position expectedPosition2 = expectedPosition.translateBy(Direction.LEFT);
+        assertEquals(expectedPosition2, getEntities(res, "mercenary").get(0).getPosition());
+    }
+
 }
