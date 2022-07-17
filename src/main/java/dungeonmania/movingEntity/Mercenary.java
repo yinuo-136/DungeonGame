@@ -20,6 +20,7 @@ public class Mercenary extends Entity implements Moving {
     private int bribeRadius;
     private String type = "mercenary";
     private boolean bribed = false;
+    private Position playerLastPosition;
 
     public Mercenary(Position position, String id) {
         this.position = position;
@@ -35,6 +36,7 @@ public class Mercenary extends Entity implements Moving {
 
     public void move() {
         currentState.move(this);
+        playerLastPosition = getDungeonInfo().getPlayer().getPos();
     }
     
     @Override

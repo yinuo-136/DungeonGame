@@ -2,6 +2,7 @@ package dungeonmania.movingEntity;
 
 import dungeonmania.Entity;
 import dungeonmania.util.Direction;
+import dungeonmania.util.Position;
 
 public class BribedStrategy implements MercenaryMovingStrategy {
     
@@ -12,7 +13,8 @@ public class BribedStrategy implements MercenaryMovingStrategy {
     @Override
     public void move(Entity movingEntity) {
         DijkstraAlgoPathFinder pathFinder = new DijkstraAlgoPathFinder();
-        Direction direction = pathFinder.findNextPath(movingEntity);
+        Position targetPos = movingEntity.getDungeonInfo().getPlayer().getPlayerLastPosition();
+        Direction direction = pathFinder.findNextPath(movingEntity, targetPos);
         if (direction == null) {
             return;
         } 

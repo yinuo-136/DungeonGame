@@ -4,6 +4,8 @@ import dungeonmania.buildableEntity.BuildableFactory;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.inventoryItem.Bomb;
 import dungeonmania.inventoryItem.InvItem;
+import dungeonmania.inventoryItem.Treasure;
+import dungeonmania.movingEntity.Mercenary;
 import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
@@ -208,11 +210,51 @@ public class DungeonManiaController {
             if (hasWeapon() == false) {
                 throw new InvalidActionException("Player dose not have a weapon");
             }
-
+            info.getEntityMap().remove(entityId);
         }
-        info.getEntityMap().remove(entityId);
+        if (e.getType() == "mercenary") {
+            // check bribe distance
+            int PlayerX = info.getPlayer().getPos().getX();
+            int PlayerY = info.getPlayer().getPos().getY();
+            int mercenaryX = e.getPos().getX();
+            int mercenaryY = e.getPos().getY();
+            int radius = info.getSpecificConfig("bribe_radius");
+            int amount = info.getSpecificConfig("bribe_amount");
+            if (Math.abs(PlayerX - mercenaryX) >  radius || Math.abs(PlayerY - mercenaryY) > radius) {
+                // if the player is not within the radius of the mercenary bribe radius
+                throw new InvalidActionException("Player is not in the mercenary's range");
+            }
+            if (((Mercenary) e).bribe(getTreasureCount()) == false) {
+                throw new InvalidActionException("Player does not have enough treasure");
+            }
+            removeTreasure(amount);
+        }
+        
         System.out.println("1");
         return this.getDungeonResponseModel();
+    }
+
+    public int getTreasureCount(){
+        DungeonInfo info = infoMap.get(this.dungeonId);
+        int counter = 0;
+        for (InvItem e : info.getItemList()) {
+            if (e instanceof Treasure) {
+                counter++;
+            }
+        }
+        return counter;
+    }
+
+    public void removeTreasure(int count) {
+        DungeonInfo info = infoMap.get(this.dungeonId);
+        List<InvItem> treasures = new ArrayList<InvItem>();
+        for (InvItem e : info.getItemList()) {
+            if (e instanceof Treasure || count == 0) {
+                treasures.add(e);
+                count--;
+            }
+        }
+        info.getItemList().removeAll(treasures);
     }
 
     public boolean isNearSpawner(Position Spawner){

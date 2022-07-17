@@ -198,7 +198,6 @@ public class ExampleTests {
         //make sure the mercenary run toward the player after the potion effect is ended
         res = dmc.tick(Direction.LEFT);
         assertEquals(pos, getEntities(res, "mercenary").get(0).getPosition());
-
     }
     @Test
     public void testInvisiblePotion() throws IllegalArgumentException, InvalidActionException {
@@ -218,6 +217,60 @@ public class ExampleTests {
         res = dmc.tick(Direction.RIGHT);
         // make sure the mercenary still alive after the potion effect as there will be no battle
         pos = getEntities(res, "mercenary").get(0).getPosition();
+    }
+
+    @Test
+    public void testMercenaryBasicBattle(){
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_potionTest_basicInvincible", "c_movementTest_testMovementDown");
+        Position pos = getEntities(res, "mercenary").get(0).getPosition();
+        Position expectedPosition = pos.translateBy(Direction.LEFT);
+
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
+        // make sure the player have picked up the potion
+        String invinciblePotionId = getInventory(res, "invincibility_potion").get(0).getId();
+        //make sure the mercenary working property, so it get closer to the player
+        assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
+
+        // make sure the mercenary is dead when player and mercenary meet
+        res = dmc.tick(Direction.RIGHT);
+        Position expectedPosition2 = pos.translateBy(Direction.RIGHT);
+        assertEquals(true, getEntities(res, "mercenary").isEmpty());
+    }
+
+    @Test
+    public void testMercenaryBribed() throws IllegalArgumentException, InvalidActionException{
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_mercenaryTest_bribe", "c_movementTest_testMovementDown");
+        Position pos = getEntities(res, "mercenary").get(0).getPosition();
+        Position expectedPosition = pos.translateBy(Direction.LEFT);
+
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
+
+        String mercenaryId = getEntities(res, "mercenary").get(0).getId();
+        res = assertDoesNotThrow(() -> dmc.interact(mercenaryId));
+        res = dmc.tick(Direction.LEFT);
+        Position expectedPosition2 = expectedPosition.translateBy(Direction.LEFT);
+        assertEquals(expectedPosition2, getEntities(res, "mercenary").get(0).getPosition());
+    }
+
+    @Test
+    public void testMercenaryBribedDontBattleNDontOverlap() throws IllegalArgumentException, InvalidActionException{
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_mercenaryTest_bribe", "c_movementTest_testMovementDown");
+        Position pos = getEntities(res, "mercenary").get(0).getPosition();
+        Position expectedPosition = pos.translateBy(Direction.LEFT);
+
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
+
+        String mercenaryId = getEntities(res, "mercenary").get(0).getId();
+        res = assertDoesNotThrow(() -> dmc.interact(mercenaryId));
+        res = dmc.tick(Direction.RIGHT);
+        Position expectedPosition2 = expectedPosition.translateBy(Direction.LEFT);
+        assertEquals(expectedPosition2, getEntities(res, "mercenary").get(0).getPosition());
     }
 
     @Test
