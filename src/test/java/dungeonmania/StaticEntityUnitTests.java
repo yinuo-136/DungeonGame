@@ -84,14 +84,21 @@ public class StaticEntityUnitTests {
     }
 
     @Test
-    @DisplayName("placed bomb test")
-    public void testPlacedBomb() {
+    @DisplayName("placed bomb test alternative")
+    public void testPlacedBomb1() {
         PlacedBomb b = new PlacedBomb(new Position(10, 10), "1", 2);
         b.setConfig();
         b.getRadius();
         assertEquals(b.getType(), "bomb");
         assertEquals(b.boulderMoveIn(new Position(1, 1)), new Position(1, 1));
         assertEquals(b.playerMoveIn(new Position(1, 1), Direction.UP), new Position(1, 1));
+    }
+
+    @Test
+    @DisplayName("PlacedBomb test")
+    public void testPlacedBomb(){
+        PlacedBomb b = new PlacedBomb(new Position(1, 1), "1", 1);
+        assertEquals(new Position(1, 1), b.getPos());
     }
 }
 

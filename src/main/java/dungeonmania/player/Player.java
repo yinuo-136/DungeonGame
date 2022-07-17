@@ -27,6 +27,8 @@ public class Player extends Entity {
     private PlayerState playerState = new NormalState(this);
     private Queue<Potion> potionUsedqueue = new LinkedList<Potion>();
 
+    private Position playerLastPosition;
+
     /**
      * Creates a Player Object at a sepcificied location with default health and attack values.
      *  
@@ -37,6 +39,7 @@ public class Player extends Entity {
     public Player(Position position, String id){
         this.position = position;
         this.id = id;
+        playerLastPosition = position;
 
         return;
     }
@@ -133,6 +136,7 @@ public class Player extends Entity {
         Position checkPosition = position.translateBy(direction);
         List<Entity> checkEntity = dungeonInfo.getEntitiesByPosition(checkPosition);
         BattleResponse response = null;
+        playerLastPosition = position;
         for (Entity e : checkEntity){
             if (e instanceof staticEntity){
                 staticEntity se = (staticEntity) e;
@@ -237,5 +241,9 @@ public class Player extends Entity {
         if (playerState.getStateName() == "Invincible")
             return true;
         return false;
+    }
+
+    public Position getPlayerLastPosition() {
+        return playerLastPosition;
     }
 }

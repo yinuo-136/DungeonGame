@@ -19,13 +19,13 @@ public class DijkstraAlgoPathFinder {
 
     public DijkstraAlgoPathFinder() {}
 
-    public Direction findNextPath(Entity movingEntity) {
+    public Direction findNextPath(Entity movingEntity, Position playerPos) {
         ArrayList<ArrayList<Integer>> graph = buildGraph(movingEntity);
         //early exit if there is no path to player
         if (graph == null) {
             return null;
         }
-        Position playerPos = movingEntity.getDungeonInfo().getPlayer().getPos();
+        //Position playerPos = movingEntity.getDungeonInfo().getPlayer().getPos();
         int playerX = playerPos.getX();
         int playerY = playerPos.getY();
         int diffPlayerXToEntity = playerX - movingEntity.getPos().getX();
@@ -122,11 +122,6 @@ public class DijkstraAlgoPathFinder {
                     // if the bottom position is not a wall or a boulder, then add the edge to the graph.
                     if (!bottom_pos_entites.stream().anyMatch(element -> movingConstrintItemList.contains(element))) {
                         addEdge(adj, x1*range+y1, x1*range+y1+range);
-                    }
-                    List<String> top_pos_entites = e.getDungeonInfo().getEntitiesStringByPosition(new Position(x,y-1));
-                    // if the top position is not a wall or a boulder, then add the edge to the graph.
-                    if (x1 > 1 && !(top_pos_entites.stream().anyMatch(element -> movingConstrintItemList.contains(element)))) {
-                        addEdge(adj, x1*range+y1, x1*range+y1-range);
                     }
                 } 
                 x++;

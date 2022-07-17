@@ -9,6 +9,7 @@ import dungeonmania.buildableEntity.Bow;
 import dungeonmania.buildableEntity.Shield;
 import dungeonmania.inventoryItem.InvItem;
 import dungeonmania.inventoryItem.Sword;
+import dungeonmania.movingEntity.Mercenary;
 import dungeonmania.movingEntity.Moving;
 import dungeonmania.player.Player;
 import dungeonmania.response.models.BattleResponse;
@@ -43,8 +44,12 @@ public class Battle {
         if (player.getPlayerState().getStateName() == "Invisible"){
             return new BattleResponse(enemy.getClass().getSimpleName(), rounds, initial_player_health, initial_enemy_health);
         }
+        if (enemy.getType() == "mercenary" && ((Mercenary) enemy).getBribed() == true) {
+            // if the enemy is bribed, the player will not be able to attack the enemy
+            return new BattleResponse(enemy.getClass().getSimpleName(), rounds, initial_player_health, initial_enemy_health);
+        }
         if (player.isInvincible()) {
-            itemsUsed.add(new ItemResponse("needs to be changed", "invincibility_potion"));
+            itemsUsed.add(new ItemResponse(player.getPlayerState().getPotionId(), "invincibility_potion"));
             rounds.add(new RoundResponse( 0, -1 * enemy.getHealth(), itemsUsed));
             this.info.getEntityMap().remove(enemy.getId());
             return new BattleResponse(enemy.getClass().getSimpleName(), rounds, initial_player_health, initial_enemy_health);
@@ -55,20 +60,17 @@ public class Battle {
             if (item instanceof Sword) {
                 Sword sword = (Sword) item;
                 sword_attack = sword.getAttackBonus();
-                itemsUsed.add(new ItemResponse(sword.getId(), "Sword"));  
-                sword.use();
+                itemsUsed.add(new ItemResponse(sword.getId(), "Sword"));
             }
             if (item instanceof Shield) {
                 Shield shield = (Shield) item;
                 shield_defense = shield.getDefenseBonus();
                 itemsUsed.add(new ItemResponse(shield.getId(), "Shield"));  
-                shield.use();
             }
             if (item instanceof Bow) {
                 Bow bow = (Bow) item;
                 bow_multiplication = 2;
                 itemsUsed.add(new ItemResponse(bow.getId(), "Bow"));  
-                bow.use();    
             }
         }
 
@@ -91,6 +93,9 @@ public class Battle {
         
         if (player.getHealth() <= 0)
         this.info.getEntityMap().remove(player.getId());
+        // use all the items once
+        for (ItemResponse response : itemsUsed) 
+            info.getItemById(response.getId()).use();
         // return battle response
         return new BattleResponse(enemy.getClass().getSimpleName(), rounds, initial_player_health, initial_enemy_health);
     }
