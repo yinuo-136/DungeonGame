@@ -40,6 +40,7 @@ This specification is broken into four parts:
 - Thu 14 Jul 10pm - Fix triggering interactions multiple times from the front-end
 - Sat 16 Jul 9am - Add error tolerant to battle calculation
 - Mon 18 Jul 8am - Add Milestone 3 (search for 💀 to find all product/technical spec changes)
+- Tue 19 Jul 9pm - Fix section 4.1.1 by adding boss entities
 
 ## 1. Aims
 
@@ -464,6 +465,8 @@ The `type` field will be a string that starts with one of the following prefixes
 
 | Entity | JSON Prefix | Creatable in Dungeon Map? |
 | ------ | ----------- | ------------------------- |
+| Assassin | <code>assassin</code> | Yes |
+| Hydra | <code>hydra</code> | Yes |
 | Swamp Tile    | <code>swamp_tile</code> | Yes |
 | Sun Stone    | <code>sun_stone</code> | Yes |
 | Sceptre    | <code>sceptre</code> | No, since this entity must be built by the player. |
