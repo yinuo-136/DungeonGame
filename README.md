@@ -41,6 +41,7 @@ This specification is broken into four parts:
 - Sat 16 Jul 9am - Add error tolerant to battle calculation
 - Mon 18 Jul 8am - Add Milestone 3 (search for 💀 to find all product/technical spec changes)
 - Tue 19 Jul 9pm - Fix section 4.1.1 by adding boss entities
+- Tue 19 Jul 10pm - Fix M3 spec Typos
 
 ## 1. Aims
 
@@ -153,7 +154,7 @@ Some entities can be built using a 'recipe' by the player, where entities are co
 
 ### 3.5.1 Further Buildable Entities 💀
 
-In Milestone 3, the following collectable entities have been added:
+In Milestone 3, the following buildable entities have been added:
 
 | Entity    | Image         | Description |
 | --------- | --------------| ------------|
@@ -388,11 +389,11 @@ Or, in a more wordy fashion;
 
 There are two new entities in this extension:
 
-| Entity      | JSON Prefix                                               | Image                                                       | Description                                                                                                                                                                                                                           |
-|-------------|-----------------------------------------------------------|-------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Light Bulb  | <code>light_bulb_on</code> or <code>light_bulb_off</code> | <img src='images/lightbulb.png' />                          | Light bulbs cannot be collected, but can be lit up by placing a boulder on an adjacent switch. Light bulbs will always be created off. |
-| Wire        | <code>wire</code>                                         | <img src='images/wire.png' width="30" height="30" />        | Wires cannot be collected, but form part of a circuit and are connected to a switch and any entity that interacts via switches.                                                                                                       |
-| Switch Door | <code>switch_door</code>                                  | <img src='images/door.png' width="30" height="30" /> | Switch doors can be opened without a key if connected to an active switch/circuit. It should only remain open as long as it is connected to an active switch/circuit.                                                                 |
+| Entity      | Image                                                       | Description                                                                                                                                                                                                                           |
+|-------------|-------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Light Bulb  | <img src='images/lightbulb.png' />                          | Light bulbs cannot be collected, but can be lit up by placing a boulder on an adjacent switch. Light bulbs will always be created off. |
+| Wire        | <img src='images/wire.png' width="30" height="30" />        | Wires cannot be collected, but form part of a circuit and are connected to a switch and any entity that interacts via switches.                                                                                                       |
+| Switch Door | <img src='images/door.png' width="30" height="30" /> | Switch doors can be opened without a key if connected to an active switch/circuit. It should only remain open as long as it is connected to an active switch/circuit.                                                                 |
 
 All entities which interact via switches (doors, bombs, and light bulbs), as well as switches themselves can become "logical" entities, where one of the following rules is adopted:
 
@@ -473,7 +474,7 @@ The `type` field will be a string that starts with one of the following prefixes
 | Midnight Armour    | <code>midnight_armour</code> | No, since this entity must be built by the player. |
 | Time Turner    | <code>time_turner</code> | Yes |
 | Time Travelling Portal    | <code>time_travelling_portal</code> | Yes |
-| Light Bulb (off)    | <code>light_bulb_on</code> | Yes |
+| Light Bulb (off)    | <code>light_bulb_off</code> | Yes |
 | Light Bulb (on)    | <code>light_bulb_on</code> | No, since light bulbs will always be created off. |
 | Wire    | <code>wire</code> | Yes |
 | Switch Door    | <code>switch_door</code> | Yes |
