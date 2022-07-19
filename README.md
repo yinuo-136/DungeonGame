@@ -42,6 +42,7 @@ This specification is broken into four parts:
 - Mon 18 Jul 8am - Add Milestone 3 (search for 💀 to find all product/technical spec changes)
 - Tue 19 Jul 9pm - Fix section 4.1.1 by adding boss entities
 - Tue 19 Jul 10pm - Fix M3 spec Typos
+- Wed 20 Jul 12am - Fix description for `midnight_armour_defence` and durability for midnight armour in the spec.
 
 ## 1. Aims
 
@@ -159,7 +160,7 @@ In Milestone 3, the following buildable entities have been added:
 | Entity    | Image         | Description |
 | --------- | --------------| ------------|
 | Sceptre   | <img src='images/sceptre.png' /> | Can be crafted with one wood or two arrows, one key or one treasure, and one sun stone. A character with a sceptre does not need to bribe mercenaries or assassins to become allies, as they can use the sceptre to control their minds. The effects only last for a certain number of ticks. |
-| Midnight Armour | <img src='images/midnight_armour.png' /> | Can be crafted with a sword and a sun stone if there are no zombies currently in the dungeon. Midnight armour provides extra attack damage as well as protection. |
+| Midnight Armour | <img src='images/midnight_armour.png' /> | Can be crafted with a sword and a sun stone if there are no zombies currently in the dungeon. Midnight armour provides extra attack damage as well as protection, and it lasts forever. |
 
 ### 3.6 Battles
 
@@ -569,7 +570,7 @@ In Milestone 3, the following configuration fields have been added.
 | `hydra_health_increase_amount` | The increment on the health of a Hydra increases when it gets attacked. |
 | `mind_control_duration`        | The amount of time mind controlling via a sceptre lasts for. |
 | `midnight_armour_attack`       | Attack bonus wearing midnight armour gives to the player. |
-| `midnight_armour_defence`      | The number of battles that the midnight armour lasts for. |
+| `midnight_armour_defence`      | Defence bonus wearing midnight armour gives to the player. |
 
 #### 5.1.2 Backwards Compatiblity
 
