@@ -47,6 +47,7 @@ This specification is broken into four parts:
 - Wed 20 Jul 11pm - Fix description for `buildable` fields in `DungeonResponse`
 - Wed 20 Jul 11pm - Fix description for building `midnight_armour`
 - Thu 21 Jul 10pm - Clarify adjacent as being cardinally adjacent in description for logical entities
+- Fri 22 Jul 8am - Remove stale `gameMode` parameter from `generateDungeon`
 
 ## 1. Aims
 
@@ -1018,7 +1019,7 @@ If you are completing Extension Tasks 1 + 2, you will need to add code to `App.j
 </td>
 <td>POST</td>
 <td>
-<b>Parameters</b>: <code>{ xStart: int, yStart: int, xEnd: int, yEnd: int, gameMode: String }</code>
+<b>Parameters</b>: <code>{ xStart: int, yStart: int, xEnd: int, yEnd: int }</code>
 
 <b>Return Type</b>: <code>{ DungeonResponse }</code>
 </td>
