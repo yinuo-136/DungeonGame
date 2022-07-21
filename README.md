@@ -46,6 +46,7 @@ This specification is broken into four parts:
 - Wed 20 Jul 6pm - Removed redundant `hydra_spawn_rate` config field from the spec because hydra will not spawn from a spawner.
 - Wed 20 Jul 11pm - Fix description for `buildable` fields in `DungeonResponse`
 - Wed 20 Jul 11pm - Fix description for building `midnight_armour`
+- Thu 21 Jul 10pm - Clarify adjacent as being cardinally adjacent in description for logical entities
 
 ## 1. Aims
 
@@ -393,20 +394,20 @@ Or, in a more wordy fashion;
 
 There are two new entities in this extension:
 
-| Entity      | Image                                                       | Description                                                                                                                                                                                                                           |
-|-------------|-------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Light Bulb  | <img src='images/lightbulb.png' />                          | Light bulbs cannot be collected, but can be lit up by placing a boulder on an adjacent switch. Light bulbs will always be created off. |
-| Wire        | <img src='images/wire.png' width="30" height="30" />        | Wires cannot be collected, but form part of a circuit and are connected to a switch and any entity that interacts via switches.                                                                                                       |
-| Switch Door | <img src='images/door.png' width="30" height="30" /> | Switch doors can be opened without a key if connected to an active switch/circuit. It should only remain open as long as it is connected to an active switch/circuit.                                                                 |
+| Entity      | Image                                                       | Description                                                                                                                                                           |
+|-------------|-------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Light Bulb  | <img src='images/lightbulb.png' />                          | Light bulbs cannot be collected, but can be lit up by placing a boulder on an cardinally adjacent switch. Light bulbs will always be created off.                               |
+| Wire        | <img src='images/wire.png' width="30" height="30" />        | Wires cannot be collected, but form part of a circuit and are connected to a switch and any entity that interacts via switches.                                       |
+| Switch Door | <img src='images/door.png' width="30" height="30" /> | Switch doors can be opened without a key if connected to an active switch/circuit. It should only remain open as long as it is connected to an active switch/circuit. |
 
 All entities which interact via switches (doors, bombs, and light bulbs), as well as switches themselves can become "logical" entities, where one of the following rules is adopted:
 
-* AND - the entity will be only activated if there are 2 or more adjacent activated entities (switches with boulders on them or active wires). If there are more than two switches adjacent, all must be activated.
-* OR - the entity will be activated if there are 1 or more adjacent activated entities
-* XOR - the entity will be activated if there is 1 and only 1 adjacent activated entity
-* CO_AND - the entity will only be activated if there are 2 or more activated entities adjacent, which are **both activated on the same tick** (i.e. a boulder is pushed onto them at the same time).
+* AND - the entity will be only activated if there are 2 or more cardinally adjacent activated entities (switches with boulders on them or active wires). If there are more than two switches adjacent, all must be activated.
+* OR - the entity will be activated if there are 1 or more cardinally adjacent activated entities
+* XOR - the entity will be activated if there is 1 and only 1 cardinally adjacent activated entity
+* CO_AND - the entity will only be activated if there are 2 or more activated entities cardinally adjacent, which are **both activated on the same tick** (i.e. a boulder is pushed onto them at the same time).
 
-If a switch adjacent to a wire is activated, all the other interactable entities adjacent to the wire are activated. This allows for the creation of dungeons with logic gates. For example:
+If a switch cardinally adjacent to a wire is activated, all the other interactable entities cardinally adjacent to the wire are activated. This allows for the creation of dungeons with logic gates. For example:
 
 <table>
 <tr>
