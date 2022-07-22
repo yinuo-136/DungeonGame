@@ -48,6 +48,8 @@ This specification is broken into four parts:
 - Wed 20 Jul 11pm - Fix description for building `midnight_armour`
 - Thu 21 Jul 10pm - Clarify adjacent as being cardinally adjacent in description for logical entities
 - Fri 22 Jul 8am - Remove stale `gameMode` parameter from `generateDungeon`
+- Fri 22 Jul 3pm - Add rewind buttons for `time_turner` to frontend
+- Fri 22 Jul 3pm - Add dungeon generation to frontend and fix method signature for `generateDungeon`
 
 ## 1. Aims
 
@@ -970,7 +972,7 @@ Rewinds the game state a specified number of ticks.
 <td>
 
 ```java
-public DungeonResponse generateDungeon(int xStart, int yStart, int xEnd, int yEnd)
+public DungeonResponse generateDungeon(int xStart, int yStart, int xEnd, int yEnd, String configName)
 ```
 
 </td>
@@ -978,7 +980,8 @@ public DungeonResponse generateDungeon(int xStart, int yStart, int xEnd, int yEn
 Generates a dungeon surrounded by walls in a rectangular grid from the start to the end position on the map. An exit will need to be at <code>(xEnd, yEnd)</code>
 </td>
 <td>
-N/A
+IllegalArgumentException:
+<li>If <code>configName</code> is not a configuration that exists</li>
 </td>
 </tr>
 </table>
@@ -1019,7 +1022,7 @@ If you are completing Extension Tasks 1 + 2, you will need to add code to `App.j
 </td>
 <td>POST</td>
 <td>
-<b>Parameters</b>: <code>{ xStart: int, yStart: int, xEnd: int, yEnd: int }</code>
+<b>Parameters</b>: <code>{ xStart: int, yStart: int, xEnd: int, yEnd: int, configName: String }</code>
 
 <b>Return Type</b>: <code>{ DungeonResponse }</code>
 </td>
