@@ -52,6 +52,7 @@ This specification is broken into four parts:
 - Fri 22 Jul 3pm - Add dungeon generation to frontend and fix method signature for `generateDungeon`
 - Fri 22 Jul 5pm - Clarify Sun Stone and Sceptre.
 - Sat 23 Jul 12pm - Time travel clarifications
+- Sat 23 Jul 9pm - Clarify dungeon generation and time travel behaviour
 
 ## 1. Aims
 
@@ -320,6 +321,8 @@ When a character has time travelled, either by the rewind buttons or via a time 
 * The player's inventory persists across time travelling. This means that if a player picks up a sword then travels through a time portal, the sword remains in their inventory as well as being back on the map available to pick up.
 
 Only the character can travel through time travel portals.
+
+The older player should still collect items and play out all `tick` and `interact` movements with those items as they did before.
 
 <details>
 <summary>
@@ -981,7 +984,7 @@ public DungeonResponse generateDungeon(int xStart, int yStart, int xEnd, int yEn
 
 </td>
 <td>
-Generates a dungeon surrounded by walls in a rectangular grid from the start to the end position on the map. An exit will need to be at <code>(xEnd, yEnd)</code>
+Generates a dungeon surrounded by walls in a rectangular grid from the start to the end position on the map, where the start position is the top left corner and the exit is the bottom right corner. An exit will need to be at <code>(xEnd, yEnd)</code>
 </td>
 <td>
 IllegalArgumentException:
