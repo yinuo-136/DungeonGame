@@ -112,11 +112,6 @@
         "type": "player"
       },
       {
-        "x": 2,
-        "y": 1,
-        "type": "sun_stone"
-      },
-      {
         "x": 6,
         "y": 1,
         "type": "sword"
