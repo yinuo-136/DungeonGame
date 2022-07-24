@@ -43,6 +43,7 @@ import dungeonmania.staticEntities.Exit;
 import dungeonmania.staticEntities.FloorSwitch;
 import dungeonmania.staticEntities.PlacedBomb;
 import dungeonmania.staticEntities.Portal;
+import dungeonmania.staticEntities.SwampTile;
 import dungeonmania.staticEntities.Wall;
 import dungeonmania.staticEntities.ZombieToastSpawner;
 import dungeonmania.util.Direction;
@@ -134,6 +135,11 @@ public class DungeonInfo {
             case "key":
                 newEntity = new Key(id, (String) json.get("type"), new Position(x, y), (int) json.get("key"));
                 break;
+
+            case "swamp_tile":
+                newEntity = new SwampTile(new Position(x, y), id, (int) json.get("movement_factor"));
+                break;
+                
             // if default, it will be collectableEntities
             default:
                 newEntity = new CollectableEntity(id, (String) json.get("type"), new Position(x, y));
