@@ -4,6 +4,7 @@ import java.util.List;
 
 import dungeonmania.inventoryItem.InvItem;
 import dungeonmania.inventoryItem.ItemKey;
+import dungeonmania.inventoryItem.Sunstone;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
@@ -69,6 +70,9 @@ public class Door extends staticEntity{
                     items.remove(i);
                     break;   
                 }
+            } else if (i instanceof Sunstone) {
+                this.Open();
+                break;
             }
         }
         
