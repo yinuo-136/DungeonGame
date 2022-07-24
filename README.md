@@ -55,6 +55,7 @@ This specification is broken into four parts:
 - Sat 23 Jul 9pm - Clarify dungeon generation and time travel behaviour
 - Sun 24 Jul 9am - Fix description for exceptions in `interact()` and description for sun stone
 - Sun 24 Jul 9pm - Clarify dungeon state after time travel
+- Sun 24 Jul 11pm - Revert bad spec update and clarify `hydra_health_increase_rate`
 
 ## 1. Aims
 
@@ -324,7 +325,7 @@ When a character has time travelled, either by the rewind buttons or via a time 
 
 Only the character can travel through time travel portals.
 
-The older player should still collect items and play out all `tick` and `interact` movements with those items as they did before. Time travel takes the player to *prior* the tick takes place, e.g. if on tick 30 the player travels through a portal it arrives out of the other side before the beginning of tick 0.
+The older player should still collect items and play out all `tick` and `interact` movements with those items as they did before. Time travel takes the player to *after* the tick takes place, e.g. if on tick 30 the player travels through a portal it arrives out of the other side after tick 0 has taken place.
 
 <details>
 <summary>
@@ -581,7 +582,7 @@ In Milestone 3, the following configuration fields have been added.
 | `assassin_recon_radius`        | The radius within which an assassin can see and move towards the player even when they are invisible. |
 | `hydra_attack`                 | Attack damage of the hydra. |
 | `hydra_health`                 | Health of the hydra. |
-| `hydra_health_increase_rate`   | The chance that the health of a Hydra increases when it gets attacked. The value of this field should be always inclusively between 0 and 1. |
+| `hydra_health_increase_rate`   | The chance that the health of a Hydra increases when it gets attacked each round. The value of this field should be always inclusively between 0 and 1. |
 | `hydra_health_increase_amount` | The increment on the health of a Hydra increases when it gets attacked. |
 | `mind_control_duration`        | The amount of time mind controlling via a sceptre lasts for. |
 | `midnight_armour_attack`       | Attack bonus wearing midnight armour gives to the player. |
