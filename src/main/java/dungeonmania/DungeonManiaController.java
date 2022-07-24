@@ -288,7 +288,7 @@ public class DungeonManiaController {
      * /games/all
      */
     public List<String> allGames() {
-        return new ArrayList<>();
+        return FileLoader.listFileNamesInResourceDirectory("savedGames");
     }
     public DungeonResponse generateDungeon (int xStart, int yStart, int xEnd, int yEnd, String configName) {
         DungeonGenerator generator = new DungeonGenerator(new Position (xStart, yStart), new Position(xEnd, yEnd));
