@@ -4,6 +4,7 @@ import dungeonmania.DungeonInfo;
 import dungeonmania.Entity;
 import dungeonmania.goal.Goal;
 import dungeonmania.inventoryItem.InvItem;
+import dungeonmania.inventoryItem.Sunstone;
 import dungeonmania.inventoryItem.Treasure;
 
 public class treasureGoal implements Goal{
@@ -19,7 +20,7 @@ public class treasureGoal implements Goal{
     public String evalGoal() {
         int counter = 0;
         for (InvItem e : dungeonInfo.getItemList()) {
-            if (e instanceof Treasure) {
+            if (e instanceof Treasure || e instanceof Sunstone) {
                 counter++;
             }
         }

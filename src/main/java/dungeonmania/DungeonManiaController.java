@@ -287,7 +287,7 @@ public class DungeonManiaController {
      * /games/all
      */
     public List<String> allGames() {
-        return new ArrayList<>();
+        return FileLoader.listFileNamesInResourceDirectory("savedGames");
     }
 
 }

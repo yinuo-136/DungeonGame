@@ -7,6 +7,7 @@ import dungeonmania.inventoryItem.Arrow;
 import dungeonmania.inventoryItem.Bomb;
 import dungeonmania.inventoryItem.InvItem;
 import dungeonmania.inventoryItem.ItemKey;
+import dungeonmania.inventoryItem.Sunstone;
 import dungeonmania.inventoryItem.Sword;
 import dungeonmania.inventoryItem.Treasure;
 import dungeonmania.inventoryItem.Wood;
@@ -71,6 +72,9 @@ public class CollectableEntity extends Entity{
                 break;
             case "wood":
                 newItem = new Wood(id);
+                break;
+            case "sun_stone":
+                newItem = new Sunstone(id);
                 break;
         }
         items.add(newItem);
