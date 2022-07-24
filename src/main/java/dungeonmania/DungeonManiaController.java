@@ -2,6 +2,7 @@ package dungeonmania;
 
 import dungeonmania.buildableEntity.BuildableFactory;
 import dungeonmania.exceptions.InvalidActionException;
+import dungeonmania.goal.Goal;
 import dungeonmania.inventoryItem.Bomb;
 import dungeonmania.inventoryItem.InvItem;
 import dungeonmania.inventoryItem.Treasure;
@@ -289,5 +290,10 @@ public class DungeonManiaController {
     public List<String> allGames() {
         return new ArrayList<>();
     }
-
+    public DungeonResponse generateDungeon (int xStart, int yStart, int xEnd, int yEnd, String configName) {
+        DungeonGenerator generator = new DungeonGenerator(new Position (xStart, yStart), new Position(xEnd, yEnd));
+        DungeonCounter = DungeonCounter + 1;
+        DungeonResponse response = new DungeonResponse(String.valueOf(DungeonCounter), configName, generator.generate(), new ArrayList<ItemResponse>(), new ArrayList<BattleResponse>(), new ArrayList<String>(), ":exit");
+        return response;
+    }
 }
