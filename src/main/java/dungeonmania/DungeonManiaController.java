@@ -322,14 +322,17 @@ public class DungeonManiaController {
                     new_entity = new Wall(entity.getPosition(), entity.getId());
                     new_entity.setDungeonInfo(info);
                     info.getEntityMap().put(entity.getId(), new_entity);
+                    break;
                 case "player":
                     new_entity = new Player(entity.getPosition(), entity.getId());
                     new_entity.setDungeonInfo(info);
                     info.getEntityMap().put(entity.getId(), new_entity);
+                    break;
                 case "exit":
                     new_entity = new Exit(entity.getPosition(), entity.getId());
                     new_entity.setDungeonInfo(info);
                     info.getEntityMap().put(entity.getId(), new_entity);
+                    break;
             }
         }
         // set config
