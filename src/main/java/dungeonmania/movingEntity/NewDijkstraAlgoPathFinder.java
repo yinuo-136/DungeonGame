@@ -3,10 +3,8 @@
 package dungeonmania.movingEntity;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.PriorityQueue;
 
 import dungeonmania.Entity;
 import dungeonmania.staticEntities.SwampTile;
@@ -203,13 +201,12 @@ public class NewDijkstraAlgoPathFinder{
                                   int dest, int v, int pred[], int dist[])
     {
         ArrayList<ArrayList<Integer>> adj = graph.getGrid();
+        Boolean connected = false;
 
-        // a pirority queue to maintain queue of vertices whose
+        // a queue to maintain queue of vertices whose
         // order based on the movement factor of the vertex
         // adjacency list is to be scanned as per normal
         // BFS algorithm using LinkedList of Integer type
-        PriorityQueue<Integer> pq = new PriorityQueue<Integer>(new GridComparator(graph));
-
         LinkedList<Integer> queue = new LinkedList<Integer>();
 
         // boolean array visited[] which stores the
@@ -234,68 +231,29 @@ public class NewDijkstraAlgoPathFinder{
 
         queue.add(src);
 
-        pq.add(src);
+        while (!queue.isEmpty()) {
+            int u = queue.remove();
+            //sort the adjacency list of the vertex u based on the movement factor of the vertex
 
-        //bfs Algorithm
-        while (!pq.isEmpty()) {
-            int u = pq.remove();
             for (int i = 0; i < adj.get(u).size(); i++) {
+                if (dist[u] + graph.getMovementFactor(adj.get(u).get(i)) < dist[adj.get(u).get(i)]) {
+                    dist[adj.get(u).get(i)] = dist[u] + graph.getMovementFactor(adj.get(u).get(i));
+                    pred[adj.get(u).get(i)] = u;
+                }
                 if (visited[adj.get(u).get(i)] == false) {
                     visited[adj.get(u).get(i)] = true;
-            
-                    if (dist[u] + graph.getMovementFactor(adj.get(u).get(i)) < dist[adj.get(u).get(i)]) {
-                        dist[adj.get(u).get(i)] = dist[u] + graph.getMovementFactor(adj.get(u).get(i));
-                        pred[adj.get(u).get(i)] = u;
-                    }
-                    pq.add(adj.get(u).get(i));
-
+                    queue.add(adj.get(u).get(i));
 
                     // stopping condition (when we find
                     // our destination)
                     if (adj.get(u).get(i) == dest) {
-                        return true;
+                        connected = true;
                     }
                 }
+                
             }
         }
-
-        // while (!queue.isEmpty()) {
-        //     int u = queue.remove();
-        //     for (int i = 0; i < adj.get(u).size(); i++) {
-        //         if (visited[adj.get(u).get(i)] == false) {
-        //             visited[adj.get(u).get(i)] = true;
-            
-        //             // if (dist[u] + graph.getMovementFactor(adj.get(u).get(i)) < dist[adj.get(u).get(i)]) {
-        //             //     dist[adj.get(u).get(i)] = dist[u] + graph.getMovementFactor(adj.get(u).get(i));
-        //             //     pred[adj.get(u).get(i)] = u;
-        //             // }
-        //             dist[adj.get(u).get(i)] = dist[u] + graph.getMovementFactor(adj.get(u).get(i));
-        //             pred[adj.get(u).get(i)] = u;
-        //             queue.add(adj.get(u).get(i));
-                    
-        //             // stopping condition (when we find
-        //             // our destination)
-        //             if (adj.get(u).get(i) == dest) {
-        //                 return true;
-        //             }
-        //         }
-        //     }
-        // }
-
-        return false;
-    }
-}
-
-class GridComparator implements Comparator<Integer>{
-    Graph graph;
-    public GridComparator(Graph graph) {
-        this.graph = graph;
-    }
-
-    // Overriding compare()method of Comparator 
-    // for ascending order of movementFactor on that grid
-    public int compare(Integer a, Integer b) {
-        return Integer.compare(graph.getMovementFactor(a), graph.getMovementFactor(b));
+        return connected;      
     }
 }
 

@@ -289,14 +289,20 @@ public class MovingEntityTests {
         // 1 P x S M w
         // 2 x x x x w
         // 3 w w w w w
+        
+        // check if the mencerary would go around the swamp tile to reach player
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_swampTileTest", "c_swamp");
         Position pos = getEntities(res, "mercenary").get(0).getPosition();
         Position expectedPosition = pos.translateBy(Direction.DOWN);
         res = dmc.tick(Direction.UP);
         assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
-
-
+        res = dmc.tick(Direction.UP);
+        Position expectedPosition2 = expectedPosition.translateBy(Direction.LEFT);
+        assertEquals(expectedPosition2, getEntities(res, "mercenary").get(0).getPosition());
+        res = dmc.tick(Direction.UP);
+        Position expectedPosition3 = expectedPosition2.translateBy(Direction.LEFT);
+        assertEquals(expectedPosition3, getEntities(res, "mercenary").get(0).getPosition());
 
     }
 }
