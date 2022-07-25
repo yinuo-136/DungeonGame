@@ -463,4 +463,10 @@ public class DungeonInfo {
         return buildables;
     }
 
+    public void setDungeonGoal(Goal dungeonGoal) {
+        this.dungeonGoal = dungeonGoal;
+    }
+
+    
+
 }

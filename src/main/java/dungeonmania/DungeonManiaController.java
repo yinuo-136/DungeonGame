@@ -3,6 +3,7 @@ package dungeonmania;
 import dungeonmania.buildableEntity.BuildableFactory;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.goal.Goal;
+import dungeonmania.goal.basicGoal.exitGoal;
 import dungeonmania.inventoryItem.Bomb;
 import dungeonmania.inventoryItem.InvItem;
 import dungeonmania.inventoryItem.Treasure;
@@ -23,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+
+import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -329,10 +332,15 @@ public class DungeonManiaController {
                     info.getEntityMap().put(entity.getId(), new_entity);
             }
         }
-        //set config
+        // set config
         info.setConfigs(configContent);
+        // set goal
+        Goal goal = new exitGoal(info);
+        info.setDungeonGoal(goal);
+        // store info in controller
+        this.dungeonId = String.valueOf(DungeonCounter);
         infoMap.put(dungeonId, info);
-        DungeonResponse response = new DungeonResponse(String.valueOf(DungeonCounter), "Generated_Dungeon", entities, new ArrayList<ItemResponse>(), new ArrayList<BattleResponse>(), new ArrayList<String>(), ":exit");
+        DungeonResponse response = new DungeonResponse(dungeonId, "Generated_Dungeon", entities, new ArrayList<ItemResponse>(), new ArrayList<BattleResponse>(), new ArrayList<String>(), ":exit");
         return response;
     }
 }
