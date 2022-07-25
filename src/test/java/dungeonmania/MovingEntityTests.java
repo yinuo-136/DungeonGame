@@ -279,4 +279,20 @@ public class MovingEntityTests {
         res = dmc.tick(Direction.RIGHT);
         assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());        
     }
+
+    @Test
+    @DisplayName("Test if movement entity would try to avoid swamp tile")
+    public void testSwampTile(){
+        //   0 1 2 3 4
+        // 0 w w w w w
+        // 1 P x S M w
+        // 2 x x x x w
+        // 3 w w w w w
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_swampTileTest", "c_swamp");
+        Position pos = getEntities(res, "mercenary").get(0).getPosition();
+        Position expectedPosition = pos.translateBy(Direction.DOWN);
+        res = dmc.tick(Direction.UP);
+        assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
+    }
 }

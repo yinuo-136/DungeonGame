@@ -1,26 +1,30 @@
-//The BFS algo is from the following website: https://www.geeksforgeeks.org/bfs-or-dfs-for-shortest-path-problem/ 
+//Most of the BFS algo is from the following website: https://www.geeksforgeeks.org/bfs-or-dfs-for-shortest-path-problem/ 
+// but it is modified to for weighted graph.
 package dungeonmania.movingEntity;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.PriorityQueue;
 
 import dungeonmania.Entity;
+import dungeonmania.staticEntities.SwampTile;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class DijkstraAlgoPathFinder {
+public class NewDijkstraAlgoPathFinder{
     // range would be the like a diameter for the graph that dijstra would run.
     private int range = 60;
     private int v = range * range;
     private int left = range/2;
     private int top = range/2;
 
-    public DijkstraAlgoPathFinder() {}
-
     public Direction findNextPath(Entity movingEntity, Position playerPos) {
-        ArrayList<ArrayList<Integer>> graph = buildGraph(movingEntity);
+        Graph graph = buildGraph(movingEntity);
+        //ArrayList<ArrayList<Integer>> grid = graph.getGrid();
         //early exit if there is no path to player
         if (graph == null) {
             return null;
@@ -53,7 +57,8 @@ public class DijkstraAlgoPathFinder {
     }
 
     public Direction findNextPathAwayPlayer(Entity movingEntity) {
-        ArrayList<ArrayList<Integer>> graph = buildGraph(movingEntity);
+        Graph graph = buildGraph(movingEntity);
+        //ArrayList<ArrayList<Integer>> graph = buildGraph(movingEntity);
         //early exit if there is no path to player
         if (graph == null) {
             return null;
@@ -85,8 +90,11 @@ public class DijkstraAlgoPathFinder {
         return null;
     }
  
-    public ArrayList<ArrayList<Integer>> buildGraph(Entity e) {
+    public Graph buildGraph(Entity e) {
         List<String> movingConstrintItemList = Arrays.asList("wall", "boulder");
+        List<String> movementFactorEntityList = Arrays.asList("swamp_tile");
+        int[] movementFactorList = new int[v^2];
+
         ArrayList<ArrayList<Integer>> adj = new ArrayList<ArrayList<Integer>>(v);
         for (int i = 0; i < v; i++) {
             adj.add(new ArrayList<Integer>());
@@ -110,17 +118,27 @@ public class DijkstraAlgoPathFinder {
             int y1 = 0;
             // scan all the vertex around the mercenary and build a graph
             while (x < topLeftCorner.getX() + range -1) {
+                List<String> pos_entities = e.getDungeonInfo().getEntitiesStringByPosition(new Position(x,y));
                 // check if the position is a wall or a boulder, and positions on the right and bottom
-                if (!(e.getDungeonInfo().getEntitiesStringByPosition(new Position(x,y)).stream().anyMatch(element -> movingConstrintItemList.contains(element)))) {
-                    List<String> right_pos_entites = e.getDungeonInfo().getEntitiesStringByPosition(new Position(x+1,y));
+                if (!(pos_entities.stream().anyMatch(element -> movingConstrintItemList.contains(element)))) {
+                    List<String> right_pos_entities = e.getDungeonInfo().getEntitiesStringByPosition(new Position(x+1,y));
                     // if the right position is not a wall or a boulder, then add the edge to the graph.
-                    if (!right_pos_entites.stream().anyMatch(element -> movingConstrintItemList.contains(element))) {
+                    if (!right_pos_entities.stream().anyMatch(element -> movingConstrintItemList.contains(element))) {
                         addEdge(adj, x1*range+y1, x1*range+y1+1);
                     }
-                    List<String> bottom_pos_entites = e.getDungeonInfo().getEntitiesStringByPosition(new Position(x,y+1));
+                    List<String> bottom_pos_entities = e.getDungeonInfo().getEntitiesStringByPosition(new Position(x,y+1));
                     // if the bottom position is not a wall or a boulder, then add the edge to the graph.
-                    if (!bottom_pos_entites.stream().anyMatch(element -> movingConstrintItemList.contains(element))) {
+                    if (!bottom_pos_entities.stream().anyMatch(element -> movingConstrintItemList.contains(element))) {
                         addEdge(adj, x1*range+y1, x1*range+y1+range);
+                    }
+                    List<Entity> posEntities = e.getDungeonInfo().getEntitiesByPosition(new Position(x,y));
+                    if (pos_entities.stream().anyMatch(element -> movementFactorEntityList.contains(element))) {
+                        Entity swamp_tile = posEntities.stream().filter(element -> "swamp_tile".equals(element.getType()))
+                        .findAny()
+                        .orElse(null);
+                        movementFactorList[x1*range+y1] = ((SwampTile) swamp_tile).getMovementFactor();
+                    } else {
+                        movementFactorList[x1*range+y1] = 1;
                     }
                 } 
                 x++;
@@ -129,7 +147,9 @@ public class DijkstraAlgoPathFinder {
             y++;
             x1++;
         }
-        return adj;
+        Graph newGraph = new Graph(adj, movementFactorList);
+        //return adj;
+        return newGraph;
     }
  
     // function to form edge between two vertices
@@ -143,8 +163,7 @@ public class DijkstraAlgoPathFinder {
     // function to print the shortest distance and path
     // between source vertex and destination vertex
     public List<Integer> printShortestDistance(
-                     ArrayList<ArrayList<Integer>> adj,
-                             int s, int dest, int v)
+                     Graph graph, int s, int dest, int v)
     {
         // predecessor[i] array stores predecessor of
         // i and distance array stores distance of i
@@ -154,7 +173,7 @@ public class DijkstraAlgoPathFinder {
 
         List<Integer> pathInt = new ArrayList<Integer>();
  
-        if (BFS(adj, s, dest, v, pred, dist) == false) {
+        if (BFS(graph, s, dest, v, pred, dist) == false) {
             // System.out.println("Given source and destination" +
             //                              "are not connected");
             return pathInt;
@@ -182,13 +201,16 @@ public class DijkstraAlgoPathFinder {
     // a modified version of BFS that stores predecessor
     // of each vertex in array pred
     // and its distance from source in array dist
-    private static boolean BFS(ArrayList<ArrayList<Integer>> adj, int src,
+    private static boolean BFS(Graph graph, int src,
                                   int dest, int v, int pred[], int dist[])
     {
-        // a queue to maintain queue of vertices whose
+        ArrayList<ArrayList<Integer>> adj = graph.getGrid();
+
+        // a pirority queue to maintain queue of vertices whose
+        // order based on the movement factor of the vertex
         // adjacency list is to be scanned as per normal
         // BFS algorithm using LinkedList of Integer type
-        LinkedList<Integer> queue = new LinkedList<Integer>();
+        PriorityQueue<Integer> pq = new PriorityQueue<Integer>(new GridComparator(graph));
  
         // boolean array visited[] which stores the
         // information whether ith vertex is reached
@@ -209,27 +231,50 @@ public class DijkstraAlgoPathFinder {
         // distance from source to itself should be 0
         visited[src] = true;
         dist[src] = 0;
-        queue.add(src);
- 
+        pq.add(src);
+
         // bfs Algorithm
-        while (!queue.isEmpty()) {
-            int u = queue.remove();
+        while (!pq.isEmpty()) {
+            int u = pq.remove();
             for (int i = 0; i < adj.get(u).size(); i++) {
                 if (visited[adj.get(u).get(i)] == false) {
                     visited[adj.get(u).get(i)] = true;
-
-                    dist[adj.get(u).get(i)] = dist[u] + 1;
-                    pred[adj.get(u).get(i)] = u;
-                    queue.add(adj.get(u).get(i));
+            
+                    if (dist[u] + graph.getMovementFactor(adj.get(u).get(i)) < dist[adj.get(u).get(i)]) {
+                        dist[adj.get(u).get(i)] = dist[u] + graph.getMovementFactor(adj.get(u).get(i));
+                        pred[adj.get(u).get(i)] = u;
+                    }
+                    pq.add(adj.get(u).get(i));
 
                     // stopping condition (when we find
                     // our destination)
-                    if (adj.get(u).get(i) == dest)
+                    if (adj.get(u).get(i) == dest) {
                         return true;
+                    }
                 }
             }
         }
+
         return false;
+    }
+}
+
+class GridComparator implements Comparator<Integer>{
+    Graph graph;
+    public GridComparator(Graph graph) {
+        this.graph = graph;
+    }
+
+    // Overriding compare()method of Comparator 
+    // for ascending order of movementFactor on that grid
+    public int compare(Integer a, Integer b) {
+        if (graph.getMovementFactor(a) < graph.getMovementFactor(b)) {
+            return -1;
+        } else if (graph.getMovementFactor(a) > graph.getMovementFactor(b)) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 }
 
