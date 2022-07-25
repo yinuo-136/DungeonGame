@@ -21,6 +21,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import dungeonmania.movingEntity.DijkstraAlgoPathFinder;
+import dungeonmania.movingEntity.NewDijkstraAlgoPathFinder;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
@@ -294,5 +295,8 @@ public class MovingEntityTests {
         Position expectedPosition = pos.translateBy(Direction.DOWN);
         res = dmc.tick(Direction.UP);
         assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
+
+
+
     }
 }

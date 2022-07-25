@@ -4,8 +4,6 @@ package dungeonmania.movingEntity;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Comparator;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -140,7 +138,7 @@ public class NewDijkstraAlgoPathFinder{
                     } else {
                         movementFactorList[x1*range+y1] = 1;
                     }
-                } 
+                }
                 x++;
                 y1++;
             }
@@ -211,7 +209,9 @@ public class NewDijkstraAlgoPathFinder{
         // adjacency list is to be scanned as per normal
         // BFS algorithm using LinkedList of Integer type
         PriorityQueue<Integer> pq = new PriorityQueue<Integer>(new GridComparator(graph));
- 
+
+        LinkedList<Integer> queue = new LinkedList<Integer>();
+
         // boolean array visited[] which stores the
         // information whether ith vertex is reached
         // at least once in the Breadth first search
@@ -231,9 +231,12 @@ public class NewDijkstraAlgoPathFinder{
         // distance from source to itself should be 0
         visited[src] = true;
         dist[src] = 0;
+
+        queue.add(src);
+
         pq.add(src);
 
-        // bfs Algorithm
+        //bfs Algorithm
         while (!pq.isEmpty()) {
             int u = pq.remove();
             for (int i = 0; i < adj.get(u).size(); i++) {
@@ -246,6 +249,7 @@ public class NewDijkstraAlgoPathFinder{
                     }
                     pq.add(adj.get(u).get(i));
 
+
                     // stopping condition (when we find
                     // our destination)
                     if (adj.get(u).get(i) == dest) {
@@ -254,6 +258,29 @@ public class NewDijkstraAlgoPathFinder{
                 }
             }
         }
+
+        // while (!queue.isEmpty()) {
+        //     int u = queue.remove();
+        //     for (int i = 0; i < adj.get(u).size(); i++) {
+        //         if (visited[adj.get(u).get(i)] == false) {
+        //             visited[adj.get(u).get(i)] = true;
+            
+        //             // if (dist[u] + graph.getMovementFactor(adj.get(u).get(i)) < dist[adj.get(u).get(i)]) {
+        //             //     dist[adj.get(u).get(i)] = dist[u] + graph.getMovementFactor(adj.get(u).get(i));
+        //             //     pred[adj.get(u).get(i)] = u;
+        //             // }
+        //             dist[adj.get(u).get(i)] = dist[u] + graph.getMovementFactor(adj.get(u).get(i));
+        //             pred[adj.get(u).get(i)] = u;
+        //             queue.add(adj.get(u).get(i));
+                    
+        //             // stopping condition (when we find
+        //             // our destination)
+        //             if (adj.get(u).get(i) == dest) {
+        //                 return true;
+        //             }
+        //         }
+        //     }
+        // }
 
         return false;
     }
@@ -268,13 +295,7 @@ class GridComparator implements Comparator<Integer>{
     // Overriding compare()method of Comparator 
     // for ascending order of movementFactor on that grid
     public int compare(Integer a, Integer b) {
-        if (graph.getMovementFactor(a) < graph.getMovementFactor(b)) {
-            return -1;
-        } else if (graph.getMovementFactor(a) > graph.getMovementFactor(b)) {
-            return 1;
-        } else {
-            return 0;
-        }
+        return Integer.compare(graph.getMovementFactor(a), graph.getMovementFactor(b));
     }
 }
 
