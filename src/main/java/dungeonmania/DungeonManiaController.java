@@ -7,10 +7,13 @@ import dungeonmania.inventoryItem.Bomb;
 import dungeonmania.inventoryItem.InvItem;
 import dungeonmania.inventoryItem.Treasure;
 import dungeonmania.movingEntity.Mercenary;
+import dungeonmania.player.Player;
 import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.response.models.ItemResponse;
+import dungeonmania.staticEntities.Exit;
+import dungeonmania.staticEntities.Wall;
 import dungeonmania.util.Direction;
 import dungeonmania.util.FileLoader;
 import dungeonmania.util.Position;
@@ -293,7 +296,43 @@ public class DungeonManiaController {
     public DungeonResponse generateDungeon (int xStart, int yStart, int xEnd, int yEnd, String configName) {
         DungeonGenerator generator = new DungeonGenerator(new Position (xStart, yStart), new Position(xEnd, yEnd));
         DungeonCounter = DungeonCounter + 1;
-        DungeonResponse response = new DungeonResponse(String.valueOf(DungeonCounter), configName, generator.generate(), new ArrayList<ItemResponse>(), new ArrayList<BattleResponse>(), new ArrayList<String>(), ":exit");
+        DungeonInfo info = new DungeonInfo();
+        String jsonContent = null;
+        //read and set config file
+        try {
+            jsonContent = FileLoader.loadResourceFile("/configs/" + configName + ".json");
+        } catch (IOException e) {
+            throw new IllegalArgumentException();
+        }
+
+        //convert json into JSONObject
+        JSONObject configContent = new JSONObject(jsonContent);
+
+        // get entities list
+        List <EntityResponse> entities = generator.generate();
+
+        // set entities in info
+        for (EntityResponse entity : entities) {
+            Entity new_entity;
+            switch (entity.getType()) {
+                case "wall" :
+                    new_entity = new Wall(entity.getPosition(), entity.getId());
+                    new_entity.setDungeonInfo(info);
+                    info.getEntityMap().put(entity.getId(), new_entity);
+                case "player":
+                    new_entity = new Player(entity.getPosition(), entity.getId());
+                    new_entity.setDungeonInfo(info);
+                    info.getEntityMap().put(entity.getId(), new_entity);
+                case "exit":
+                    new_entity = new Exit(entity.getPosition(), entity.getId());
+                    new_entity.setDungeonInfo(info);
+                    info.getEntityMap().put(entity.getId(), new_entity);
+            }
+        }
+        //set config
+        info.setConfigs(configContent);
+        infoMap.put(dungeonId, info);
+        DungeonResponse response = new DungeonResponse(String.valueOf(DungeonCounter), "Generated_Dungeon", entities, new ArrayList<ItemResponse>(), new ArrayList<BattleResponse>(), new ArrayList<String>(), ":exit");
         return response;
     }
 }
