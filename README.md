@@ -57,6 +57,7 @@ This specification is broken into four parts:
 - Sun 24 Jul 9pm - Clarify dungeon state after time travel
 - Sun 24 Jul 11pm - Revert bad spec update and clarify `hydra_health_increase_rate`
 - Tue 26 Jul 11pm - Clarify logical entity input
+- Wed 27 Jul 8am - (Important) Update exit location of player out of time portal
 
 ## 1. Aims
 
@@ -314,7 +315,7 @@ This part of the extension includes the following new entity:
 | --------- | --------------|
 | Time Travelling Portal | <img src="images/time_portal.png" /> |
 
-If a player travels through a time travelling portal, they exit through the same portal in a square cardinally adjacent to the portal, except the dungeon state is that of 30 ticks previously. If less than 30 ticks have passed, then the dungeon state is simply the initial dungeon state.
+If a player travels through a time travelling portal, they end up on the same square as the portal, except the dungeon state is that of 30 ticks previously. If less than 30 ticks have passed, then the dungeon state is simply the initial dungeon state.
 
 #### 3.11.3 Time Travel Rules
 
