@@ -10,29 +10,16 @@ public class BuildableFactory {
 
     public void build(String buildable, DungeonInfo info) throws IllegalArgumentException, InvalidActionException {
         Buildable buildableItem;
-        int idCounter = 0;
 
         switch (buildable) {
             case "bow":
-                List<String> bowIdList = info.getInvItemIdsListByType("bow");
-                String bowId = "bow" + idCounter;
-
-                while(bowIdList.contains(bowId)) {
-                    idCounter++;
-                    bowId = "bow" + idCounter;
-                }
+                String bowId = idGenerator("bow", info);
 
                 buildableItem = new Bow(bowId, info.getSpecificConfig("bow_durability"));
                 break;
 
             case "shield":
-            List<String> shieldIdList = info.getInvItemIdsListByType("shield");
-            String shieldId = "shield" + idCounter;
-
-            while(shieldIdList.contains(shieldId)) {
-                idCounter++;
-                shieldId = "shield" + idCounter;
-            }
+                String shieldId = idGenerator("shield", info);
 
                 buildableItem = new Shield(shieldId, info.getSpecificConfig("shield_defence"), info.getSpecificConfig("shield_durability"));
                 break;
@@ -44,6 +31,19 @@ public class BuildableFactory {
         buildableItem.setDungeonInfo(info);
         buildableItem.craft();
         info.addInvItem((InvItem) buildableItem);
+    }
+
+    private String idGenerator(String string, DungeonInfo info){
+        int idCounter = 0;
+        List<String> idList = info.getInvItemIdsListByType(string);
+        String id = string + idCounter;
+
+        while(idList.contains(id)) {
+            idCounter++;
+            id = string + idCounter;
+        }
+
+        return id;
     }
 
 }
