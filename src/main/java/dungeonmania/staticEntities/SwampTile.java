@@ -51,7 +51,7 @@ public class SwampTile extends staticEntity{
     public void setConfig() {
     }
 
-    public int getMovement_factor() {
+    public int getMovementFactor() {
         return movement_factor;
     }
     
