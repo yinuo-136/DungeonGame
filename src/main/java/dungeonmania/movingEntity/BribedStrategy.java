@@ -17,7 +17,8 @@ public class BribedStrategy implements MercenaryMovingStrategy, Serializable {
      */
     @Override
     public void move(Entity movingEntity) {
-        DijkstraAlgoPathFinder pathFinder = new DijkstraAlgoPathFinder();
+        //DijkstraAlgoPathFinder pathFinder = new DijkstraAlgoPathFinder();
+        NewDijkstraAlgoPathFinder pathFinder = new NewDijkstraAlgoPathFinder();
         Position targetPos = movingEntity.getDungeonInfo().getPlayer().getPlayerLastPosition();
         Direction direction = pathFinder.findNextPath(movingEntity, targetPos);
         if (direction == null) {

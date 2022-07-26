@@ -53,7 +53,7 @@ public class SwampTile extends staticEntity implements Serializable{
     public void setConfig() {
     }
 
-    public int getMovement_factor() {
+    public int getMovementFactor() {
         return movement_factor;
     }
     

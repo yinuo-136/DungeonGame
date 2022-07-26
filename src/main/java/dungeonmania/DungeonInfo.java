@@ -464,4 +464,10 @@ public class DungeonInfo implements Serializable{
         return buildables;
     }
 
+    public void setDungeonGoal(Goal dungeonGoal) {
+        this.dungeonGoal = dungeonGoal;
+    }
+
+    
+
 }

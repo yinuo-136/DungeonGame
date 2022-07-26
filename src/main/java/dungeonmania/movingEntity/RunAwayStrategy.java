@@ -20,7 +20,9 @@ public class RunAwayStrategy implements MercenaryMovingStrategy, Serializable {
      */
     @Override
     public void move(Entity movingEntity) {
-        DijkstraAlgoPathFinder pathFinder = new DijkstraAlgoPathFinder();
+        //DijkstraAlgoPathFinder pathFinder = new DijkstraAlgoPathFinder();
+
+        NewDijkstraAlgoPathFinder pathFinder = new NewDijkstraAlgoPathFinder();
         Direction direction = pathFinder.findNextPathAwayPlayer(movingEntity);
         if (direction == null) {
             return;
