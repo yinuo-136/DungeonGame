@@ -56,6 +56,7 @@ This specification is broken into four parts:
 - Sun 24 Jul 9am - Fix description for exceptions in `interact()` and description for sun stone
 - Sun 24 Jul 9pm - Clarify dungeon state after time travel
 - Sun 24 Jul 11pm - Revert bad spec update and clarify `hydra_health_increase_rate`
+- Tue 26 Jul 11pm - Clarify logical entity input
 
 ## 1. Aims
 
@@ -506,7 +507,7 @@ Some entities will contain additional fields in their JSON entry, namely:
 
 #### 4.1.3 Further Extra Fields 💀
 
-- All logical entities will be created with the field `logic` which will be one of `and`, `or`, `xor`, or `co_and`.
+- All logical entities will be created with the field `logic` which will be one of `and`, `or`, `xor`, or `co_and`. Milestone 2 entities (bombs, switches) that do not have a logic field cannot be activated by wires and act as they did in Milestone 2. Milestone 3 logical entities (light bulbs, switch doors) will always be created with a logic field. Regular doors will never be created with a logic field.
 - All swamp tiles will be created with a field `movement_factor` which will be the tile's movement factor, an integer >= 0.
 - Switch doors will also have keys.
 
