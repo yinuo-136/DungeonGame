@@ -29,6 +29,8 @@ import dungeonmania.inventoryItem.InvItem;
 import dungeonmania.inventoryItem.Sword;
 import dungeonmania.inventoryItem.Potion.InvincibilityPotion;
 import dungeonmania.inventoryItem.Potion.InvisibilityPotion;
+import dungeonmania.movingEntity.Assassin;
+import dungeonmania.movingEntity.Hydra;
 import dungeonmania.movingEntity.Mercenary;
 import dungeonmania.movingEntity.Moving;
 import dungeonmania.movingEntity.Spider;
@@ -92,6 +94,18 @@ public class DungeonInfo {
 
             case "mercenary":
                 newEntity = new Mercenary(new Position(x, y), id);
+                newEntity.setDungeonInfo(info);
+                newEntity.setConfig();
+                break;
+
+            case "assassin":
+                newEntity = new Assassin(new Position(x, y), id);
+                newEntity.setDungeonInfo(info);
+                newEntity.setConfig();
+                break;
+            
+            case "hydra":
+                newEntity = new Hydra(new Position(x,y), id);
                 newEntity.setDungeonInfo(info);
                 newEntity.setConfig();
                 break;
