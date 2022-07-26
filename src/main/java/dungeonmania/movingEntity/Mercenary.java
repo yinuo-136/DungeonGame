@@ -16,6 +16,8 @@ public class Mercenary extends Entity implements Moving, MercenaryType {
     private static int bribedDamage;
     private static int bribedDefence;
     private MercenaryMovingStrategy currentState = new NotBribedStrategy();
+    private MercenaryMovingStrategy prevState = new NotBribedStrategy();
+
     private int costToBribe;
     private int bribeRadius;
     private String type = "mercenary";
@@ -126,5 +128,13 @@ public class Mercenary extends Entity implements Moving, MercenaryType {
 
     public Boolean getBribed() {
         return bribed;
+    }
+
+    public void setInvisibleStrategy(Player player) {
+        prevState = currentState;
+        this.currentState = new RandomStrategy();
+    }
+    public void revertInvisibleStrategy() {
+        this.currentState = prevState;
     }
 }

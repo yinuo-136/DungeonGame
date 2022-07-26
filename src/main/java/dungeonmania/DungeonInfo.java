@@ -32,6 +32,7 @@ import dungeonmania.inventoryItem.Potion.InvisibilityPotion;
 import dungeonmania.movingEntity.Assassin;
 import dungeonmania.movingEntity.Hydra;
 import dungeonmania.movingEntity.Mercenary;
+import dungeonmania.movingEntity.MercenaryType;
 import dungeonmania.movingEntity.Moving;
 import dungeonmania.movingEntity.Spider;
 import dungeonmania.movingEntity.ZombieToast;
@@ -278,6 +279,15 @@ public class DungeonInfo {
         for (Entity e : entityMap.values()){
             if (e.getType() == "mercenary"){
                 list.add((Mercenary) e);
+            }
+        }
+        return list;
+    }
+    public List<MercenaryType> getAllMencenaryType(){
+        List<MercenaryType> list = new ArrayList<>();
+        for (Entity e : entityMap.values()){
+            if (e instanceof MercenaryType){
+                list.add((MercenaryType) e);
             }
         }
         return list;

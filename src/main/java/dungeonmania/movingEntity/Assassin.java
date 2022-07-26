@@ -15,6 +15,8 @@ public class Assassin extends Entity implements Moving, MercenaryType {
     private Position position;
     private String type = "assassin";
     private MercenaryMovingStrategy currentState = new NotBribedStrategy();
+    private MercenaryMovingStrategy prevState = new NotBribedStrategy();
+
     private int costToBribe;
     private int bribeRadius;
     private Double bribe_fail_rate;
@@ -113,8 +115,27 @@ public class Assassin extends Entity implements Moving, MercenaryType {
         EntityResponse response = new EntityResponse(id, type, position, false);
         return response;
     }
+
+    public void setStrategy(MercenaryMovingStrategy strategy) {
+        this.currentState = strategy;
+    }
+
+    public MercenaryMovingStrategy getCurrentState() {
+        return currentState;
+    }
     
     public Boolean getBribed() {
         return bribed;
+    }
+
+    public void setInvisibleStrategy(Player player) {
+        if (Math.abs(player.getPos().getX() - position.getX()) >  assassin_recon_radius || Math.abs(player.getPos().getY() - position.getY()) > assassin_recon_radius) {
+            // if the player is not within the radius of the recon radius, change to random, else stay in current state
+            this.currentState = new RandomStrategy();
+        }
+    }
+
+    public void revertInvisibleStrategy() {
+        this.currentState = prevState;
     }
 }
