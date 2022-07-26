@@ -170,6 +170,10 @@ public class DungeonInfo {
         return configMap.get(name);
     }
 
+    public double getSpecificConfigDouble(String name){
+        return configMap.get(name);
+    }
+
     public List<String> getEntitiesStringByPosition(Position pos) {
         List<String> entities = new ArrayList<String>();
         for (Entity entity : entityMap.values()) {
