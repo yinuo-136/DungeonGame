@@ -164,7 +164,7 @@ public class BuildableTests {
     } */
     
     @Test
-    @DisplayName("Test buildable key")
+    @DisplayName("Test Shield buildable with key")
     public void testUnusedKey() throws IllegalArgumentException, InvalidActionException{
         DungeonManiaController controller = new DungeonManiaController();
         controller.newGame("build_shield", "simple");
@@ -235,5 +235,28 @@ public class BuildableTests {
             assertEquals(controller.getDungeonResponseModel().getBuildables().size(), 0);
     }
     
+    @Test
+    @DisplayName("Test Shield buildable with Sunstone")
+    public void testShieldCraftSunStone() throws IllegalArgumentException, InvalidActionException{
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.newGame("d_build_shield_sunstone", "simple");
+        controller.tick(dungeonmania.util.Direction.RIGHT);
+        controller.tick(dungeonmania.util.Direction.RIGHT);
+        controller.tick(dungeonmania.util.Direction.RIGHT);
 
+        assertTrue(controller.getDungeonResponseModel().getBuildables().contains("shield"));
+
+        DungeonResponse response = controller.build("shield");
+        List<ItemResponse> inventory = response.getInventory();
+        boolean succeed = false;
+        boolean stoneRemains = false;
+        for (ItemResponse item : inventory) {
+            if (item.getType() == "shield") {succeed = true;}
+
+            if (item.getType() == "sun_stone") {stoneRemains = true;}
+        }
+
+        assertTrue(succeed);
+        assertTrue(stoneRemains);
+    }
 }
