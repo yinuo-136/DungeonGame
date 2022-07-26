@@ -441,32 +441,8 @@ public class DungeonInfo {
             tickableEntity.tick();
     }
 
-    /*
-     * Returns list of currently craftable items
-     */
-    public List<String> getCurrentBuildables() {
-        List<String> buildables = new ArrayList<String>();
-
-        Buildable bow = new Bow();
-        bow.setDungeonInfo(this);
-        Buildable shield = new Shield();
-        shield.setDungeonInfo(this);
-
-        if (bow.checkCraftable()) {
-            buildables.add("bow");
-        }
-
-        if (shield.checkCraftable()) {
-            buildables.add("shield");
-        }
-
-        return buildables;
-    }
-
     public void setDungeonGoal(Goal dungeonGoal) {
         this.dungeonGoal = dungeonGoal;
     }
-
-    
 
 }

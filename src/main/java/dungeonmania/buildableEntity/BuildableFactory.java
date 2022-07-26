@@ -4,6 +4,7 @@ import dungeonmania.DungeonInfo;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.inventoryItem.InvItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BuildableFactory {
@@ -44,6 +45,24 @@ public class BuildableFactory {
         }
 
         return id;
+    }
+
+    /*
+     * Returns list of currently craftable items
+     */
+    public List<String> getCurrentBuildables(DungeonInfo info) {
+        List<String> buildables = new ArrayList<String>();
+
+        Buildable bow = new Bow();
+        bow.setDungeonInfo(info);
+        Buildable shield = new Shield();
+        shield.setDungeonInfo(info);
+
+        if (bow.checkCraftable()) { buildables.add("bow");}
+
+        if (shield.checkCraftable()) { buildables.add("shield");}
+
+        return buildables;
     }
 
 }
