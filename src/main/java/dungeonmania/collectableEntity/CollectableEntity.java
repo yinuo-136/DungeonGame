@@ -1,4 +1,5 @@
 package dungeonmania.collectableEntity;
+import java.io.Serializable;
 import java.util.List;
 
 import dungeonmania.DungeonInfo;
@@ -17,7 +18,7 @@ import dungeonmania.player.Player;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Position;
 
-public class CollectableEntity extends Entity{
+public class CollectableEntity extends Entity implements Serializable{
 
     protected String id;
     protected String type;

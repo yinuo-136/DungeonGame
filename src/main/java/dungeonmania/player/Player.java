@@ -1,5 +1,6 @@
 package dungeonmania.player;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -15,7 +16,7 @@ import dungeonmania.staticEntities.staticEntity;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class Player extends Entity {
+public class Player extends Entity implements Serializable{
     private String id;
     private String type = "player";
     private int enemiesMet = 0; 

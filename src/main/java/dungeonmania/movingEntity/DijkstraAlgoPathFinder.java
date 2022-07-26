@@ -1,5 +1,6 @@
 //The BFS algo is from the following website: https://www.geeksforgeeks.org/bfs-or-dfs-for-shortest-path-problem/ 
 package dungeonmania.movingEntity;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -10,7 +11,7 @@ import dungeonmania.Entity;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class DijkstraAlgoPathFinder {
+public class DijkstraAlgoPathFinder implements Serializable{
     // range would be the like a diameter for the graph that dijstra would run.
     private int range = 60;
     private int v = range * range;

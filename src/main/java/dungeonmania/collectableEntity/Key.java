@@ -1,12 +1,13 @@
 package dungeonmania.collectableEntity;
 
+import java.io.Serializable;
 import java.util.List;
 
 import dungeonmania.inventoryItem.InvItem;
 import dungeonmania.inventoryItem.ItemKey;
 import dungeonmania.util.Position;
 
-public class Key extends CollectableEntity{
+public class Key extends CollectableEntity implements Serializable{
     private int key;
 
     public Key(String id, String type, Position position, int key){

@@ -6,6 +6,7 @@ import dungeonmania.inventoryItem.Bomb;
 import dungeonmania.inventoryItem.InvItem;
 import dungeonmania.inventoryItem.Treasure;
 import dungeonmania.movingEntity.Mercenary;
+import dungeonmania.player.Player;
 import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
@@ -13,6 +14,14 @@ import dungeonmania.response.models.ItemResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.FileLoader;
 import dungeonmania.util.Position;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.nio.file.Paths;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -188,7 +197,7 @@ public class DungeonManiaController {
         }
 
         //case zombie spawner
-        if (e.getType() == "zombie_toast_spawner") {
+        if (e.getType().equals("zombie_toast_spawner")) {
             //check player position
             if (isNearSpawner(e.getPos()) == false) {
                 throw new InvalidActionException(" player is not cardinally adjacent to the spawner");
@@ -199,7 +208,7 @@ public class DungeonManiaController {
             }
             info.getEntityMap().remove(entityId);
         }
-        if (e.getType() == "mercenary") {
+        if (e.getType().equals("mercenary")) {
             // check bribe distance
             int PlayerX = info.getPlayer().getPos().getX();
             int PlayerY = info.getPlayer().getPos().getY();
@@ -271,15 +280,64 @@ public class DungeonManiaController {
 
     /**
      * /game/save
+     * 
      */
     public DungeonResponse saveGame(String name) throws IllegalArgumentException {
-        return null;
+        DungeonInfo info = infoMap.get(this.dungeonId);
+        try {
+            String path = Paths.get("").toAbsolutePath().toString();
+            System.out.println("Working Directory = " + path);
+            FileOutputStream fs = new FileOutputStream("src/main/resources/savedGames/" + name);
+            ObjectOutputStream os;
+            try {
+                os = new ObjectOutputStream(fs);
+                os.writeObject(info);
+                os.close();
+                fs.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }         
+            
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return getDungeonResponseModel(); 
     }
 
     /**
      * /game/load
      */
     public DungeonResponse loadGame(String name) throws IllegalArgumentException {
+        List<String> l = allGames();
+        if (l.contains(name) == false) {
+            throw new IllegalArgumentException("not a valid game name");
+        }
+        DungeonCounter = DungeonCounter + 1;
+        this.dungeonId = Integer.toString(DungeonCounter);
+        this.dungeonName = name;
+        
+        try {
+            FileInputStream fi = new FileInputStream("src/main/resources/savedGames/" + name);
+            ObjectInputStream os;
+            try {
+                os = new ObjectInputStream(fi);
+                try {
+                    DungeonInfo info = (DungeonInfo) os.readObject();
+                    infoMap.put(this.dungeonId, info);
+                    os.close();
+                    fi.close();
+                    return getDungeonResponseModel();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        
+        
         return null;
     }
 
@@ -287,7 +345,16 @@ public class DungeonManiaController {
      * /games/all
      */
     public List<String> allGames() {
-        return FileLoader.listFileNamesInResourceDirectory("savedGames");
+        //return FileLoader.listFileNamesInResourceDirectory("savedGames");
+        File folder = new File("src/main/resources/savedGames");
+        File[] listOfFiles = folder.listFiles();
+        List<String> l = new ArrayList<>();
+
+        for (int i = 0; i < listOfFiles.length; i++) {
+            l.add(listOfFiles[i].getName());
+        }
+
+        return l;
     }
 
 }

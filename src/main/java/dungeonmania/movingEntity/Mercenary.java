@@ -1,5 +1,6 @@
 package dungeonmania.movingEntity;
 
+import java.io.Serializable;
 import java.util.List;
 
 import dungeonmania.Entity;
@@ -8,7 +9,7 @@ import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class Mercenary extends Entity implements Moving {
+public class Mercenary extends Entity implements Moving, Serializable {
     private String id;
     private Position position;
     private double health;

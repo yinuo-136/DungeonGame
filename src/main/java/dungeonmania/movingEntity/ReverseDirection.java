@@ -1,11 +1,12 @@
 package dungeonmania.movingEntity;
 
+import java.io.Serializable;
 import java.util.List;
 
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class ReverseDirection implements SpiderMovingState{
+public class ReverseDirection implements SpiderMovingState, Serializable{
     private Spider spider;
 
     public ReverseDirection(Spider spider) {

@@ -1,12 +1,14 @@
 package dungeonmania.goal.basicGoal;
 
+import java.io.Serializable;
+
 import dungeonmania.DungeonInfo;
 import dungeonmania.Entity;
 import dungeonmania.goal.Goal;
 import dungeonmania.movingEntity.Moving;
 import dungeonmania.staticEntities.ZombieToastSpawner;
 
-public class enemiesGoal implements Goal{
+public class enemiesGoal implements Goal, Serializable{
     private DungeonInfo dungeonInfo;
     private int enemy_goal;
 
