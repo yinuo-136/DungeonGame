@@ -108,6 +108,9 @@ public class ExampleTests {
         Position pos = getEntities(res, "mercenary").get(0).getPosition();
         Position expectedPosition = pos.translateBy(Direction.LEFT);
 
+        assertEquals(pos, getEntities(res, "mercenary").get(0).getPosition());
+
+
         res = dmc.tick(Direction.RIGHT);
         assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
         // make sure the player have picked up the potion
