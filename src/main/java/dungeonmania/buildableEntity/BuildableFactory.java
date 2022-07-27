@@ -64,15 +64,19 @@ public class BuildableFactory {
      */
     public List<String> getCurrentBuildables(DungeonInfo info) {
         List<String> buildables = new ArrayList<String>();
+        List<Buildable> craftCheck = new ArrayList<>();
 
-        Buildable bow = new Bow();
-        bow.setDungeonInfo(info);
-        Buildable shield = new Shield();
-        shield.setDungeonInfo(info);
+        craftCheck.add(new Bow());
+        craftCheck.add(new Shield());
+        craftCheck.add(new MidnightArmour());
+        craftCheck.add(new Sceptre());
 
-        if (bow.checkCraftable()) { buildables.add("bow");}
-
-        if (shield.checkCraftable()) { buildables.add("shield");}
+        for (Buildable buildable: craftCheck){
+            buildable.setDungeonInfo(info);
+            if (buildable.checkCraftable()) {
+                buildables.add(buildable.getType());
+            }
+        }
 
         return buildables;
     }
