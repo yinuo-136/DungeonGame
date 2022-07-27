@@ -8,7 +8,7 @@ import dungeonmania.response.models.ItemResponse;
 public class Sceptre implements InvItem, Buildable{
     private String id;
     private static String type = "sceptre";
-
+ 
     private DungeonInfo dungeonInfo;
 
     public Sceptre() {
@@ -48,5 +48,5 @@ public class Sceptre implements InvItem, Buildable{
         // TODO Auto-generated method stub
         return null;
     }
-    
+
 }
