@@ -24,7 +24,19 @@ public class BuildableFactory {
 
                 buildableItem = new Shield(shieldId, info.getSpecificConfig("shield_defence"), info.getSpecificConfig("shield_durability"));
                 break;
-        
+            
+            case "sceptre":
+                String spectreId = idGenerator("sceptre", info);
+
+                buildableItem = new Sceptre(spectreId, info.getSpecificConfig("mind_control_duration"));
+                break;
+
+            case "midnight_armour":
+                String midnightArmourId = idGenerator("midnight_armour", info);
+
+                buildableItem = new MidnightArmour(midnightArmourId, info.getSpecificConfig("midnight_armour_defence"), info.getSpecificConfig("midnight_armour_attack"));
+                break;
+
             default:
                 throw new IllegalArgumentException("Invalid Build Request!");
         }
