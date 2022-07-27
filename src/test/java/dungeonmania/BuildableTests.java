@@ -266,7 +266,9 @@ public class BuildableTests {
     @Test
     @DisplayName("Test Spectre Unit")
     public void testSpectreUnit() {
-        Sceptre sceptre = new Sceptre("sceptre1");
+        Sceptre sceptre = new Sceptre("sceptre1", 3);
+
+        assertEquals(3, sceptre.getDuration());
 
         assertEquals("sceptre1", sceptre.getItemResponse().getId());
         assertEquals("sceptre", sceptre.getItemResponse().getType());
