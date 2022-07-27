@@ -89,4 +89,9 @@ public class Sceptre implements InvItem, Buildable{
 		return duration;
 	}
 
+    @Override
+    public String getType() {
+        return type;
+    }
+
 }

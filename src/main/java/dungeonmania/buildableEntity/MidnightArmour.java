@@ -86,5 +86,10 @@ public class MidnightArmour implements InvItem, Buildable{
     public int getDefenseBonus() {
         return defenseBonus;
     }
+
+    @Override
+    public String getType() {
+        return type;
+    }
     
 }
