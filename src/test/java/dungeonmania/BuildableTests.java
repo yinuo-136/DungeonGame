@@ -269,6 +269,7 @@ public class BuildableTests {
         Sceptre sceptre = new Sceptre("sceptre1", 3);
 
         assertEquals(3, sceptre.getDuration());
+        assertEquals("sceptre", sceptre.getType());
 
         assertEquals("sceptre1", sceptre.getItemResponse().getId());
         assertEquals("sceptre", sceptre.getItemResponse().getType());
@@ -282,6 +283,7 @@ public class BuildableTests {
 
         assertEquals(5, ma.getDefenseBonus());
         assertEquals(6, ma.getAttackBonus());
+        assertEquals("midnight_armour", ma.getType());
 
         assertEquals("midnight_armour1", ma.getItemResponse().getId());
         assertEquals("midnight_armour", ma.getItemResponse().getType());
