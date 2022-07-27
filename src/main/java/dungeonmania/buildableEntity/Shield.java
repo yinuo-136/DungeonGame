@@ -46,31 +46,39 @@ public class Shield implements InvItem,Buildable, Serializable {
     }
 
     public void craft() throws InvalidActionException {
-        List<String> woodIdList = dungeonInfo.getInvItemIdsListByType("wood");
-        List<String> treasureIdList = dungeonInfo.getInvItemIdsListByType("treasure");
-        List<String> keyIdList = dungeonInfo.getInvItemIdsListByType("key");
+        List<String> woodList = dungeonInfo.getInvItemIdsListByType("wood");
+        List<String> treasureList = dungeonInfo.getInvItemIdsListByType("treasure");
+        List<String> keyList = dungeonInfo.getInvItemIdsListByType("key");
+        List<String> sunStoneList = dungeonInfo.getInvItemIdsListByType("sun_stone");
          
 
-        if ((woodIdList.size()<2) || ((treasureIdList.size()<1) && (keyIdList.size()<1)) ) {
+        if ((woodList.size()<2) || ((treasureList.size()<1) && (keyList.size()<1) && sunStoneList.size()<1) ) {
             throw new InvalidActionException("Insufficient Materials to craft Shield!");
         }
 
-        //Remove one wood from inventory
-        dungeonInfo.removeInvItemById(woodIdList.get(0));
-        dungeonInfo.removeInvItemById(woodIdList.get(1));
+        //Remove two wood from inventory
+        dungeonInfo.removeInvItemById(woodList.get(0));
+        dungeonInfo.removeInvItemById(woodList.get(1));
 
-        //Remove Treasure or Key from Inventory (Give priority to Treasure)
-        if (treasureIdList.size() < 1) {
-            dungeonInfo.removeInvItemById(keyIdList.get(0));
-        } else {
-            dungeonInfo.removeInvItemById(treasureIdList.get(0));
+        //Remove Treasure or Key from Inventory (Give priority to Treasure then Key then Sun Stone)
+        if (treasureList.size() > 0) {
+            dungeonInfo.removeInvItemById(treasureList.get(0));
+            return;
         }
         
+        if (keyList.size() > 0) {
+            dungeonInfo.removeInvItemById(keyList.get(0));
+            return;
+        }
     }
 
     public Boolean checkCraftable(){
-        if ((dungeonInfo.getNumInvItemType("wood")<2) || 
-            (dungeonInfo.getNumInvItemType("treasure")<1) && (dungeonInfo.getNumInvItemType("key")<1)) {
+        int numWood = dungeonInfo.getNumInvItemType("wood");
+        int numTreasure = dungeonInfo.getNumInvItemType("treasure");
+        int numKey = dungeonInfo.getNumInvItemType("key");
+        int numSunStone = dungeonInfo.getNumInvItemType("sun_stone");
+
+        if ( numWood <2 || (numTreasure<1 && numKey<1 && numSunStone<1)) {
            return false;
         }
 
