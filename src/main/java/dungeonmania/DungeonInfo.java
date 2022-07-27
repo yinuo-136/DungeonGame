@@ -30,7 +30,10 @@ import dungeonmania.inventoryItem.InvItem;
 import dungeonmania.inventoryItem.Sword;
 import dungeonmania.inventoryItem.Potion.InvincibilityPotion;
 import dungeonmania.inventoryItem.Potion.InvisibilityPotion;
+import dungeonmania.movingEntity.Assassin;
+import dungeonmania.movingEntity.Hydra;
 import dungeonmania.movingEntity.Mercenary;
+import dungeonmania.movingEntity.MercenaryType;
 import dungeonmania.movingEntity.Moving;
 import dungeonmania.movingEntity.Spider;
 import dungeonmania.movingEntity.ZombieToast;
@@ -93,6 +96,18 @@ public class DungeonInfo implements Serializable{
 
             case "mercenary":
                 newEntity = new Mercenary(new Position(x, y), id);
+                newEntity.setDungeonInfo(info);
+                newEntity.setConfig();
+                break;
+
+            case "assassin":
+                newEntity = new Assassin(new Position(x, y), id);
+                newEntity.setDungeonInfo(info);
+                newEntity.setConfig();
+                break;
+            
+            case "hydra":
+                newEntity = new Hydra(new Position(x,y), id);
                 newEntity.setDungeonInfo(info);
                 newEntity.setConfig();
                 break;
@@ -168,6 +183,10 @@ public class DungeonInfo implements Serializable{
     }
 
     public int getSpecificConfig(String name){
+        return configMap.get(name);
+    }
+
+    public double getSpecificConfigDouble(String name){
         return configMap.get(name);
     }
 
@@ -261,6 +280,15 @@ public class DungeonInfo implements Serializable{
         for (Entity e : entityMap.values()){
             if (e.getType().equals("mercenary")){
                 list.add((Mercenary) e);
+            }
+        }
+        return list;
+    }
+    public List<MercenaryType> getAllMencenaryType(){
+        List<MercenaryType> list = new ArrayList<>();
+        for (Entity e : entityMap.values()){
+            if (e instanceof MercenaryType){
+                list.add((MercenaryType) e);
             }
         }
         return list;
