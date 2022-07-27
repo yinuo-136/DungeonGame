@@ -9,7 +9,7 @@ import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class Mercenary extends Entity implements Moving, Serializable, MercenaryType  {
+public class Mercenary extends Entity implements Moving, MercenaryType, Serializable {
     private String id;
     private Position position;
     private double health;

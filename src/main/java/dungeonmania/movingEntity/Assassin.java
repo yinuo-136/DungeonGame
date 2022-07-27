@@ -1,5 +1,6 @@
 package dungeonmania.movingEntity;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Random;
 
@@ -8,7 +9,7 @@ import dungeonmania.player.Player;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Position;
 
-public class Assassin extends Entity implements Moving, MercenaryType {
+public class Assassin extends Entity implements Moving, MercenaryType, Serializable {
     private String id;
     private double health;
     private double damage;

@@ -1,5 +1,6 @@
 package dungeonmania.movingEntity;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Random;
 
@@ -7,7 +8,7 @@ import dungeonmania.Entity;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Position;
 
-public class Hydra extends Entity implements Moving, ZombieType {
+public class Hydra extends Entity implements Moving, ZombieType, Serializable {
     private String id;
     private Position position;
     private double health;

@@ -215,24 +215,11 @@ public class DungeonManiaController {
             }
             info.getEntityMap().remove(entityId);
         }
-<<<<<<< HEAD
 
         if(e instanceof MercenaryType){
             int amount = ((MercenaryType)e).getCostToBribe();
             // check if the player is within the bribe radius
             if (((MercenaryType) e).checkBribeDistance(info.getPlayer()) == false) {
-=======
-        if (e.getType().equals("mercenary")) {
-            // check bribe distance
-            int PlayerX = info.getPlayer().getPos().getX();
-            int PlayerY = info.getPlayer().getPos().getY();
-            int mercenaryX = e.getPos().getX();
-            int mercenaryY = e.getPos().getY();
-            int radius = info.getSpecificConfig("bribe_radius");
-            int amount = info.getSpecificConfig("bribe_amount");
-            if (Math.abs(PlayerX - mercenaryX) >  radius || Math.abs(PlayerY - mercenaryY) > radius) {
-                // if the player is not within the radius of the mercenary bribe radius
->>>>>>> origin/master
                 throw new InvalidActionException("Player is not in the mercenary's range");
             }
             // check if player has enough money
