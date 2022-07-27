@@ -262,10 +262,10 @@ public class BuildableTests {
         assertTrue(stoneRemains);
     }
 
-    // Spectre and Midnight unit tests
+    // sceptre and Midnight unit tests
     @Test
-    @DisplayName("Test Spectre Unit")
-    public void testSpectreUnit() {
+    @DisplayName("Test sceptre Unit")
+    public void testsceptreUnit() {
         Sceptre sceptre = new Sceptre("sceptre1", 3);
 
         assertEquals(3, sceptre.getDuration());
@@ -358,18 +358,18 @@ public class BuildableTests {
     @DisplayName("Test Sceptre buildable with Wood, key and sunstone")
     public void testSceptreCrafting() throws IllegalArgumentException, InvalidActionException{
         DungeonManiaController controller = new DungeonManiaController();
-        controller.newGame("d_build_spectre", "simple");
+        controller.newGame("d_build_sceptre", "simple");
         controller.tick(dungeonmania.util.Direction.RIGHT);
         controller.tick(dungeonmania.util.Direction.RIGHT);
         controller.tick(dungeonmania.util.Direction.RIGHT);
 
-        assertTrue(controller.getDungeonResponseModel().getBuildables().contains("spectre"));
+        assertTrue(controller.getDungeonResponseModel().getBuildables().contains("sceptre"));
 
-        DungeonResponse response = controller.build("spectre");
+        DungeonResponse response = controller.build("sceptre");
         List<ItemResponse> inventory = response.getInventory();
         boolean succeed = false;
         for (ItemResponse item : inventory) {
-            if (item.getType() == "spectre")
+            if (item.getType() == "sceptre")
                 succeed = true;
         }
         assertTrue(succeed);
@@ -379,19 +379,19 @@ public class BuildableTests {
     @DisplayName("Test Sceptre buildable with Arrow, treasure and sunstone")
     public void testSceptreCrafting1() throws IllegalArgumentException, InvalidActionException{
         DungeonManiaController controller = new DungeonManiaController();
-        controller.newGame("d_build_spectre1", "simple");
+        controller.newGame("d_build_sceptre1", "simple");
         controller.tick(dungeonmania.util.Direction.RIGHT);
         controller.tick(dungeonmania.util.Direction.RIGHT);
         controller.tick(dungeonmania.util.Direction.RIGHT);
         controller.tick(dungeonmania.util.Direction.RIGHT);
 
-        assertTrue(controller.getDungeonResponseModel().getBuildables().contains("spectre"));
+        assertTrue(controller.getDungeonResponseModel().getBuildables().contains("sceptre"));
 
-        DungeonResponse response = controller.build("spectre");
+        DungeonResponse response = controller.build("sceptre");
         List<ItemResponse> inventory = response.getInventory();
         boolean succeed = false;
         for (ItemResponse item : inventory) {
-            if (item.getType() == "spectre")
+            if (item.getType() == "sceptre")
                 succeed = true;
         }
         assertTrue(succeed);
@@ -401,17 +401,17 @@ public class BuildableTests {
     @DisplayName("Test Sceptre buildable with Wood and sunstone")
     public void testSceptreCrafting2() throws IllegalArgumentException, InvalidActionException{
         DungeonManiaController controller = new DungeonManiaController();
-        controller.newGame("d_build_spectre2", "simple");
+        controller.newGame("d_build_sceptre2", "simple");
         controller.tick(dungeonmania.util.Direction.RIGHT);
         controller.tick(dungeonmania.util.Direction.RIGHT);
 
-        assertTrue(controller.getDungeonResponseModel().getBuildables().contains("spectre"));
+        assertTrue(controller.getDungeonResponseModel().getBuildables().contains("sceptre"));
 
-        DungeonResponse response = controller.build("spectre");
+        DungeonResponse response = controller.build("sceptre");
         List<ItemResponse> inventory = response.getInventory();
         boolean succeed = false;
         for (ItemResponse item : inventory) {
-            if (item.getType() == "spectre")
+            if (item.getType() == "sceptre")
                 succeed = true;
         }
         assertTrue(succeed);
