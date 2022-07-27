@@ -130,11 +130,17 @@ public class Mercenary extends Entity implements Moving, MercenaryType {
         return bribed;
     }
 
-    public void setInvisibleStrategy(Player player) {
+    public void setPlayerInvisibleStrategy(Player player) {
         prevState = currentState;
         this.currentState = new RandomStrategy();
     }
-    public void revertInvisibleStrategy() {
+
+    public void revertStrategy() {
         this.currentState = prevState;
+    }
+
+    public void setPlayerInvincibleStrategy() {
+        prevState = currentState;
+        this.currentState = new RunAwayStrategy();
     }
 }

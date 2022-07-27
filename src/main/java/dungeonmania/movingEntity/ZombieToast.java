@@ -11,7 +11,7 @@ import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class ZombieToast extends Entity implements Moving{
+public class ZombieToast extends Entity implements Moving, ZombieType{
     private String id;
     private double health;
     private double damage;

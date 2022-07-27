@@ -1,12 +1,13 @@
 package dungeonmania.movingEntity;
 
 import java.util.List;
+import java.util.Random;
 
 import dungeonmania.Entity;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Position;
 
-public class Hydra extends Entity implements Moving{
+public class Hydra extends Entity implements Moving, ZombieType {
     private String id;
     private Position position;
     private double health;
@@ -20,6 +21,15 @@ public class Hydra extends Entity implements Moving{
     public Hydra(Position position, String id) {
         this.id = id;
         this.position = position;
+    }
+
+    public boolean chanceTrue(){
+        // if the random number is greater than 0 after subtract the rate(between 0 to 1) times by 100, then return true.
+        Random rand = new Random();
+        if (rand.nextInt(100) - hydra_health_increase_rate*100 > 0) {
+            return true;
+        }
+        return false;
     }
 
     @Override

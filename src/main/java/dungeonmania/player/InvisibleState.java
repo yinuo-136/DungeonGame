@@ -29,7 +29,7 @@ public class InvisibleState implements PlayerState {
         // }
         List<MercenaryType> allMencenaryType = player.getDungeonInfo().getAllMencenaryType();
         for (MercenaryType mencenaryType : allMencenaryType) {
-            mencenaryType.setInvisibleStrategy(player);
+            mencenaryType.setPlayerInvisibleStrategy(player);
         }
     }
 
@@ -61,7 +61,7 @@ public class InvisibleState implements PlayerState {
             List<MercenaryType> allMencenaryType = player.getDungeonInfo().getAllMencenaryType();
             // return all mencenary to its original state
             for (MercenaryType mencenaryType : allMencenaryType) {
-                mencenaryType.revertInvisibleStrategy();
+                mencenaryType.revertStrategy();
             }
             Potion potion = player.pullPotion();
             if (potion != null) {

@@ -43,6 +43,7 @@ public class Assassin extends Entity implements Moving, MercenaryType {
     }
 
     public boolean chanceTrue(){
+        // if the random number is greater than 0 after subtract the rate(between 0 to 1) times by 100, then return true.
         Random rand = new Random();
         if (rand.nextInt(100) - bribe_fail_rate*100 > 0) {
             return true;
@@ -128,14 +129,22 @@ public class Assassin extends Entity implements Moving, MercenaryType {
         return bribed;
     }
 
-    public void setInvisibleStrategy(Player player) {
+    public void setPlayerInvisibleStrategy(Player player) {
+        prevState = currentState;
         if (Math.abs(player.getPos().getX() - position.getX()) >  assassin_recon_radius || Math.abs(player.getPos().getY() - position.getY()) > assassin_recon_radius) {
             // if the player is not within the radius of the recon radius, change to random, else stay in current state
-            this.currentState = new RandomStrategy();
+            return;
         }
+        this.currentState = new RandomStrategy();
     }
 
-    public void revertInvisibleStrategy() {
+    // return to previous state 
+    public void revertStrategy() {
         this.currentState = prevState;
+    }
+
+    public void setPlayerInvincibleStrategy() {
+        prevState = currentState;
+        this.currentState = new RunAwayStrategy();
     }
 }
