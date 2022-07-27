@@ -1,5 +1,6 @@
 package dungeonmania.movingEntity;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -7,7 +8,7 @@ import java.util.Random;
 import dungeonmania.Entity;
 import dungeonmania.util.Direction;
 
-public class RandomStrategy implements MercenaryMovingStrategy {
+public class RandomStrategy implements MercenaryMovingStrategy , Serializable{
     private List<Direction> directions = Arrays.asList(Direction.DOWN, Direction.UP, Direction.LEFT, Direction.RIGHT);
     private List<String> movingConstrintItemList = Arrays.asList("wall", "boulder");
 

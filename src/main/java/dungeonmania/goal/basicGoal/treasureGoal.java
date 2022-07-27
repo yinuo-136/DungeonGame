@@ -1,5 +1,7 @@
 package dungeonmania.goal.basicGoal;
 
+import java.io.Serializable;
+
 import dungeonmania.DungeonInfo;
 import dungeonmania.Entity;
 import dungeonmania.goal.Goal;
@@ -7,7 +9,7 @@ import dungeonmania.inventoryItem.InvItem;
 import dungeonmania.inventoryItem.Sunstone;
 import dungeonmania.inventoryItem.Treasure;
 
-public class treasureGoal implements Goal{
+public class treasureGoal implements Goal, Serializable{
     private DungeonInfo dungeonInfo;
     private int treasure;
     

@@ -1,10 +1,12 @@
 package dungeonmania.staticEntities;
 
+import java.io.Serializable;
+
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class Exit extends staticEntity {
+public class Exit extends staticEntity implements Serializable{
     private Position pos;
     private String id;
     private String type = "exit";

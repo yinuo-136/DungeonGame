@@ -1,5 +1,6 @@
 package dungeonmania;
 
+import java.io.Serializable;
 import java.io.ObjectInputFilter.Config;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,7 +50,7 @@ import dungeonmania.staticEntities.ZombieToastSpawner;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class DungeonInfo {
+public class DungeonInfo implements Serializable{
     private HashMap<String, Entity> entityMap = new HashMap<>(); // the entity map
     private HashMap<String, Integer> configMap = new HashMap<>(); // the config file map
     private List<InvItem> itemList = new ArrayList<>(); // the item list
@@ -205,7 +206,7 @@ public class DungeonInfo {
     //find the player
     public Player getPlayer(){
         for (Entity e : entityMap.values()){
-            if (e.getType() == "player"){
+            if (e.getType().equals("player")){
                 Player p = (Player) e;
                 return p;
             }
@@ -254,7 +255,7 @@ public class DungeonInfo {
     public List<Moving> getAllMovingEntity(){
         List<Moving> list = new ArrayList<>();
         for (Entity e : entityMap.values()){
-            if (e.getType() == "spider" || e.getType() == "mercenary" || e.getType() == "zombie_toast"){
+            if (e.getType().equals("spider") || e.getType().equals("mercenary") || e.getType().equals("zombie_toast")){
                 list.add((Moving) e);
             }
         }
@@ -263,7 +264,7 @@ public class DungeonInfo {
     public List<Mercenary> getAllMencenary(){
         List<Mercenary> list = new ArrayList<>();
         for (Entity e : entityMap.values()){
-            if (e.getType() == "mercenary"){
+            if (e.getType().equals("mercenary")){
                 list.add((Mercenary) e);
             }
         }
@@ -272,7 +273,7 @@ public class DungeonInfo {
     public List<ZombieToast> getAllZombie(){
         List<ZombieToast> list = new ArrayList<>();
         for (Entity e : entityMap.values()){
-            if (e.getType() == "zombie_toast"){
+            if (e.getType().equals("zombie_toast")){
                 list.add((ZombieToast) e);
             }
         }
@@ -354,7 +355,7 @@ public class DungeonInfo {
         // spawn zombie
         List<ZombieToastSpawner> zl = new ArrayList<>();
         for (Entity e : entityMap.values()){
-            if (e.getType() == "zombie_toast_spawner") {
+            if (e.getType().equals("zombie_toast_spawner")) {
                 ZombieToastSpawner z = (ZombieToastSpawner) e;
                 zl.add(z);
             }

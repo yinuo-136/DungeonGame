@@ -1,5 +1,6 @@
 package dungeonmania.buildableEntity;
 
+import java.io.Serializable;
 import java.util.List;
 
 import dungeonmania.DungeonInfo;
@@ -7,7 +8,7 @@ import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.inventoryItem.InvItem;
 import dungeonmania.response.models.ItemResponse;
 
-public class Bow implements InvItem, Buildable {
+public class Bow implements InvItem, Buildable, Serializable {
 
     private String id;
     private static String type = "bow";

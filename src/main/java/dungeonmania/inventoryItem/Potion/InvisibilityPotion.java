@@ -1,11 +1,13 @@
 package dungeonmania.inventoryItem.Potion;
+import java.io.Serializable;
+
 import dungeonmania.DungeonInfo;
 import dungeonmania.inventoryItem.InvItem;
 import dungeonmania.player.InvisibleState;
 import dungeonmania.player.Player;
 import dungeonmania.response.models.ItemResponse;
 
-public class InvisibilityPotion implements Potion, InvItem {
+public class InvisibilityPotion implements Potion, InvItem, Serializable {
     private int duration;
     private String id;
     private String type = "invisibility_potion";

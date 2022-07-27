@@ -1,5 +1,6 @@
 package dungeonmania.player;
 
+import java.io.Serializable;
 import java.util.List;
 
 import dungeonmania.inventoryItem.Potion.Potion;
@@ -11,7 +12,7 @@ import dungeonmania.movingEntity.RunAwayStrategy;
 import dungeonmania.movingEntity.ZombieToast;
 import dungeonmania.util.Position;
 
-public class InvincibleState implements PlayerState {
+public class InvincibleState implements PlayerState, Serializable {
 
     private double attack = Double.MAX_VALUE;
     private double health = Double.MAX_VALUE;
