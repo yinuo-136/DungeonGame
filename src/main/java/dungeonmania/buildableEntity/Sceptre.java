@@ -15,6 +15,7 @@ public class Sceptre implements InvItem, Buildable{
     }
 
     public Sceptre(String id) {
+        this.id = id;
     }
 
     @Override
@@ -35,18 +36,17 @@ public class Sceptre implements InvItem, Buildable{
 
     @Override
     public ItemResponse getItemResponse() {
-        // TODO Auto-generated method stub
-        return null;
+        return new ItemResponse(id, type);
     }
 
     @Override
     public void setDungeonInfo(DungeonInfo dungeonInfo) {
+        this.dungeonInfo = dungeonInfo;
     }
 
     @Override
     public String getId() {
-        // TODO Auto-generated method stub
-        return null;
+        return id;
     }
 
 }

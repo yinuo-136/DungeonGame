@@ -10,13 +10,16 @@ public class MidnightArmour implements InvItem, Buildable{
     private static String type = "midnight_armour";
 
     private int defenseBonus;
-    private int AttackBonus;
+    private int attackBonus;
     private DungeonInfo dungeonInfo;
 
     public MidnightArmour() {
     }
 
-    public MidnightArmour(String id, int defenseBonus, int AttackBonus) {
+    public MidnightArmour(String id, int defenseBonus, int attackBonus) {
+        this.id = id;
+        this.defenseBonus = defenseBonus;
+        this.attackBonus = attackBonus;
     }
 
     @Override
@@ -39,28 +42,26 @@ public class MidnightArmour implements InvItem, Buildable{
 
     @Override
     public ItemResponse getItemResponse() {
-        // TODO Auto-generated method stub
-        return null;
+        return new ItemResponse(id, type);
     }
 
     @Override
     public void setDungeonInfo(DungeonInfo dungeonInfo) {
-        // TODO Auto-generated method stub
+        this.dungeonInfo = dungeonInfo;
         
     }
 
     @Override
     public String getId() {
-        // TODO Auto-generated method stub
-        return null;
+        return id;
     }
 
     public int getAttackBonus() {
-        return 0;
+        return attackBonus;
     }
 
     public int getDefenseBonus() {
-        return 0;
+        return defenseBonus;
     }
     
 }
