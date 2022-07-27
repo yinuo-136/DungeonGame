@@ -1,9 +1,11 @@
 package dungeonmania.goal.complexGoal;
 
+import java.io.Serializable;
+
 import dungeonmania.goal.Goal;
 import dungeonmania.goal.basicGoal.exitGoal;
 
-public class andGoal implements Goal{
+public class andGoal implements Goal, Serializable{
     Goal firstGoal;
     Goal secGoal;
 

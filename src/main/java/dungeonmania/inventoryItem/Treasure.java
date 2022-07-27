@@ -1,9 +1,11 @@
 package dungeonmania.inventoryItem;
 
+import java.io.Serializable;
+
 import dungeonmania.DungeonInfo;
 import dungeonmania.response.models.ItemResponse;
 
-public class Treasure implements InvItem {
+public class Treasure implements InvItem, Serializable {
 
     private String id;
     private String type = "treasure";

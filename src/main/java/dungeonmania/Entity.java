@@ -1,9 +1,11 @@
 package dungeonmania;
 
+import java.io.Serializable;
+
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Position;
 
-public abstract class Entity {
+public abstract class Entity implements Serializable{
     protected DungeonInfo dungeonInfo;
     public abstract String getId();
     public abstract String getType();

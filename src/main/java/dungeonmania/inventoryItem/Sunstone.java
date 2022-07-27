@@ -1,9 +1,11 @@
 package dungeonmania.inventoryItem;
 
+import java.io.Serializable;
+
 import dungeonmania.DungeonInfo;
 import dungeonmania.response.models.ItemResponse;
 
-public class Sunstone implements InvItem{
+public class Sunstone implements InvItem, Serializable{
     String id;
     private String type = "sun_stone";
 

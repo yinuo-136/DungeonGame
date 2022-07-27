@@ -1,5 +1,6 @@
 package dungeonmania.staticEntities;
 
+import java.io.Serializable;
 import java.util.List;
 
 import dungeonmania.inventoryItem.InvItem;
@@ -9,7 +10,7 @@ import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class Door extends staticEntity{
+public class Door extends staticEntity implements Serializable{
     private String id;
     private Position pos;
     private boolean isOpen;

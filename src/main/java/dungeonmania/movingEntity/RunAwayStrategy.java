@@ -1,12 +1,13 @@
 package dungeonmania.movingEntity;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
 import dungeonmania.Entity;
 import dungeonmania.util.Direction;
 
-public class RunAwayStrategy implements MercenaryMovingStrategy {
+public class RunAwayStrategy implements MercenaryMovingStrategy, Serializable {
     private List<String> movingConstrintItemList = Arrays.asList("wall", "boulder");
 
     
