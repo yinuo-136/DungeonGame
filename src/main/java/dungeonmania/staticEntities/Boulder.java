@@ -1,5 +1,6 @@
 package dungeonmania.staticEntities;
 
+import java.io.Serializable;
 import java.util.List;
 
 import dungeonmania.Entity;
@@ -7,7 +8,7 @@ import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class Boulder extends staticEntity {
+public class Boulder extends staticEntity implements Serializable{
     private String id;
     private Position position;
     private String type = "boulder";

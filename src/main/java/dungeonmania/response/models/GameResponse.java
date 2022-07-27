@@ -1,8 +1,9 @@
 package dungeonmania.response.models;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public final class GameResponse {
+public final class GameResponse implements Serializable{
     private final String dungeonId;
     private final String name;
     private final LocalDateTime lastSaved;

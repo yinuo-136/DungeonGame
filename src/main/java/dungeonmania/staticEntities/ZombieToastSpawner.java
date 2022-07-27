@@ -1,5 +1,6 @@
 package dungeonmania.staticEntities;
 
+import java.io.Serializable;
 import java.util.List;
 
 import dungeonmania.Entity;
@@ -7,7 +8,7 @@ import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class ZombieToastSpawner extends staticEntity {
+public class ZombieToastSpawner extends staticEntity implements Serializable{
     private String id;
     private Position pos;
     private int Spawntime;

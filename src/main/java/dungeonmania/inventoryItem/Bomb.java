@@ -1,11 +1,13 @@
 package dungeonmania.inventoryItem;
 
+import java.io.Serializable;
+
 import dungeonmania.DungeonInfo;
 import dungeonmania.response.models.ItemResponse;
 import dungeonmania.staticEntities.PlacedBomb;
 import dungeonmania.util.Position;
 
-public class Bomb implements InvItem {
+public class Bomb implements InvItem, Serializable {
 
     private String id;
     private String type = "bomb";

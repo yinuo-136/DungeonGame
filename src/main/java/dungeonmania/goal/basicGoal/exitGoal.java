@@ -1,5 +1,7 @@
 package dungeonmania.goal.basicGoal;
 
+import java.io.Serializable;
+
 import dungeonmania.DungeonInfo;
 import dungeonmania.Entity;
 import dungeonmania.goal.Goal;
@@ -7,7 +9,7 @@ import dungeonmania.player.Player;
 import dungeonmania.staticEntities.Exit;
 import dungeonmania.util.Position;
 
-public class exitGoal implements Goal{
+public class exitGoal implements Goal, Serializable{
     private DungeonInfo dungeonInfo;
 
     public exitGoal(DungeonInfo info) {

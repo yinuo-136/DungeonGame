@@ -1,9 +1,11 @@
 package dungeonmania.player;
 
+import java.io.Serializable;
+
 import dungeonmania.inventoryItem.Potion.Potion;
 import dungeonmania.util.Position;
 
-public class NormalState implements PlayerState {
+public class NormalState implements PlayerState, Serializable {
 
     private Player player;
     public NormalState(Player player) {

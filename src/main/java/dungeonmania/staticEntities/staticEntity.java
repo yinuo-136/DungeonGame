@@ -1,5 +1,7 @@
 package dungeonmania.staticEntities;
 
+import java.io.Serializable;
+
 import dungeonmania.Entity;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;

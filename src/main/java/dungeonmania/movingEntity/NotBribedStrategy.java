@@ -1,12 +1,13 @@
 package dungeonmania.movingEntity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import dungeonmania.Entity;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class NotBribedStrategy implements MercenaryMovingStrategy {
+public class NotBribedStrategy implements MercenaryMovingStrategy, Serializable{
     
     public String getStatename() {
         return "NotBribed";

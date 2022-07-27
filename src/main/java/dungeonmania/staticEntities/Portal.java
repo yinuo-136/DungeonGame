@@ -1,5 +1,6 @@
 package dungeonmania.staticEntities;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +9,7 @@ import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class Portal extends staticEntity {
+public class Portal extends staticEntity implements Serializable{
     private String id;
     private static List<Portal> portalList = new ArrayList<>();
     private Position pos;
