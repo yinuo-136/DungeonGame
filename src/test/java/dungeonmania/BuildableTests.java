@@ -8,6 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import dungeonmania.DungeonManiaController;
 import dungeonmania.buildableEntity.Bow;
 import dungeonmania.buildableEntity.Shield;
+import dungeonmania.buildableEntity.Sceptre;
+import dungeonmania.buildableEntity.MidnightArmour;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.ItemResponse;
@@ -122,7 +124,7 @@ public class BuildableTests {
     }
 
     @Test
-    @DisplayName("Test buildable wood and arrow")
+    @DisplayName("Test Bow buildable wood and arrow")
     public void testWoodAndArrow() throws IllegalArgumentException, InvalidActionException{
         DungeonManiaController controller = new DungeonManiaController();
         controller.newGame("build_bow", "simple");
@@ -259,4 +261,145 @@ public class BuildableTests {
         assertTrue(succeed);
         assertTrue(stoneRemains);
     }
+
+    // Spectre and Midnight unit tests
+    @Test
+    @DisplayName("Test Spectre Unit")
+    public void testSpectreUnit() {
+        Sceptre sceptre = new Sceptre("sceptre1");
+
+        assertEquals("sceptre1", sceptre.getItemResponse().getId());
+        assertEquals("sceptre", sceptre.getItemResponse().getType());
+        
+    }
+
+    @Test
+    @DisplayName("Test Midnight Armour Unit")
+    public void testMidnightArmourUnit() {
+        MidnightArmour ma = new MidnightArmour("midnight_armour1", 5, 6);
+
+        assertEquals(5, ma.getDefenseBonus());
+        assertEquals(6, ma.getAttackBonus());
+
+        assertEquals("midnight_armour1", ma.getItemResponse().getId());
+        assertEquals("midnight_armour", ma.getItemResponse().getType());
+        
+    }
+ 
+    @Test
+    @DisplayName("Test crafting sceptre without required items")
+    public void testInsufficientItemForSceptre() {
+        assertThrows(InvalidActionException.class,
+            () -> {
+                DungeonManiaController controller = new DungeonManiaController();
+            controller.newGame("d_build_sceptre", "simple");
+            controller.build("sceptre");
+            });
+    }
+
+    @Test
+    @DisplayName("Test crafting Midnight Armour without required items")
+    public void testInsufficientItemForMidnightArmour() {
+        assertThrows(InvalidActionException.class,
+            () -> {
+                DungeonManiaController controller = new DungeonManiaController();
+            controller.newGame("d_build_ma", "simple");
+            controller.build("midnight_armour");
+            });
+    }
+
+    @Test
+    @DisplayName("Test crafting Midnight Armour with Zombie on Map")
+    public void testCraftMidnightArmourWithZombie() {
+        assertThrows(InvalidActionException.class,
+            () -> {
+                DungeonManiaController controller = new DungeonManiaController();
+            controller.newGame("d_build_ma_zombie", "simple");
+            controller.build("midnight_armour");
+            });
+    }
+
+    @Test
+    @DisplayName("Test Midnight Armour buildable")
+    public void testMidnightArmourCrafting() throws IllegalArgumentException, InvalidActionException{
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.newGame("d_build_ma", "simple");
+        controller.tick(dungeonmania.util.Direction.RIGHT);
+        controller.tick(dungeonmania.util.Direction.RIGHT);
+
+        assertTrue(controller.getDungeonResponseModel().getBuildables().contains("midnight_armour"));
+
+        DungeonResponse response = controller.build("midnight_armour");
+        List<ItemResponse> inventory = response.getInventory();
+        boolean succeed = false;
+        for (ItemResponse item : inventory) {
+            if (item.getType() == "midnight_armour")
+                succeed = true;
+        }
+        assertTrue(succeed);
+    }
+
+    @Test
+    @DisplayName("Test Sceptre buildable with Wood, key and sunstone")
+    public void testSceptreCrafting() throws IllegalArgumentException, InvalidActionException{
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.newGame("d_build_spectre", "simple");
+        controller.tick(dungeonmania.util.Direction.RIGHT);
+        controller.tick(dungeonmania.util.Direction.RIGHT);
+        controller.tick(dungeonmania.util.Direction.RIGHT);
+
+        assertTrue(controller.getDungeonResponseModel().getBuildables().contains("spectre"));
+
+        DungeonResponse response = controller.build("spectre");
+        List<ItemResponse> inventory = response.getInventory();
+        boolean succeed = false;
+        for (ItemResponse item : inventory) {
+            if (item.getType() == "spectre")
+                succeed = true;
+        }
+        assertTrue(succeed);
+    }
+
+    @Test
+    @DisplayName("Test Sceptre buildable with Arrow, treasure and sunstone")
+    public void testSceptreCrafting1() throws IllegalArgumentException, InvalidActionException{
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.newGame("d_build_spectre1", "simple");
+        controller.tick(dungeonmania.util.Direction.RIGHT);
+        controller.tick(dungeonmania.util.Direction.RIGHT);
+        controller.tick(dungeonmania.util.Direction.RIGHT);
+        controller.tick(dungeonmania.util.Direction.RIGHT);
+
+        assertTrue(controller.getDungeonResponseModel().getBuildables().contains("spectre"));
+
+        DungeonResponse response = controller.build("spectre");
+        List<ItemResponse> inventory = response.getInventory();
+        boolean succeed = false;
+        for (ItemResponse item : inventory) {
+            if (item.getType() == "spectre")
+                succeed = true;
+        }
+        assertTrue(succeed);
+    }
+
+    @Test
+    @DisplayName("Test Sceptre buildable with Wood and sunstone")
+    public void testSceptreCrafting2() throws IllegalArgumentException, InvalidActionException{
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.newGame("d_build_spectre2", "simple");
+        controller.tick(dungeonmania.util.Direction.RIGHT);
+        controller.tick(dungeonmania.util.Direction.RIGHT);
+
+        assertTrue(controller.getDungeonResponseModel().getBuildables().contains("spectre"));
+
+        DungeonResponse response = controller.build("spectre");
+        List<ItemResponse> inventory = response.getInventory();
+        boolean succeed = false;
+        for (ItemResponse item : inventory) {
+            if (item.getType() == "spectre")
+                succeed = true;
+        }
+        assertTrue(succeed);
+    }
+
 }
