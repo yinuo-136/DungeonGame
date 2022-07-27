@@ -1,5 +1,6 @@
 package dungeonmania.staticEntities;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 
@@ -9,7 +10,7 @@ import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class Wall extends staticEntity {
+public class Wall extends staticEntity implements Serializable{
     String id;
     private Position pos;
     private String type = "wall";

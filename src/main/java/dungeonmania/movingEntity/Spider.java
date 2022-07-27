@@ -1,5 +1,6 @@
 package dungeonmania.movingEntity;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Random;
 
@@ -9,7 +10,7 @@ import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class Spider extends Entity implements Moving {
+public class Spider extends Entity implements Moving, Serializable {
     private static double damage;
     private static int SpawnRate;
     private static int timeToSpawn;

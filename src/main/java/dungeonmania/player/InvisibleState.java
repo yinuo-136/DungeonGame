@@ -1,5 +1,6 @@
 package dungeonmania.player;
 
+import java.io.Serializable;
 import java.util.List;
 
 import dungeonmania.inventoryItem.Potion.Potion;
@@ -11,7 +12,7 @@ import dungeonmania.movingEntity.NotBribedStrategy;
 import dungeonmania.movingEntity.RandomStrategy;
 import dungeonmania.util.Position;
 
-public class InvisibleState implements PlayerState {
+public class InvisibleState implements PlayerState, Serializable {
     
     private int potionTime;
     private Player player;

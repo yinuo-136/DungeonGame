@@ -1,12 +1,14 @@
 package dungeonmania.goal.basicGoal;
 
+import java.io.Serializable;
+
 import dungeonmania.DungeonInfo;
 import dungeonmania.Entity;
 import dungeonmania.goal.Goal;
 import dungeonmania.staticEntities.Boulder;
 import dungeonmania.staticEntities.FloorSwitch;
 
-public class bouldersGoal implements Goal{
+public class bouldersGoal implements Goal, Serializable{
     private DungeonInfo dungeonInfo;
     
     public bouldersGoal(DungeonInfo info) {

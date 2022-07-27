@@ -1,5 +1,6 @@
 package dungeonmania.movingEntity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -11,7 +12,7 @@ import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class ZombieToast extends Entity implements Moving, ZombieType{
+public class ZombieToast extends Entity implements Moving, Serializable , ZombieType {
     private String id;
     private double health;
     private double damage;

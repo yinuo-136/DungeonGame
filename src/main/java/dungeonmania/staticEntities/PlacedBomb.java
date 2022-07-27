@@ -1,5 +1,6 @@
 package dungeonmania.staticEntities;
 
+import java.io.Serializable;
 import java.util.List;
 
 import dungeonmania.DungeonInfo;
@@ -10,7 +11,7 @@ import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class PlacedBomb extends staticEntity implements Tick{
+public class PlacedBomb extends staticEntity implements Tick, Serializable{
     
     private Position pos;
     private String type = "bomb";
