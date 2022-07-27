@@ -30,13 +30,12 @@ public class MidnightArmour implements InvItem, Buildable{
         List<String> sunStoneList = dungeonInfo.getInvItemIdsListByType("sun_stone");
         int numZombie = dungeonInfo.getAllZombie().size();
 
-        if ( swordList.size() < 1 || sunStoneList.size() < 1 || numZombie > 0) {
-            if (swordList.size() < 1 || sunStoneList.size() < 1){
-                throw new InvalidActionException("Insufficient Materials to craft Midnight Armour!");
-            }
-            else {
-                throw new InvalidActionException("Can't craft Midnight Armour when there is a zombie on the map!");
-            }
+        if (swordList.size() < 1 || sunStoneList.size() < 1) {
+            throw new InvalidActionException("Insufficient Materials to craft Midnight Armour!");
+         }
+
+         if (numZombie > 0) {
+            throw new InvalidActionException("Can't craft Midnight Armour when there is a zombie on the map!");
          }
 
          //remove items from inventory
