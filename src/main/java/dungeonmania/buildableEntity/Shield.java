@@ -59,16 +59,16 @@ public class Shield implements InvItem,Buildable {
         dungeonInfo.removeInvItemById(woodList.get(0));
         dungeonInfo.removeInvItemById(woodList.get(1));
 
-        //Remove Treasure or Key from Inventory (Give priority to Sun Stone then Treasure then Key)
-        if (sunStoneList.size() > 0) {return;}
-
+        //Remove Treasure or Key from Inventory (Give priority to Treasure then Key then Sun Stone)
         if (treasureList.size() > 0) {
             dungeonInfo.removeInvItemById(treasureList.get(0));
             return;
         }
         
-        dungeonInfo.removeInvItemById(keyList.get(0));
-        
+        if (keyList.size() > 0) {
+            dungeonInfo.removeInvItemById(keyList.get(0));
+            return;
+        }
     }
 
     public Boolean checkCraftable(){
