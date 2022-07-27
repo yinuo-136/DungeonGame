@@ -160,6 +160,11 @@ public class DungeonInfo {
 
     // set config
     public void setConfigs(JSONObject config){
+        //Default Values for backwards compatibility
+        configMap.put("mind_control_duration", 3);
+        configMap.put("midnight_armour_attack", 2);
+        configMap.put("midnight_armour_defence", 2);
+
         for (String keyString : config.keySet()){
             int configValue = config.getInt(keyString);
             configMap.put(keyString, configValue);
