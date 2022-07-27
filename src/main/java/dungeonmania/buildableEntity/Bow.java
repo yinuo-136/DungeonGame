@@ -40,24 +40,27 @@ public class Bow implements InvItem, Buildable {
     }
 
     public void craft() throws InvalidActionException {
-        List<String> woodIdList = dungeonInfo.getInvItemIdsListByType("wood");
-        List<String> arrowIdList = dungeonInfo.getInvItemIdsListByType("arrow");
+        List<String> woodList = dungeonInfo.getInvItemIdsListByType("wood");
+        List<String> arrowList = dungeonInfo.getInvItemIdsListByType("arrow");
 
-        if ((woodIdList.size()<1) || (arrowIdList.size()<3) ) {
+        if ((woodList.size()<1) || (arrowList.size()<3) ) {
             throw new InvalidActionException("Insufficient Materials to craft bow!");
         }
 
         //Remove one wood from inventory
-        dungeonInfo.removeInvItemById(woodIdList.get(0));
+        dungeonInfo.removeInvItemById(woodList.get(0));
 
         //Remove three arrows from inventory
-        dungeonInfo.removeInvItemById(arrowIdList.get(0));
-        dungeonInfo.removeInvItemById(arrowIdList.get(1));
-        dungeonInfo.removeInvItemById(arrowIdList.get(2));
+        dungeonInfo.removeInvItemById(arrowList.get(0));
+        dungeonInfo.removeInvItemById(arrowList.get(1));
+        dungeonInfo.removeInvItemById(arrowList.get(2));
     }
 
     public Boolean checkCraftable(){
-        if ((dungeonInfo.getNumInvItemType("wood")<1) || (dungeonInfo.getNumInvItemType("arrow")<3) ) {
+        int numWood = dungeonInfo.getNumInvItemType("wood");
+        int numArrow = dungeonInfo.getNumInvItemType("arrow");
+
+        if (numWood < 1 || numArrow < 3) {
            return false;
         }
 
