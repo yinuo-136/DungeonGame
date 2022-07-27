@@ -18,6 +18,7 @@ public class ZombieToast extends Entity implements Moving, ZombieType{
     private Position position;
     private String type = "zombie_toast";
     private MercenaryMovingStrategy currentState = new RandomStrategy();
+    private MercenaryMovingStrategy prevState = new RandomStrategy();
 
     public ZombieToast(Position position, String id) {
         this.id = id;
@@ -98,6 +99,10 @@ public class ZombieToast extends Entity implements Moving, ZombieType{
 
     public void setStrategy(MercenaryMovingStrategy strategy) {
         this.currentState = strategy;
+    }
+
+    public void revertStrategy() {
+        this.currentState = prevState;
     }
     
 }

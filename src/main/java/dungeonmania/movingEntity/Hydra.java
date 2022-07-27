@@ -13,6 +13,8 @@ public class Hydra extends Entity implements Moving, ZombieType {
     private double health;
     private double damage;
     private MercenaryMovingStrategy currentState = new RandomStrategy();
+    private MercenaryMovingStrategy prevState = new RandomStrategy();
+
     private String type = "hydra";
     private boolean bribed = false;
     private double hydra_health_increase_rate;
@@ -88,6 +90,15 @@ public class Hydra extends Entity implements Moving, ZombieType {
 
     public int gethydra_health_increase_amount(){
         return hydra_health_increase_amount;
+    }
+
+    public void revertStrategy() {
+        this.currentState = prevState;
+    }
+
+    @Override
+    public void setStrategy(MercenaryMovingStrategy strategy) {
+        this.currentState = strategy;   
     }
     
 }
