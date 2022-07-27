@@ -1,5 +1,7 @@
 package dungeonmania.buildableEntity;
 
+import java.util.List;
+
 import dungeonmania.DungeonInfo;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.inventoryItem.InvItem;
@@ -24,14 +26,35 @@ public class MidnightArmour implements InvItem, Buildable{
 
     @Override
     public void craft() throws InvalidActionException {
-        // TODO Auto-generated method stub
-        
+        List<String> swordList = dungeonInfo.getInvItemIdsListByType("sword");
+        List<String> sunStoneList = dungeonInfo.getInvItemIdsListByType("sun_stone");
+        int numZombie = dungeonInfo.getAllZombie().size();
+
+        if ( swordList.size() < 1 || sunStoneList.size() < 1 || numZombie > 0) {
+            if (swordList.size() < 1 || sunStoneList.size() < 1){
+                throw new InvalidActionException("Insufficient Materials to craft Midnight Armour!");
+            }
+            else {
+                throw new InvalidActionException("Can't craft Midnight Armour when there is a zombie on the map!");
+            }
+         }
+
+         //remove items from inventory
+         dungeonInfo.removeInvItemById(swordList.get(0));
+         dungeonInfo.removeInvItemById(sunStoneList.get(0));
     }
 
     @Override
     public Boolean checkCraftable() {
-        // TODO Auto-generated method stub
-        return null;
+        int numSword = dungeonInfo.getNumInvItemType("sword");
+        int numSunStone = dungeonInfo.getNumInvItemType("sun_stone");
+        int numZombie = dungeonInfo.getAllZombie().size();
+
+        if ( numSword < 1 || numSunStone < 1 || numZombie > 0) {
+           return false;
+        }
+
+        return true;
     }
 
     @Override
