@@ -317,6 +317,17 @@ public class BuildableTests {
             () -> {
                 DungeonManiaController controller = new DungeonManiaController();
             controller.newGame("d_build_ma_zombie", "simple");
+            controller.tick(dungeonmania.util.Direction.RIGHT);
+            controller.tick(dungeonmania.util.Direction.RIGHT);
+
+            controller.build("midnight_armour");
+            });
+
+            assertThrows(InvalidActionException.class,
+            () -> {
+                DungeonManiaController controller = new DungeonManiaController();
+            controller.newGame("d_build_ma_zombie", "simple");
+
             controller.build("midnight_armour");
             });
     }
