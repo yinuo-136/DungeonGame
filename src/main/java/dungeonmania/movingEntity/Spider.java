@@ -22,6 +22,8 @@ public class Spider extends Entity implements Moving, Serializable {
     private double health;
     private SpiderMovingState currentState = new CircleDirection(this); 
     private String type = "spider";
+    private MoveFactorCounter moveFactorCounter = null;
+
     
     public Spider(Position position, String id) {
         this.position = position;
@@ -34,7 +36,16 @@ public class Spider extends Entity implements Moving, Serializable {
     }
 
     public void move() {
-        currentState.move();
+        // create a moveFactorCounter if it is null, so if the moving entity first enter a new position
+        // if it is any position with a movement factor block(swamptile) in it, it will count the movement factor block
+        if (moveFactorCounter == null) {
+            moveFactorCounter = new MoveFactorCounter(this, getPos());
+        }
+        // if the counter is 0, then move the zombie.
+        if (moveFactorCounter.movementFactorCounter()) {
+            currentState.move();
+            moveFactorCounter = null;
+        }
     }
 
     @Override

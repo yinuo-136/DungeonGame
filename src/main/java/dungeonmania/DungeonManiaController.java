@@ -202,7 +202,7 @@ public class DungeonManiaController {
         if (e == null) {
             throw new IllegalArgumentException("null");
         }
-        if (e.getType() != "zombie_toast_spawner" && e.getType() != "mercenary") {
+        if (e.getType() != "zombie_toast_spawner" && !(e instanceof MercenaryType)) {
             throw new IllegalArgumentException();
         }
 

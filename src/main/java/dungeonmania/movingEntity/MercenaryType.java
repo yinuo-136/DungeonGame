@@ -10,4 +10,5 @@ public interface MercenaryType {
     public void setStrategy(MercenaryMovingStrategy strategy);
     public void setPlayerInvisibleStrategy(Player player);
     public void revertStrategy();
+    public void setPlayerInvincibleStrategy();
 }
