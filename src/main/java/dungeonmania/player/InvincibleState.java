@@ -6,10 +6,12 @@ import java.util.List;
 import dungeonmania.inventoryItem.Potion.Potion;
 import dungeonmania.movingEntity.BribedStrategy;
 import dungeonmania.movingEntity.Mercenary;
+import dungeonmania.movingEntity.MercenaryType;
 import dungeonmania.movingEntity.NotBribedStrategy;
 import dungeonmania.movingEntity.RandomStrategy;
 import dungeonmania.movingEntity.RunAwayStrategy;
 import dungeonmania.movingEntity.ZombieToast;
+import dungeonmania.movingEntity.ZombieType;
 import dungeonmania.util.Position;
 
 public class InvincibleState implements PlayerState, Serializable {
@@ -25,13 +27,13 @@ public class InvincibleState implements PlayerState, Serializable {
         this.potionTime = potionTime;
         this.potionId = potionId;
 
-        List<Mercenary> allMencenary = player.getDungeonInfo().getAllMencenary();
-        for (Mercenary mencenary : allMencenary) {
-            mencenary.setStrategy(new RunAwayStrategy());
+        List<MercenaryType> allMencenaryType = player.getDungeonInfo().getAllMencenaryType();
+        for (MercenaryType mencenaryType : allMencenaryType) {
+            mencenaryType.setPlayerInvincibleStrategy();
         }
-        List<ZombieToast> allZombie = player.getDungeonInfo().getAllZombie();
-        for (ZombieToast zombie : allZombie) {
-            zombie.setStrategy(new RunAwayStrategy());
+        List<ZombieType> allZombieType = player.getDungeonInfo().getAllZombieType();
+        for (ZombieType zombieType : allZombieType) {
+            zombieType.setStrategy(new RunAwayStrategy());
         }
     }
 
@@ -59,18 +61,14 @@ public class InvincibleState implements PlayerState, Serializable {
     public void tickPotionTime() {
         potionTime--;
         if (potionTime < 0) {
-            List<Mercenary> allMencenary = player.getDungeonInfo().getAllMencenary();
+            List<MercenaryType> allMencenaryType = player.getDungeonInfo().getAllMencenaryType();
             // return all mencenary to its original state
-            for (Mercenary mencenary : allMencenary) {
-                if (mencenary.getBribed()) {
-                    mencenary.setStrategy(new BribedStrategy());
-                } else {
-                    mencenary.setStrategy(new NotBribedStrategy());
-                }
+            for (MercenaryType mencenaryType : allMencenaryType) {
+                mencenaryType.revertStrategy();
             }
-            List<ZombieToast> allZombie = player.getDungeonInfo().getAllZombie();
-            for (ZombieToast zombie : allZombie) {
-                zombie.setStrategy(new RandomStrategy());
+            List<ZombieType> allZombieType = player.getDungeonInfo().getAllZombieType();
+            for (ZombieType zombieType : allZombieType) {
+                zombieType.setStrategy(new RandomStrategy());
             }
             
             Potion potion = player.pullPotion();

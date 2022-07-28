@@ -23,6 +23,7 @@ public class Mercenary extends Entity implements Moving, MercenaryType, Serializ
     private int bribeRadius;
     private String type = "mercenary";
     private boolean bribed = false;
+    private MoveFactorCounter moveFactorCounter = null;
 
     public Mercenary(Position position, String id) {
         this.position = position;
@@ -37,7 +38,16 @@ public class Mercenary extends Entity implements Moving, MercenaryType, Serializ
     }
 
     public void move() {
-        currentState.move(this);
+        // create a moveFactorCounter if it is null, so if the moving entity first enter a new position
+        // if it is any position with a movement factor block(swamptile) in it, it will count the movement factor block
+        if (moveFactorCounter == null) {
+            moveFactorCounter = new MoveFactorCounter(this, getPos());
+        }
+        // if the counter is 0, then move the zombie.
+        if (moveFactorCounter.movementFactorCounter()) {
+            currentState.move(this);
+            moveFactorCounter = null;
+        }
     }
 
     @Override
