@@ -261,7 +261,7 @@ public class MovingEntityTests {
             res = dmc.tick(Direction.LEFT);
         }
         res = dmc.tick(Direction.RIGHT);
-        assertEquals(new Position(1, 2), getEntities(res, "mercenary").get(0).getPosition());
+        assertEquals(new Position(0, 1), getEntities(res, "mercenary").get(0).getPosition());
 
     }
     @Test 

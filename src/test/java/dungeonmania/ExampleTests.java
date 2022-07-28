@@ -126,9 +126,13 @@ public class ExampleTests {
         Position expectedPosition2 = pos.translateBy(Direction.RIGHT);
         assertEquals(expectedPosition2, getEntities(res, "mercenary").get(0).getPosition());
 
+        res = dmc.tick(Direction.LEFT);
+        Position expectedPosition3 = expectedPosition2.translateBy(Direction.RIGHT);
+        assertEquals(expectedPosition3, getEntities(res, "mercenary").get(0).getPosition());
+
         //make sure the mercenary run toward the player after the potion effect is ended
         res = dmc.tick(Direction.LEFT);
-        assertEquals(pos, getEntities(res, "mercenary").get(0).getPosition());
+        assertEquals(expectedPosition2, getEntities(res, "mercenary").get(0).getPosition());
     }
     @Test
     public void testInvisiblePotion() throws IllegalArgumentException, InvalidActionException {
