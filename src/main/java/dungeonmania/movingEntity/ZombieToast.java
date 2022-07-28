@@ -1,6 +1,6 @@
 package dungeonmania.movingEntity;
 
-import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,13 +12,14 @@ import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class ZombieToast extends Entity implements Moving, Serializable {
+public class ZombieToast extends Entity implements Moving {
     private String id;
     private double health;
     private double damage;
     private Position position;
     private String type = "zombie_toast";
     private MercenaryMovingStrategy currentState = new RandomStrategy();
+    private MercenaryMovingStrategy prevState = new RandomStrategy();
 
     public ZombieToast(Position position, String id) {
         this.id = id;
@@ -99,6 +100,10 @@ public class ZombieToast extends Entity implements Moving, Serializable {
 
     public void setStrategy(MercenaryMovingStrategy strategy) {
         this.currentState = strategy;
+    }
+
+    public void revertStrategy() {
+        this.currentState = prevState;
     }
     
 }

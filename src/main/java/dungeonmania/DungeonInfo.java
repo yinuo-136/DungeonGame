@@ -30,7 +30,10 @@ import dungeonmania.inventoryItem.InvItem;
 import dungeonmania.inventoryItem.Sword;
 import dungeonmania.inventoryItem.Potion.InvincibilityPotion;
 import dungeonmania.inventoryItem.Potion.InvisibilityPotion;
+import dungeonmania.movingEntity.Assassin;
+import dungeonmania.movingEntity.Hydra;
 import dungeonmania.movingEntity.Mercenary;
+import dungeonmania.movingEntity.MercenaryType;
 import dungeonmania.movingEntity.Moving;
 import dungeonmania.movingEntity.Spider;
 import dungeonmania.movingEntity.ZombieToast;
@@ -96,6 +99,18 @@ public class DungeonInfo implements Serializable{
 
             case "mercenary":
                 newEntity = new Mercenary(new Position(x, y), id);
+                newEntity.setDungeonInfo(info);
+                newEntity.setConfig();
+                break;
+
+            case "assassin":
+                newEntity = new Assassin(new Position(x, y), id);
+                newEntity.setDungeonInfo(info);
+                newEntity.setConfig();
+                break;
+            
+            case "hydra":
+                newEntity = new Hydra(new Position(x,y), id);
                 newEntity.setDungeonInfo(info);
                 newEntity.setConfig();
                 break;
@@ -178,6 +193,11 @@ public class DungeonInfo implements Serializable{
 
     // set config
     public void setConfigs(JSONObject config){
+        //Default Values for backwards compatibility
+        configMap.put("mind_control_duration", 3);
+        configMap.put("midnight_armour_attack", 2);
+        configMap.put("midnight_armour_defence", 2);
+
         for (String keyString : config.keySet()){
             int configValue = config.getInt(keyString);
             configMap.put(keyString, configValue);
@@ -185,6 +205,10 @@ public class DungeonInfo implements Serializable{
     }
 
     public int getSpecificConfig(String name){
+        return configMap.get(name);
+    }
+
+    public double getSpecificConfigDouble(String name){
         return configMap.get(name);
     }
 
@@ -278,6 +302,15 @@ public class DungeonInfo implements Serializable{
         for (Entity e : entityMap.values()){
             if (e.getType().equals("mercenary")){
                 list.add((Mercenary) e);
+            }
+        }
+        return list;
+    }
+    public List<MercenaryType> getAllMencenaryType(){
+        List<MercenaryType> list = new ArrayList<>();
+        for (Entity e : entityMap.values()){
+            if (e instanceof MercenaryType){
+                list.add((MercenaryType) e);
             }
         }
         return list;
@@ -457,28 +490,6 @@ public class DungeonInfo implements Serializable{
     public void runTicks() {
         for (Tick tickableEntity : tickList)
             tickableEntity.tick();
-    }
-
-    /*
-     * Returns list of currently craftable items
-     */
-    public List<String> getCurrentBuildables() {
-        List<String> buildables = new ArrayList<String>();
-
-        Buildable bow = new Bow();
-        bow.setDungeonInfo(this);
-        Buildable shield = new Shield();
-        shield.setDungeonInfo(this);
-
-        if (bow.checkCraftable()) {
-            buildables.add("bow");
-        }
-
-        if (shield.checkCraftable()) {
-            buildables.add("shield");
-        }
-
-        return buildables;
     }
 
     public void setDungeonGoal(Goal dungeonGoal) {

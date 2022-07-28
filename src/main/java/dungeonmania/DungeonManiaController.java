@@ -8,6 +8,7 @@ import dungeonmania.inventoryItem.Bomb;
 import dungeonmania.inventoryItem.InvItem;
 import dungeonmania.inventoryItem.Treasure;
 import dungeonmania.movingEntity.Mercenary;
+import dungeonmania.movingEntity.MercenaryType;
 import dungeonmania.player.Player;
 import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.DungeonResponse;
@@ -140,11 +141,14 @@ public class DungeonManiaController {
      */
     public DungeonResponse getDungeonResponseModel() {
         DungeonInfo info = infoMap.get(this.dungeonId);
+        BuildableFactory builder = new BuildableFactory();
+
         List<EntityResponse> entityResponses = info.getListEntityResponse();
         List<ItemResponse> itemResponses = info.getListItemResponse();
-        List<String> buildables = info.getCurrentBuildables();
+        List<String> buildables = builder.getCurrentBuildables(info);
         String goalString = info.getGoalString();
         List<BattleResponse> battle =  info.getBattleResponses();
+        
         return new DungeonResponse(dungeonId, dungeonName, entityResponses, itemResponses, battle, buildables, goalString);
     }
 
@@ -227,21 +231,18 @@ public class DungeonManiaController {
             }
             info.getEntityMap().remove(entityId);
         }
-        if (e.getType().equals("mercenary")) {
-            // check bribe distance
-            int PlayerX = info.getPlayer().getPos().getX();
-            int PlayerY = info.getPlayer().getPos().getY();
-            int mercenaryX = e.getPos().getX();
-            int mercenaryY = e.getPos().getY();
-            int radius = info.getSpecificConfig("bribe_radius");
-            int amount = info.getSpecificConfig("bribe_amount");
-            if (Math.abs(PlayerX - mercenaryX) >  radius || Math.abs(PlayerY - mercenaryY) > radius) {
-                // if the player is not within the radius of the mercenary bribe radius
+
+        if(e instanceof MercenaryType){
+            int amount = ((MercenaryType)e).getCostToBribe();
+            // check if the player is within the bribe radius
+            if (((MercenaryType) e).checkBribeDistance(info.getPlayer()) == false) {
                 throw new InvalidActionException("Player is not in the mercenary's range");
             }
-            if (((Mercenary) e).bribe(getTreasureCount()) == false) {
+            // check if player has enough money
+            if (((MercenaryType) e).checkBribeAmoountEnough(getTreasureCount()) == false) {
                 throw new InvalidActionException("Player does not have enough treasure");
             }
+            ((MercenaryType) e).bribe(getTreasureCount());
             removeTreasure(amount);
         }
         

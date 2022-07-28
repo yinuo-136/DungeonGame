@@ -7,6 +7,7 @@ import java.util.List;
 import javax.annotation.processing.RoundEnvironment;
 
 import dungeonmania.buildableEntity.Bow;
+import dungeonmania.buildableEntity.MidnightArmour;
 import dungeonmania.buildableEntity.Shield;
 import dungeonmania.inventoryItem.InvItem;
 import dungeonmania.inventoryItem.Sword;
@@ -61,12 +62,12 @@ public class Battle implements Serializable{
             if (item instanceof Sword) {
                 Sword sword = (Sword) item;
                 sword_attack += sword.getAttackBonus();
-                itemsUsed.add(new ItemResponse(sword.getId(), "Sword"));
+                itemsUsed.add(sword.getItemResponse());
             }
             if (item instanceof Shield) {
                 Shield shield = (Shield) item;
                 shield_defense += shield.getDefenseBonus();
-                itemsUsed.add(new ItemResponse(shield.getId(), "Shield"));  
+                itemsUsed.add(shield.getItemResponse());  
             }
             
         }
@@ -74,7 +75,13 @@ public class Battle implements Serializable{
             if (item instanceof Bow) {
                 Bow bow = (Bow) item;
                 bow_multiplication *= 2;
-                itemsUsed.add(new ItemResponse(bow.getId(), "Bow"));  
+                itemsUsed.add(bow.getItemResponse());  
+            }
+            if (item instanceof MidnightArmour) {
+                MidnightArmour midnightArmour = (MidnightArmour) item;
+                sword_attack += midnightArmour.getAttackBonus();
+                shield_defense += midnightArmour.getDefenseBonus();
+                itemsUsed.add(midnightArmour.getItemResponse());  
             }
         }
 
