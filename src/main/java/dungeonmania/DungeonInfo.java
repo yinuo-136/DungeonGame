@@ -270,21 +270,13 @@ public class DungeonInfo implements Serializable{
     public List<Moving> getAllMovingEntity(){
         List<Moving> list = new ArrayList<>();
         for (Entity e : entityMap.values()){
-            if (e.getType().equals("spider") || e.getType().equals("mercenary") || e.getType().equals("zombie_toast")){
-                list.add((Moving) e);
+            if (e instanceof Moving){
+                Moving m = (Moving) e;
+                list.add(m);
             }
         }
         return list;
     }
-    // public List<Mercenary> getAllMencenary(){
-    //     List<Mercenary> list = new ArrayList<>();
-    //     for (Entity e : entityMap.values()){
-    //         if (e.getType().equals("mercenary")){
-    //             list.add((Mercenary) e);
-    //         }
-    //     }
-    //     return list;
-    // }
     public List<MercenaryType> getAllMencenaryType(){
         List<MercenaryType> list = new ArrayList<>();
         for (Entity e : entityMap.values()){

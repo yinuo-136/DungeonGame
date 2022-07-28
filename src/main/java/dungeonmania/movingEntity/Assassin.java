@@ -24,6 +24,7 @@ public class Assassin extends Entity implements Moving, MercenaryType, Serializa
     private int assassin_recon_radius;
     private static int bribedDamage;
     private boolean bribed = false;
+    private MoveFactorCounter moveFactorCounter = null;
 
     public Assassin(Position position, String id) {
         this.id = id;
@@ -31,9 +32,9 @@ public class Assassin extends Entity implements Moving, MercenaryType, Serializa
     }
 
     public void setConfig(){
-        this.health = dungeonInfo.getSpecificConfig("mercenary_health");
-        this.damage = dungeonInfo.getSpecificConfig("mercenary_attack");
-        this.costToBribe = dungeonInfo.getSpecificConfig("bribe_amount");
+        this.health = dungeonInfo.getSpecificConfig("assassin_health");
+        this.damage = dungeonInfo.getSpecificConfig("assassin_attack");
+        this.costToBribe = dungeonInfo.getSpecificConfig("assassin_bribe_amount");
         this.bribeRadius = dungeonInfo.getSpecificConfig("bribe_radius");
         this.bribe_fail_rate = dungeonInfo.getSpecificConfigDouble("assassin_bribe_fail_rate");
         this.assassin_recon_radius = dungeonInfo.getSpecificConfig("assassin_recon_radius");
@@ -94,7 +95,16 @@ public class Assassin extends Entity implements Moving, MercenaryType, Serializa
     }
     @Override
     public void move() {
-        currentState.move(this);
+        // create a moveFactorCounter if it is null, so if the moving entity first enter a new position
+        // if it is any position with a movement factor block(swamptile) in it, it will count the movement factor block
+        if (moveFactorCounter == null) {
+            moveFactorCounter = new MoveFactorCounter(this, getPos());
+        }
+        // if the counter is 0, then move the zombie.
+        if (moveFactorCounter.movementFactorCounter()) {
+            currentState.move(this);
+            moveFactorCounter = null;
+        }
     }
     @Override
     public List<String> getEntitiesStringByPosition(Position pos) {
@@ -112,9 +122,14 @@ public class Assassin extends Entity implements Moving, MercenaryType, Serializa
     public Position getPos() {
         return position;
     }
+
+    public void setPos(Position pos) {
+        this.position = pos;
+    }
+
     @Override
     public EntityResponse getEntityResponse() {
-        EntityResponse response = new EntityResponse(id, type, position, false);
+        EntityResponse response = new EntityResponse(id, type, getPos(), false);
         return response;
     }
 
@@ -132,7 +147,7 @@ public class Assassin extends Entity implements Moving, MercenaryType, Serializa
 
     public void setPlayerInvisibleStrategy(Player player) {
         prevState = currentState;
-        if (Math.abs(player.getPos().getX() - position.getX()) >  assassin_recon_radius || Math.abs(player.getPos().getY() - position.getY()) > assassin_recon_radius) {
+        if (Math.abs(player.getPos().getX() - position.getX()) <  assassin_recon_radius || Math.abs(player.getPos().getY() - position.getY()) < assassin_recon_radius) {
             // if the player is not within the radius of the recon radius, change to random, else stay in current state
             return;
         }
