@@ -8,7 +8,7 @@ import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class ZombieToastSpawner extends staticEntity implements Serializable{
+public class ZombieToastSpawner extends staticEntity {
     private String id;
     private Position pos;
     private int Spawntime;

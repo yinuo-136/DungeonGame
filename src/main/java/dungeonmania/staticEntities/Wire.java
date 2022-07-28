@@ -1,6 +1,5 @@
 package dungeonmania.staticEntities;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,47 +8,15 @@ import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class FloorSwitch extends staticEntity {
-    private String id;
+public class Wire extends staticEntity{
     private Position pos;
-    private boolean isTriggered;
-    private String type = "switch";
+    private String id;
+    private String type = "wire";
+    private Boolean isConnected = false;
 
-    public FloorSwitch(Position p, String id) {
+    public Wire(Position p, String id) {
         this.id = id;
         this.pos = p;
-        this.isTriggered = false;
-    }
-
-    public Position getPos() {
-        return pos;
-    }
-
-    public boolean isTriggered() {
-        return isTriggered;
-    }
-
-    public void setTriggered(boolean isTriggered) {
-        this.isTriggered = isTriggered;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    @Override
-    public EntityResponse getEntityResponse() {
-        EntityResponse response = new EntityResponse(id, type, pos, false);
-        return response;
-    }
-
-    @Override
-    public void setConfig() {
-        
     }
 
     @Override
@@ -60,9 +27,37 @@ public class FloorSwitch extends staticEntity {
     @Override
     public Position boulderMoveIn(Position p) {
         return this.pos;
-    } 
+    }
+
+    @Override
+    public String getId() {
+        return this.id;
+    }
+
+    @Override
+    public String getType() {
+        return this.type;
+    }
+
+    @Override
+    public Position getPos() {
+        return this.pos;
+    }
+
+    @Override
+    public EntityResponse getEntityResponse() {
+        EntityResponse response = new EntityResponse(id, type, pos, false);
+        return response;
+    }
+
+    @Override
+    public void setConfig() {}
+
     
-    public void activateWire() {
+
+    public void activate() {
+        //activate this wire
+        this.isConnected = true;
 
         //activate the wire that connect to this
         //get a list of adjencent positions
@@ -86,8 +81,10 @@ public class FloorSwitch extends staticEntity {
         }
     }
 
-    public void deactivateWire() {
-         //deactivate the wire that connect to this
+    public void deactivate() {
+        this.isConnected = false;
+
+         //activate the wire that connect to this
         //get a list of adjencent positions
         List<Position> adjacentPositions = new ArrayList<>();
         adjacentPositions.add(this.pos.translateBy(Direction.UP));
@@ -108,5 +105,9 @@ public class FloorSwitch extends staticEntity {
             
         }
 
+    }
+
+    public Boolean getIsConnected() {
+        return isConnected;
     }
 }

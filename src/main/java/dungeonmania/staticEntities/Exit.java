@@ -6,7 +6,7 @@ import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class Exit extends staticEntity implements Serializable{
+public class Exit extends staticEntity {
     private Position pos;
     private String id;
     private String type = "exit";

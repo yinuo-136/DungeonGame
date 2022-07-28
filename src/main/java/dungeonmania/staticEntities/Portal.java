@@ -9,7 +9,7 @@ import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class Portal extends staticEntity implements Serializable{
+public class Portal extends staticEntity {
     private String id;
     private static List<Portal> portalList = new ArrayList<>();
     private Position pos;

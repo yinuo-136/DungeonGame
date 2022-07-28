@@ -1,12 +1,11 @@
 package dungeonmania.staticEntities;
 
-import java.io.Serializable;
 
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class SwampTile extends staticEntity implements Serializable{
+public class SwampTile extends staticEntity {
     private String id;
     private Position pos;
     private int movement_factor;

@@ -68,6 +68,9 @@ public class Battle implements Serializable{
                 shield_defense += shield.getDefenseBonus();
                 itemsUsed.add(new ItemResponse(shield.getId(), "Shield"));  
             }
+            
+        }
+        for (InvItem item : itemList) {
             if (item instanceof Bow) {
                 Bow bow = (Bow) item;
                 bow_multiplication *= 2;

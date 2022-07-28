@@ -80,6 +80,19 @@ public class DungeonManiaController {
         infoMap.put(dungeonId, info);
 
         String jsonContent = null;
+
+
+        List<String> dungeonList = dungeons();
+        List<String> configList = configs();
+
+        if (!dungeonList.contains(dungeonName)) {
+            throw new IllegalArgumentException();
+        }
+
+        if (!configList.contains(configName)) {
+            throw new IllegalArgumentException();
+        }
+
         //read and set config file
         try {
             jsonContent = FileLoader.loadResourceFile("/configs/" + configName + ".json");
