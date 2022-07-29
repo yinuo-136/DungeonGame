@@ -83,7 +83,7 @@ public class ItemTests {
         InvisibilityPotion i = new InvisibilityPotion(1, "1");
         assertTrue(i.getId() == "1");
         assertTrue(i.getItemResponse().getId() == "1" && i.getItemResponse().getType() == "invisibility_potion");
-        assertTrue(i.getDuration() == 1);
+        assertTrue(i.getDuration() == 2);
         assertTrue(i.getType() == "invisibility_potion");
     }
 
@@ -93,7 +93,7 @@ public class ItemTests {
         InvincibilityPotion i = new InvincibilityPotion(1, "1");
         assertTrue(i.getId() == "1");
         assertTrue(i.getItemResponse().getId() == "1" && i.getItemResponse().getType() == "invincibility_potion");
-        assertTrue(i.getDuration() == 1);
+        assertTrue(i.getDuration() == 2);
         assertTrue(i.getType() == "invincibility_potion");
     }
 

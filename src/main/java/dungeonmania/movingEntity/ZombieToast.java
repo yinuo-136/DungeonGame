@@ -20,6 +20,7 @@ public class ZombieToast extends Entity implements Moving {
     private String type = "zombie_toast";
     private MercenaryMovingStrategy currentState = new RandomStrategy();
     private MercenaryMovingStrategy prevState = new RandomStrategy();
+    private MoveFactorCounter moveFactorCounter = null;
 
     public ZombieToast(Position position, String id) {
         this.id = id;
@@ -34,7 +35,16 @@ public class ZombieToast extends Entity implements Moving {
     }
 
     public void move() {
-        currentState.move(this);
+        // create a moveFactorCounter if it is null, so if the moving entity first enter a new position
+        // if it is any position with a movement factor block(swamptile) in it, it will count the movement factor block
+        if (moveFactorCounter == null) {
+            moveFactorCounter = new MoveFactorCounter(this, getPos());
+        }
+        // if the counter is 0, then move the zombie.
+        if (moveFactorCounter.movementFactorCounter()) {
+            currentState.move(this);
+            moveFactorCounter = null;
+        }
     }
 
     // @Override
@@ -65,13 +75,6 @@ public class ZombieToast extends Entity implements Moving {
     public double getDamage() {
         return damage;
     }
-
-    // public boolean isAlive() {
-    //     if (this.getHealth() > 0){
-    //         return true;
-    //     }
-    //     return false;
-    // }
 
     @Override
     public String getId() {

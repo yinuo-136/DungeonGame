@@ -38,6 +38,7 @@ import dungeonmania.movingEntity.MercenaryType;
 import dungeonmania.movingEntity.Moving;
 import dungeonmania.movingEntity.Spider;
 import dungeonmania.movingEntity.ZombieToast;
+import dungeonmania.movingEntity.ZombieType;
 import dungeonmania.player.Player;
 import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.EntityResponse;
@@ -316,17 +317,9 @@ public class DungeonInfo implements Serializable{
     public List<Moving> getAllMovingEntity(){
         List<Moving> list = new ArrayList<>();
         for (Entity e : entityMap.values()){
-            if (e.getType().equals("spider") || e.getType().equals("mercenary") || e.getType().equals("zombie_toast")){
-                list.add((Moving) e);
-            }
-        }
-        return list;
-    }
-    public List<Mercenary> getAllMencenary(){
-        List<Mercenary> list = new ArrayList<>();
-        for (Entity e : entityMap.values()){
-            if (e.getType().equals("mercenary")){
-                list.add((Mercenary) e);
+            if (e instanceof Moving){
+                Moving m = (Moving) e;
+                list.add(m);
             }
         }
         return list;
@@ -343,8 +336,17 @@ public class DungeonInfo implements Serializable{
     public List<ZombieToast> getAllZombie(){
         List<ZombieToast> list = new ArrayList<>();
         for (Entity e : entityMap.values()){
-            if (e.getType().equals("zombie_toast")){
+            if (e instanceof ZombieToast){
                 list.add((ZombieToast) e);
+            }
+        }
+        return list;
+    }
+    public List<ZombieType> getAllZombieType(){
+        List<ZombieType> list = new ArrayList<>();
+        for (Entity e : entityMap.values()){
+            if (e instanceof ZombieType){
+                list.add((ZombieType) e);
             }
         }
         return list;

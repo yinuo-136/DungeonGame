@@ -102,57 +102,6 @@ public class ExampleTests {
     }
 
     @Test
-    public void testInvinsiblePotion() throws IllegalArgumentException, InvalidActionException{
-        DungeonManiaController dmc = new DungeonManiaController();
-        DungeonResponse res = dmc.newGame("d_potionTest_basicInvincible", "c_movementTest_testMovementDown");
-        Position pos = getEntities(res, "mercenary").get(0).getPosition();
-        Position expectedPosition = pos.translateBy(Direction.LEFT);
-
-        assertEquals(pos, getEntities(res, "mercenary").get(0).getPosition());
-
-
-        res = dmc.tick(Direction.RIGHT);
-        assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
-        // make sure the player have picked up the potion
-        String invinciblePotionId = getInventory(res, "invincibility_potion").get(0).getId();
-        //make sure the mercenary working property, so it get closer to the player
-        assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
-        //consume the potion
-        res = dmc.tick(invinciblePotionId);
-        assertEquals(pos, getEntities(res, "mercenary").get(0).getPosition());
-
-        // make sure the mercenary run away from player for one round(duration of potion for this config)
-        res = dmc.tick(Direction.LEFT);
-        Position expectedPosition2 = pos.translateBy(Direction.RIGHT);
-        assertEquals(expectedPosition2, getEntities(res, "mercenary").get(0).getPosition());
-
-        //make sure the mercenary run toward the player after the potion effect is ended
-        res = dmc.tick(Direction.LEFT);
-        assertEquals(pos, getEntities(res, "mercenary").get(0).getPosition());
-    }
-    @Test
-    public void testInvisiblePotion() throws IllegalArgumentException, InvalidActionException {
-        DungeonManiaController dmc = new DungeonManiaController();
-        DungeonResponse res = dmc.newGame("d_potionTest_basicInvisible", "c_movementTest_testMovementDown");
-        Position pos = getEntities(res, "mercenary").get(0).getPosition();
-        Position expectedPosition = pos.translateBy(Direction.LEFT);
-
-        res = dmc.tick(Direction.RIGHT);
-        assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
-        // make sure the player have picked up the potion
-        String invisibilityPotionId = getInventory(res, "invisibility_potion").get(0).getId();
-        //make sure the mercenary working property, so it get closer to the player
-        assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
-        //consume the potion
-        res = dmc.tick(invisibilityPotionId);
-        res = dmc.tick(Direction.RIGHT);
-        // make sure the mercenary still alive after the potion effect as there will be no battle
-        pos = getEntities(res, "mercenary").get(0).getPosition();
-        res = dmc.tick(Direction.RIGHT);
-        assertThrows(InvalidActionException.class, () -> dmc.tick(invisibilityPotionId));
-    }
-
-    @Test
     public void testMercenaryBasicBattle(){
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_potionTest_basicInvincible", "c_movementTest_testMovementDown");

@@ -20,6 +20,7 @@ public class Hydra extends Entity implements Moving, ZombieType, Serializable {
     private boolean bribed = false;
     private double hydra_health_increase_rate;
     private int hydra_health_increase_amount;
+    private MoveFactorCounter moveFactorCounter = null;
 
     public Hydra(Position position, String id) {
         this.id = id;
@@ -52,7 +53,16 @@ public class Hydra extends Entity implements Moving, ZombieType, Serializable {
 
     @Override
     public void move() {
-        currentState.move(this);
+        // create a moveFactorCounter if it is null, so if the moving entity first enter a new position
+        // if it is any position with a movement factor block(swamptile) in it, it will count the movement factor block
+        if (moveFactorCounter == null) {
+            moveFactorCounter = new MoveFactorCounter(this, getPos());
+        }
+        // if the counter is 0, then move the zombie.
+        if (moveFactorCounter.movementFactorCounter()) {
+            currentState.move(this);
+            moveFactorCounter = null;
+        }
     }
 
     @Override
@@ -75,6 +85,9 @@ public class Hydra extends Entity implements Moving, ZombieType, Serializable {
         return position;
     }
 
+    public void setPos(Position pos){
+        this.position = pos;
+    }
     @Override
     public EntityResponse getEntityResponse() {
         EntityResponse response = new EntityResponse(id, type, position, false);
