@@ -57,6 +57,7 @@ public class Boulder extends staticEntity{
             //before player moves in, move the boulder and check if can trigger the floor swtich
             this.position = this.position.translateBy(d);
             if (this.fs != null){
+                fs.setHasBoulder(false);
                 fs.setTriggered(false);
                 fs.deactivateWire();
                 this.fs = null;
@@ -67,6 +68,7 @@ public class Boulder extends staticEntity{
                     FloorSwitch f = (FloorSwitch) e;
                     f.setTriggered(true);
                     this.fs = f;
+                    fs.setHasBoulder(true);
                     fs.activateWire();
                 }
             }

@@ -168,7 +168,8 @@ public class DungeonManiaController {
             //check exceptions
             throw new IllegalArgumentException("not usable item");
         }
-        InvItem item = info.getItemById(itemUsedId);
+        info.updateActives();
+        InvItem item = info.getItemById(itemUsedId);      
         item.use();
         info.runTicks();
         info.getPlayer().tickPlayerState();
@@ -185,6 +186,7 @@ public class DungeonManiaController {
     public DungeonResponse tick(Direction movementDirection) {
         DungeonInfo info = infoMap.get(this.dungeonId);
         //trigger player movement
+        info.updateActives();
         info.movePLayer(movementDirection);
         info.runTicks();
         info.getPlayer().tickPlayerState();

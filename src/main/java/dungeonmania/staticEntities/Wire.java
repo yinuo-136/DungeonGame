@@ -13,6 +13,7 @@ public class Wire extends staticEntity{
     private String id;
     private String type = "wire";
     private Boolean isConnected = false;
+    private Boolean isConnectedLastTick = false;
 
     public Wire(Position p, String id) {
         this.id = id;
@@ -110,4 +111,14 @@ public class Wire extends staticEntity{
     public Boolean getIsConnected() {
         return isConnected;
     }
+
+    public Boolean getIsConnectedLastTick() {
+        return isConnectedLastTick;
+    }
+
+    public void setIsConnectedLastTick(Boolean isConnectedLastTick) {
+        this.isConnectedLastTick = isConnectedLastTick;
+    }
+
+    
 }

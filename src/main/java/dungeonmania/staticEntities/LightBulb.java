@@ -10,9 +10,9 @@ import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class LightBulb extends staticEntity implements Tick{
-    private Position pos;
-    private String id;
-    private String type = "light_bulb_off";
+    protected Position pos;
+    protected String id;
+    protected String type = "light_bulb_off";
 
     public LightBulb(Position p, String id) {
         this.id = id;

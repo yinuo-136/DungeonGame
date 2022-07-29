@@ -23,12 +23,20 @@ public class CollectableEntity extends Entity implements Serializable{
     protected String id;
     protected String type;
     protected Position position;
+    protected String logic = "no_logic";
 
 
     public CollectableEntity(String id, String type, Position position) {
         this.id = id;
         this.type = type;
         this.position = position;
+    }
+
+    public CollectableEntity(String id, String type, Position position, String logic) {
+        this.id = id;
+        this.type = type;
+        this.position = position;
+        this.logic = logic;
     }
 
     public String getId() {
@@ -61,7 +69,11 @@ public class CollectableEntity extends Entity implements Serializable{
                 newItem = new Arrow(id);
                 break;
             case "bomb":
-                newItem = new Bomb(id, dungeonInfo.getConfigMap().get("bomb_radius"));
+                if (logic != "no_logic") {
+                    newItem = new Bomb(id, dungeonInfo.getConfigMap().get("bomb_radius"), logic);
+                } else {
+                    newItem = new Bomb(id, dungeonInfo.getConfigMap().get("bomb_radius"));
+                }            
                 newItem.setDungeonInfo(dungeonInfo);
                 break;
             case "sword":

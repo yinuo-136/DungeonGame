@@ -9,6 +9,7 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.google.gson.JsonObject;
@@ -46,6 +47,9 @@ import dungeonmania.staticEntities.Door;
 import dungeonmania.staticEntities.Exit;
 import dungeonmania.staticEntities.FloorSwitch;
 import dungeonmania.staticEntities.LightBulb;
+import dungeonmania.staticEntities.LogicFloorSwitch;
+import dungeonmania.staticEntities.LogicLightBulb;
+import dungeonmania.staticEntities.LogicSwitchDoor;
 import dungeonmania.staticEntities.PlacedBomb;
 import dungeonmania.staticEntities.Portal;
 import dungeonmania.staticEntities.SwampTile;
@@ -128,7 +132,12 @@ public class DungeonInfo implements Serializable{
                 break;
             
             case "switch":
-                newEntity = new FloorSwitch(new Position(x, y), id);
+                try{
+                    newEntity = new LogicFloorSwitch(new Position(x, y), id, (String) json.get("logic"));
+                    this.addTick((Tick) newEntity);
+                } catch(JSONException e) {
+                    newEntity = new FloorSwitch(new Position(x, y), id);
+                } 
                 break;
 
             case "portal":
@@ -160,19 +169,35 @@ public class DungeonInfo implements Serializable{
                 break;
             
             case "switch_door":
-                newEntity = new SwitchDoor(new Position(x, y), (int) json.get("key"), id);
+                try{
+                    newEntity = new LogicSwitchDoor(new Position(x, y), (int) json.get("key"), id, (String) json.get("logic"));
+                } catch(JSONException e){
+                    newEntity = new SwitchDoor(new Position(x, y), (int) json.get("key"), id);
+                }         
                 this.addTick((Tick) newEntity);
                 break;
             
             case "light_bulb_off":
-                newEntity = new LightBulb(new Position(x, y), id);
+                try{
+                    newEntity = new LogicLightBulb(new Position(x, y), id, (String) json.get("logic"));
+                } catch(JSONException e) {
+                    newEntity = new LightBulb(new Position(x, y), id);
+                }           
                 this.addTick((Tick) newEntity);
                 break;
             
             case "wire":
                 newEntity = new Wire(new Position(x, y), id);
                 break;
-                
+            
+            case "bomb":
+                try{
+                    newEntity = new CollectableEntity(id, (String) json.get("type"), new Position(x, y), (String) json.get("logic"));
+                } catch(JSONException e) {
+                    newEntity = new CollectableEntity(id, (String) json.get("type"), new Position(x, y));
+                }
+                break;
+            
             // if default, it will be collectableEntities
             default:
                 newEntity = new CollectableEntity(id, (String) json.get("type"), new Position(x, y));
@@ -515,4 +540,15 @@ public class DungeonInfo implements Serializable{
         return l;
     }
 
+    public void updateActives() {
+        for (Entity e : entityMap.values()) {
+            if (e instanceof FloorSwitch) {
+                FloorSwitch fl = (FloorSwitch) e;
+                fl.setTriggeredLastTick(fl.isTriggered());
+            } else if (e instanceof Wire) {
+                Wire w = (Wire) e;
+                w.setIsConnectedLastTick(w.getIsConnected());
+            }
+        }
+    }
 }

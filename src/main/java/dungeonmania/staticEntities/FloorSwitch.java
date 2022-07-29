@@ -4,15 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dungeonmania.Entity;
+import dungeonmania.Tick;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class FloorSwitch extends staticEntity {
-    private String id;
-    private Position pos;
-    private boolean isTriggered;
-    private String type = "switch";
+public class FloorSwitch extends staticEntity{
+    protected Boolean hasBoulder = false;
+    protected String id;
+    protected Position pos;
+    protected boolean isTriggeredLastTick = false;
+    protected boolean isTriggered;
+    protected String type = "switch";
 
     public FloorSwitch(Position p, String id) {
         this.id = id;
@@ -32,6 +35,7 @@ public class FloorSwitch extends staticEntity {
         this.isTriggered = isTriggered;
     }
 
+    
     public String getId() {
         return id;
     }
@@ -54,6 +58,10 @@ public class FloorSwitch extends staticEntity {
     @Override
     public Position playerMoveIn(Position p, Direction d) {
         return this.pos;
+    }
+
+    public void setHasBoulder(Boolean hasBoulder) {
+        this.hasBoulder = hasBoulder;
     }
 
     @Override
@@ -108,4 +116,14 @@ public class FloorSwitch extends staticEntity {
         }
 
     }
+
+    public boolean isTriggeredLastTick() {
+        return isTriggeredLastTick;
+    }
+
+    public void setTriggeredLastTick(boolean isTriggeredLastTick) {
+        this.isTriggeredLastTick = isTriggeredLastTick;
+    }
+
+    
 }
