@@ -203,10 +203,10 @@ public class Player extends Entity implements Serializable{
      *      greater than 0;
      *      <code>false</code> otherwise.
      */
-    public Boolean isAlive() {
-        if (health > 0) { return true; }
-        else { return false; }
-    }
+    // public Boolean isAlive() {
+    //     if (health > 0) { return true; }
+    //     else { return false; }
+    // }
 
     public String getId() {
         return id;

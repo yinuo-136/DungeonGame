@@ -286,15 +286,6 @@ public class DungeonInfo implements Serializable{
         }
         return list;
     }
-    public List<ZombieToast> getAllZombie(){
-        List<ZombieToast> list = new ArrayList<>();
-        for (Entity e : entityMap.values()){
-            if (e.getType().equals("zombie_toast")){
-                list.add((ZombieToast) e);
-            }
-        }
-        return list;
-    }
     public List<ZombieType> getAllZombieType(){
         List<ZombieType> list = new ArrayList<>();
         for (Entity e : entityMap.values()){

@@ -60,7 +60,7 @@ public class InvincibleState implements PlayerState, Serializable {
     // Reduce the potion duration time by 1. then pull the potion from the queue and activate it or return to normal state if no potion in the queue.
     public void tickPotionTime() {
         potionTime--;
-        if (potionTime < 0) {
+        if (getPotionTime() < 0) {
             List<MercenaryType> allMencenaryType = player.getDungeonInfo().getAllMencenaryType();
             // return all mencenary to its original state
             for (MercenaryType mencenaryType : allMencenaryType) {
