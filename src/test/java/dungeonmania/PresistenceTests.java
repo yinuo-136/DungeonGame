@@ -63,11 +63,11 @@ public class PresistenceTests {
         //test exception
         assertThrows(IllegalArgumentException.class, () -> dmc.loadGame("non-existGame"));
 
-        //delete test files
-        File directory = new File("src/main/resources/savedGames");
-        for (File file: Objects.requireNonNull(directory.listFiles())) {
-            file.delete();
-        }
+        // //delete test files
+        // File directory = new File("src/main/resources/savedGames");
+        // for (File file: Objects.requireNonNull(directory.listFiles())) {
+        //     file.delete();
+        // }
     }
 
 }
