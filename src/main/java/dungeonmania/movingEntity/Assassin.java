@@ -151,7 +151,7 @@ public class Assassin extends Entity implements Moving, MercenaryType, Serializa
             // if the player is not within the radius of the recon radius, change to random, else stay in current state
             return;
         }
-        this.currentState = new RandomStrategy();
+        setStrategy(new RandomStrategy());
     }
 
     // return to previous state 
@@ -161,6 +161,6 @@ public class Assassin extends Entity implements Moving, MercenaryType, Serializa
 
     public void setPlayerInvincibleStrategy() {
         prevState = currentState;
-        this.currentState = new RunAwayStrategy();
+        setStrategy(new RunAwayStrategy());
     }
 }

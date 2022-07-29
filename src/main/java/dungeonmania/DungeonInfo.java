@@ -294,7 +294,7 @@ public class DungeonInfo implements Serializable{
     public List<ZombieToast> getAllZombie(){
         List<ZombieToast> list = new ArrayList<>();
         for (Entity e : entityMap.values()){
-            if (e.getType().equals("zombie_toast")){
+            if (e instanceof ZombieToast){
                 list.add((ZombieToast) e);
             }
         }
