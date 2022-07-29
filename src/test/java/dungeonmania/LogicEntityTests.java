@@ -3,10 +3,15 @@ package dungeonmania;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.util.Direction;
+import dungeonmania.util.Position;
+
 import static dungeonmania.TestUtils.countEntityOfType;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static dungeonmania.TestUtils.getInventory;
+import static dungeonmania.TestUtils.getPlayer;
 
 public class LogicEntityTests {
     @Test
@@ -75,7 +80,7 @@ public class LogicEntityTests {
 
     @Test
     @DisplayName("Test the logic behavior of logic bomb")
-    public void testLogicBomb() {
+    public void testLogicBomb() throws IllegalArgumentException, InvalidActionException {
         DungeonManiaController dmc = new DungeonManiaController();
 
         //test and logic
@@ -87,6 +92,7 @@ public class LogicEntityTests {
         DungonRes = dmc.tick(Direction.RIGHT);
         DungonRes = dmc.tick(Direction.RIGHT);
         DungonRes = dmc.tick(Direction.DOWN);
+        dmc.tick(getInventory(DungonRes, "bomb").get(0).getId());
 
         assertEquals(1, countEntityOfType(DungonRes, "switch"));
 
@@ -101,7 +107,72 @@ public class LogicEntityTests {
         DungonRes = dmc.tick(Direction.RIGHT);
         DungonRes = dmc.tick(Direction.RIGHT);
         DungonRes = dmc.tick(Direction.DOWN);
+        dmc.tick(getInventory(DungonRes, "bomb").get(0).getId());
 
         assertEquals(0, countEntityOfType(DungonRes, "bomb"));
+
+        dmc = new DungeonManiaController();
+        DungonRes = dmc.newGame("logicBombANDthree", "c_movementTest_testMovementDown");
+        DungonRes = dmc.tick(Direction.LEFT);
+        DungonRes = dmc.tick(Direction.RIGHT);
+        DungonRes = dmc.tick(Direction.RIGHT);
+        DungonRes = dmc.tick(Direction.UP);
+        DungonRes = dmc.tick(Direction.RIGHT);
+        DungonRes = dmc.tick(Direction.RIGHT);
+        DungonRes = dmc.tick(Direction.DOWN);
+        DungonRes = dmc.tick(getInventory(DungonRes, "bomb").get(0).getId());
+
+        assertEquals(1, countEntityOfType(DungonRes, "bomb"));
+    }
+
+    @Test
+    @DisplayName("Test the logic behavior of logic switch door")
+    public void testLogicSwitchDoor() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        //test and logic
+        DungeonResponse DungonRes = dmc.newGame("logicSwitchDoorAND", "c_movementTest_testMovementDown");
+        DungonRes = dmc.tick(Direction.RIGHT);
+        DungonRes = dmc.tick(Direction.UP);
+        DungonRes = dmc.tick(Direction.RIGHT);
+        DungonRes = dmc.tick(Direction.RIGHT);
+        DungonRes = dmc.tick(Direction.DOWN);
+
+        assertEquals(new Position(3, -1), getPlayer(DungonRes).get().getPosition());
+
+        dmc = new DungeonManiaController();
+        //test and logic
+        DungonRes = dmc.newGame("logicSwitchDoorANDtwo", "c_movementTest_testMovementDown");
+        DungonRes = dmc.tick(Direction.RIGHT);
+        DungonRes = dmc.tick(Direction.UP);
+        DungonRes = dmc.tick(Direction.RIGHT);
+        DungonRes = dmc.tick(Direction.RIGHT);
+        DungonRes = dmc.tick(Direction.DOWN);
+
+        assertEquals(new Position(3, 0), getPlayer(DungonRes).get().getPosition());
+        dmc.tick(Direction.DOWN);
+        DungonRes = dmc.tick(Direction.LEFT);
+        DungonRes = dmc.tick(Direction.LEFT);
+        DungonRes = dmc.tick(Direction.UP);
+        DungonRes = dmc.tick(Direction.RIGHT);
+
+        dmc = new DungeonManiaController();
+        //test and logic
+        DungonRes = dmc.newGame("logicSwitchDoorANDtwo", "c_movementTest_testMovementDown");
+        DungonRes = dmc.tick(Direction.RIGHT);
+        DungonRes = dmc.tick(Direction.RIGHT);
+
+        assertEquals(new Position(1, 0), getPlayer(DungonRes).get().getPosition());
+    }
+
+    @Test
+    @DisplayName("Test the logic behavior of logic switch")
+    public void testLogicSwitch() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        //test and logic
+        DungeonResponse DungonRes = dmc.newGame("logicSwitch", "c_movementTest_testMovementDown");
+        DungonRes = dmc.tick(Direction.RIGHT);
+        assertEquals(1, countEntityOfType(DungonRes, "light_bulb_off"));
+        DungonRes = dmc.tick(Direction.RIGHT);
+        assertEquals(1, countEntityOfType(DungonRes, "light_bulb_on"));
     }
 }
