@@ -69,7 +69,7 @@ public class CollectableEntity extends Entity implements Serializable{
                 newItem = new Arrow(id);
                 break;
             case "bomb":
-                if (logic != "no_logic") {
+                if (logic.equals("no_logic") == false) {
                     newItem = new Bomb(id, dungeonInfo.getConfigMap().get("bomb_radius"), logic);
                 } else {
                     newItem = new Bomb(id, dungeonInfo.getConfigMap().get("bomb_radius"));

@@ -70,8 +70,38 @@ public class LogicEntityTests {
         DungonRes = dmc.tick(Direction.DOWN);
         DungonRes = dmc.tick(Direction.RIGHT);
 
-        assertEquals(1, countEntityOfType(DungonRes, "light_bulb_off"));
-
-        
+        assertEquals(1, countEntityOfType(DungonRes, "light_bulb_off"));        
     } 
+
+    @Test
+    @DisplayName("Test the logic behavior of logic bomb")
+    public void testLogicBomb() {
+        DungeonManiaController dmc = new DungeonManiaController();
+
+        //test and logic
+        DungeonResponse DungonRes = dmc.newGame("logicBombAND", "c_movementTest_testMovementDown");
+        DungonRes = dmc.tick(Direction.LEFT);
+        DungonRes = dmc.tick(Direction.RIGHT);
+        DungonRes = dmc.tick(Direction.RIGHT);
+        DungonRes = dmc.tick(Direction.UP);
+        DungonRes = dmc.tick(Direction.RIGHT);
+        DungonRes = dmc.tick(Direction.RIGHT);
+        DungonRes = dmc.tick(Direction.DOWN);
+
+        assertEquals(1, countEntityOfType(DungonRes, "switch"));
+
+        dmc = new DungeonManiaController();
+
+
+        DungonRes = dmc.newGame("logicBombANDtwo", "c_movementTest_testMovementDown");
+        DungonRes = dmc.tick(Direction.LEFT);
+        DungonRes = dmc.tick(Direction.RIGHT);
+        DungonRes = dmc.tick(Direction.RIGHT);
+        DungonRes = dmc.tick(Direction.UP);
+        DungonRes = dmc.tick(Direction.RIGHT);
+        DungonRes = dmc.tick(Direction.RIGHT);
+        DungonRes = dmc.tick(Direction.DOWN);
+
+        assertEquals(0, countEntityOfType(DungonRes, "bomb"));
+    }
 }
