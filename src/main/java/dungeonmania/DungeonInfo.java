@@ -295,6 +295,15 @@ public class DungeonInfo implements Serializable{
         }
         return list;
     }
+    public List<ZombieToast> getAllZombie(){
+        List<ZombieToast> list = new ArrayList<>();
+        for (Entity e : entityMap.values()){
+            if (e instanceof ZombieToast){
+                list.add((ZombieToast) e);
+            }
+        }
+        return list;
+    }
 
     public void initSpawnConfig(){
         //in this stage, only spider needs to be init
