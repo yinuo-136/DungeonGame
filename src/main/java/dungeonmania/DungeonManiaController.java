@@ -128,11 +128,14 @@ public class DungeonManiaController {
      */
     public DungeonResponse getDungeonResponseModel() {
         DungeonInfo info = infoMap.get(this.dungeonId);
+        BuildableFactory builder = new BuildableFactory();
+
         List<EntityResponse> entityResponses = info.getListEntityResponse();
         List<ItemResponse> itemResponses = info.getListItemResponse();
-        List<String> buildables = info.getCurrentBuildables();
+        List<String> buildables = builder.getCurrentBuildables(info);
         String goalString = info.getGoalString();
         List<BattleResponse> battle =  info.getBattleResponses();
+        
         return new DungeonResponse(dungeonId, dungeonName, entityResponses, itemResponses, battle, buildables, goalString);
     }
 

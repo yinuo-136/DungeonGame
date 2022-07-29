@@ -177,6 +177,11 @@ public class DungeonInfo implements Serializable{
 
     // set config
     public void setConfigs(JSONObject config){
+        //Default Values for backwards compatibility
+        configMap.put("mind_control_duration", 3);
+        configMap.put("midnight_armour_attack", 2);
+        configMap.put("midnight_armour_defence", 2);
+
         for (String keyString : config.keySet()){
             int configValue = config.getInt(keyString);
             configMap.put(keyString, configValue);
@@ -286,20 +291,20 @@ public class DungeonInfo implements Serializable{
         }
         return list;
     }
-    public List<ZombieType> getAllZombieType(){
-        List<ZombieType> list = new ArrayList<>();
-        for (Entity e : entityMap.values()){
-            if (e instanceof ZombieType){
-                list.add((ZombieType) e);
-            }
-        }
-        return list;
-    }
     public List<ZombieToast> getAllZombie(){
         List<ZombieToast> list = new ArrayList<>();
         for (Entity e : entityMap.values()){
             if (e instanceof ZombieToast){
                 list.add((ZombieToast) e);
+            }
+        }
+        return list;
+    }
+    public List<ZombieType> getAllZombieType(){
+        List<ZombieType> list = new ArrayList<>();
+        for (Entity e : entityMap.values()){
+            if (e instanceof ZombieType){
+                list.add((ZombieType) e);
             }
         }
         return list;
@@ -472,32 +477,8 @@ public class DungeonInfo implements Serializable{
             tickableEntity.tick();
     }
 
-    /*
-     * Returns list of currently craftable items
-     */
-    public List<String> getCurrentBuildables() {
-        List<String> buildables = new ArrayList<String>();
-
-        Buildable bow = new Bow();
-        bow.setDungeonInfo(this);
-        Buildable shield = new Shield();
-        shield.setDungeonInfo(this);
-
-        if (bow.checkCraftable()) {
-            buildables.add("bow");
-        }
-
-        if (shield.checkCraftable()) {
-            buildables.add("shield");
-        }
-
-        return buildables;
-    }
-
     public void setDungeonGoal(Goal dungeonGoal) {
         this.dungeonGoal = dungeonGoal;
     }
-
-    
 
 }
