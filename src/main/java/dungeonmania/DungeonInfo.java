@@ -231,7 +231,7 @@ public class DungeonInfo implements Serializable{
         configMap.put("hydra_attack", 10);
         configMap.put("hydra_health", 10);
         configMap.put("hydra_health_increase_amount", 1);
-        configMap.put("hydra_health_increase_rate", 1);
+        configMap.put("hydra_health_increase_rate", 50);
         configMap.put("hydra_spawn_rate", 0);
         configMap.put("invincibility_potion_duration", 1);
         configMap.put("invisibility_potion_duration", 1);
