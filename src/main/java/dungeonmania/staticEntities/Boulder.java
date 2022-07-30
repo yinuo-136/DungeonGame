@@ -8,7 +8,7 @@ import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class Boulder extends staticEntity implements Serializable{
+public class Boulder extends staticEntity{
     private String id;
     private Position position;
     private String type = "boulder";
@@ -57,7 +57,9 @@ public class Boulder extends staticEntity implements Serializable{
             //before player moves in, move the boulder and check if can trigger the floor swtich
             this.position = this.position.translateBy(d);
             if (this.fs != null){
+                fs.setHasBoulder(false);
                 fs.setTriggered(false);
+                fs.deactivateWire();
                 this.fs = null;
             }
             List<Entity> checkEntity = dungeonInfo.getEntitiesByPosition(this.position);
@@ -66,6 +68,8 @@ public class Boulder extends staticEntity implements Serializable{
                     FloorSwitch f = (FloorSwitch) e;
                     f.setTriggered(true);
                     this.fs = f;
+                    fs.setHasBoulder(true);
+                    fs.activateWire();
                 }
             }
 

@@ -13,10 +13,10 @@ import dungeonmania.util.Position;
 
 public class PlacedBomb extends staticEntity implements Tick, Serializable{
     
-    private Position pos;
-    private String type = "bomb";
-    private String id;
-    private int radius;
+    protected Position pos;
+    protected String type = "bomb";
+    protected String id;
+    protected int radius;
 
     public PlacedBomb(Position position, String id, int radius) {
         this.pos = position;

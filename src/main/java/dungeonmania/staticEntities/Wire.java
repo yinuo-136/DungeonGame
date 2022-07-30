@@ -4,44 +4,45 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dungeonmania.Entity;
-import dungeonmania.Tick;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class FloorSwitch extends staticEntity{
-    protected Boolean hasBoulder = false;
-    protected String id;
-    protected Position pos;
-    protected boolean isTriggeredLastTick = false;
-    protected boolean isTriggered;
-    protected String type = "switch";
+public class Wire extends staticEntity{
+    private Position pos;
+    private String id;
+    private String type = "wire";
+    private Boolean isConnected = false;
+    private Boolean isConnectedLastTick = false;
 
-    public FloorSwitch(Position p, String id) {
+    public Wire(Position p, String id) {
         this.id = id;
         this.pos = p;
-        this.isTriggered = false;
     }
 
-    public Position getPos() {
-        return pos;
+    @Override
+    public Position playerMoveIn(Position p, Direction d) {
+        return this.pos;
     }
 
-    public boolean isTriggered() {
-        return isTriggered;
+    @Override
+    public Position boulderMoveIn(Position p) {
+        return this.pos;
     }
 
-    public void setTriggered(boolean isTriggered) {
-        this.isTriggered = isTriggered;
-    }
-
-    
+    @Override
     public String getId() {
-        return id;
+        return this.id;
     }
 
+    @Override
     public String getType() {
-        return type;
+        return this.type;
+    }
+
+    @Override
+    public Position getPos() {
+        return this.pos;
     }
 
     @Override
@@ -51,25 +52,13 @@ public class FloorSwitch extends staticEntity{
     }
 
     @Override
-    public void setConfig() {
-        
-    }
+    public void setConfig() {}
 
-    @Override
-    public Position playerMoveIn(Position p, Direction d) {
-        return this.pos;
-    }
-
-    public void setHasBoulder(Boolean hasBoulder) {
-        this.hasBoulder = hasBoulder;
-    }
-
-    @Override
-    public Position boulderMoveIn(Position p) {
-        return this.pos;
-    } 
     
-    public void activateWire() {
+
+    public void activate() {
+        //activate this wire
+        this.isConnected = true;
 
         //activate the wire that connect to this
         //get a list of adjencent positions
@@ -93,8 +82,10 @@ public class FloorSwitch extends staticEntity{
         }
     }
 
-    public void deactivateWire() {
-         //deactivate the wire that connect to this
+    public void deactivate() {
+        this.isConnected = false;
+
+         //activate the wire that connect to this
         //get a list of adjencent positions
         List<Position> adjacentPositions = new ArrayList<>();
         adjacentPositions.add(this.pos.translateBy(Direction.UP));
@@ -117,12 +108,16 @@ public class FloorSwitch extends staticEntity{
 
     }
 
-    public boolean isTriggeredLastTick() {
-        return isTriggeredLastTick;
+    public Boolean getIsConnected() {
+        return isConnected;
     }
 
-    public void setTriggeredLastTick(boolean isTriggeredLastTick) {
-        this.isTriggeredLastTick = isTriggeredLastTick;
+    public Boolean getIsConnectedLastTick() {
+        return isConnectedLastTick;
+    }
+
+    public void setIsConnectedLastTick(Boolean isConnectedLastTick) {
+        this.isConnectedLastTick = isConnectedLastTick;
     }
 
     
