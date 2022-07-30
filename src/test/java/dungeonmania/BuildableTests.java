@@ -17,7 +17,6 @@ import dungeonmania.buildableEntity.MidnightArmour;
 import dungeonmania.buildableEntity.Sceptre;
 import dungeonmania.buildableEntity.Shield;
 import dungeonmania.exceptions.InvalidActionException;
-import dungeonmania.movingEntity.MercenaryType;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.ItemResponse;
 import dungeonmania.util.Direction;
