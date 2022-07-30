@@ -441,9 +441,11 @@ public class BuildableTests {
         //Gather crafting materials
         res = dmc.tick(Direction.RIGHT);
         assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
+        
         res = dmc.tick(Direction.RIGHT);
         expectedPosition = expectedPosition.translateBy(Direction.LEFT);
         assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
+        
         res = dmc.tick(Direction.RIGHT);
         expectedPosition = expectedPosition.translateBy(Direction.LEFT);
         assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
@@ -459,23 +461,23 @@ public class BuildableTests {
         res = dmc.tick(Direction.LEFT);
         expectedPosition = expectedPosition.translateBy(Direction.LEFT);
         assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
-        assertEquals(false, getEntities(res, "mercenary").get(0).isInteractable());
+        assertFalse(getEntities(res, "mercenary").get(0).isInteractable());
 
         res = dmc.tick(Direction.LEFT);
         expectedPosition = expectedPosition.translateBy(Direction.LEFT);
         assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
-        assertEquals(false, getEntities(res, "mercenary").get(0).isInteractable());
+        assertFalse(getEntities(res, "mercenary").get(0).isInteractable());
 
         res = dmc.tick(Direction.LEFT);
         expectedPosition = expectedPosition.translateBy(Direction.LEFT);
         assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
-        assertEquals(false, getEntities(res, "mercenary").get(0).isInteractable());
+        assertFalse(getEntities(res, "mercenary").get(0).isInteractable());
 
         ////Move and make sure Mercenary is no longer bribed
         res = dmc.tick(Direction.LEFT);
         expectedPosition = expectedPosition.translateBy(Direction.LEFT);
         assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
-        assertEquals(true, getEntities(res, "mercenary").get(0).isInteractable());
+        assertTrue(getEntities(res, "mercenary").get(0).isInteractable());
 }
 
     @Test
@@ -490,9 +492,11 @@ public class BuildableTests {
         //Gather crafting materials
         res = dmc.tick(Direction.RIGHT);
         assertEquals(expectedPosition, getEntities(res, "assassin").get(0).getPosition());
+        
         res = dmc.tick(Direction.RIGHT);
         expectedPosition = expectedPosition.translateBy(Direction.LEFT);
         assertEquals(expectedPosition, getEntities(res, "assassin").get(0).getPosition());
+        
         res = dmc.tick(Direction.RIGHT);
         expectedPosition = expectedPosition.translateBy(Direction.LEFT);
         assertEquals(expectedPosition, getEntities(res, "assassin").get(0).getPosition());
@@ -508,23 +512,23 @@ public class BuildableTests {
         res = dmc.tick(Direction.LEFT);
         expectedPosition = expectedPosition.translateBy(Direction.LEFT);
         assertEquals(expectedPosition, getEntities(res, "assassin").get(0).getPosition());
-        assertEquals(false, getEntities(res, "assassin").get(0).isInteractable());
+        assertFalse(getEntities(res, "assassin").get(0).isInteractable());
 
         res = dmc.tick(Direction.LEFT);
         expectedPosition = expectedPosition.translateBy(Direction.LEFT);
         assertEquals(expectedPosition, getEntities(res, "assassin").get(0).getPosition());
-        assertEquals(false, getEntities(res, "assassin").get(0).isInteractable());
+        assertFalse(getEntities(res, "assassin").get(0).isInteractable());
 
         res = dmc.tick(Direction.LEFT);
         expectedPosition = expectedPosition.translateBy(Direction.LEFT);
         assertEquals(expectedPosition, getEntities(res, "assassin").get(0).getPosition());
-        assertEquals(false, getEntities(res, "assassin").get(0).isInteractable());
+        assertFalse(getEntities(res, "assassin").get(0).isInteractable());
 
         ////Move and make sure Assassin is no longer bribed
         res = dmc.tick(Direction.LEFT);
         expectedPosition = expectedPosition.translateBy(Direction.LEFT);
         assertEquals(expectedPosition, getEntities(res, "assassin").get(0).getPosition());
-        assertEquals(true, getEntities(res, "assassin").get(0).isInteractable());
+        assertTrue(getEntities(res, "assassin").get(0).isInteractable());
 
 
     }
