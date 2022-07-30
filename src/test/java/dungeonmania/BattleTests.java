@@ -169,4 +169,27 @@ public class BattleTests {
         assertTrue(player_exists);
         assertTrue(mercenary_exists);
     }
+    @Test
+    @DisplayName("Test Midnight Armour in battle")
+    public void testMidnightArmourBattle() throws IllegalArgumentException, InvalidActionException{
+        // Player will walk into mercenary and win with 1 hp because the midnight armour will negate its damage
+        // i.e. player of 1hp with midngiht armour of attack and defense 5 will beat a mercenary with 5 damage of 4 health in 2 rounds
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.newGame("d_battleTest_MA", "c_battleTest_MA");
+        controller.tick(Direction.RIGHT);
+        controller.tick(Direction.RIGHT);
+        controller.build("midnight_armour");
+        DungeonResponse response = controller.tick(Direction.RIGHT);
+        // Battle will last two rounds
+        assertTrue(response.getBattles().get(0).getRounds().size() == 2);
+        List<EntityResponse> entities = response.getEntities();
+        // player lives and mercenary dies
+        Boolean player_exists = false;
+        for (EntityResponse e : entities) {
+            assertTrue(e.getType() != "mercenary");
+            if (e.getType() == "player")
+                player_exists = true;
+        }
+        assertTrue(player_exists);
+    }
 }
