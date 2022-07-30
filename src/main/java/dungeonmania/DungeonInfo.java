@@ -39,6 +39,7 @@ import dungeonmania.movingEntity.Moving;
 import dungeonmania.movingEntity.Spider;
 import dungeonmania.movingEntity.ZombieToast;
 import dungeonmania.movingEntity.ZombieType;
+import dungeonmania.player.OlderPlayer;
 import dungeonmania.player.Player;
 import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.EntityResponse;
@@ -90,6 +91,33 @@ public class DungeonInfo implements Serializable, Cloneable{
         DungeonInfo dungeonInfoClone = (DungeonInfo) this.clone();
         // store the dungeonInfo into the historyArray for time travel
         dungeonInfoHistory.addDungeonInfo(dungeonInfoClone);
+    }
+
+    public void rewind(int tickBefore) {
+        int index = dungeonInfoHistory.getDungeonInfoSize() - tickBefore;
+        if (index < 0) {
+            index = 0;
+        }
+        // get the last dungeonInfo from the historyArray
+        DungeonInfo oldDungeonInfo = dungeonInfoHistory.getDungeonInfo(index);
+        // get the player in the current dungeonInfo
+        Player player = this.getPlayer();
+        // get the player in the last dungeonInfo if there is no olderplayer in the current dungeonInfo, add a new one
+        Player playerLast = oldDungeonInfo.getPlayer();
+        if (this.getOlderPlayer() == null) {
+            String id = "older_player";
+            OlderPlayer olderPlayer = new OlderPlayer(id, playerLast);
+            oldDungeonInfo.getEntityMap().put(olderPlayer.getId(), olderPlayer);
+        }
+        // set the dungeonInfo to the current dungeonInfo
+        this.entityMap = oldDungeonInfo.entityMap;
+        this.configMap = oldDungeonInfo.configMap;
+        this.itemList = oldDungeonInfo.itemList;
+        this.dungeonGoal = oldDungeonInfo.dungeonGoal;
+        this.battleList = oldDungeonInfo.battleList;
+        this.tickList = oldDungeonInfo.tickList;
+        this.entityCounter = oldDungeonInfo.entityCounter;
+        this.dungeonInfoHistory = oldDungeonInfo.dungeonInfoHistory;
     }
 
     //create an entity class in terms of the type.
@@ -283,6 +311,16 @@ public class DungeonInfo implements Serializable, Cloneable{
         for (Entity e : entityMap.values()){
             if (e.getType().equals("player")){
                 Player p = (Player) e;
+                return p;
+            }
+        }
+        return null;
+    }
+
+    public OlderPlayer getOlderPlayer(){
+        for (Entity e : entityMap.values()){
+            if (e.getType().equals("older_player")){
+                OlderPlayer p = (OlderPlayer) e;
                 return p;
             }
         }

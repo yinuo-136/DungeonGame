@@ -9,9 +9,9 @@ public class OlderPlayer extends Entity {
     private String type = "older_player";
     private Position pos;
 
-    public OlderPlayer(String id, Position pos) {
+    public OlderPlayer(String id, Player player) {
         this.id = id;
-        this.pos = pos;
+        this.pos = player.getPos();
     }
 
     @Override
