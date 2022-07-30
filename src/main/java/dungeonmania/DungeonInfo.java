@@ -62,7 +62,7 @@ import dungeonmania.staticEntities.ZombieToastSpawner;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class DungeonInfo implements Serializable{
+public class DungeonInfo implements Serializable, Cloneable{
     private HashMap<String, Entity> entityMap = new HashMap<>(); // the entity map
     private HashMap<String, Integer> configMap = new HashMap<>(); // the config file map
     private List<InvItem> itemList = new ArrayList<>(); // the item list
@@ -70,6 +70,7 @@ public class DungeonInfo implements Serializable{
     private List<BattleResponse> battleList = new ArrayList<>(); // battle response list
     private List<Tick> tickList = new ArrayList<>(); // tickable entities list
     private int entityCounter = 0;
+    private DungeonInfoHistory dungeonInfoHistory = new DungeonInfoHistory();
 
     //store all entities into map
     public void storeEntitiesInMap(JSONArray arr){
@@ -83,6 +84,13 @@ public class DungeonInfo implements Serializable{
     }
 
     //helper methods
+
+    public void storeDungeonInfo() throws CloneNotSupportedException{
+        //clone the dungeonInfo and add it to dungeonInfoHistory
+        DungeonInfo dungeonInfoClone = (DungeonInfo) this.clone();
+        // store the dungeonInfo into the historyArray for time travel
+        dungeonInfoHistory.addDungeonInfo(dungeonInfoClone);
+    }
 
     //create an entity class in terms of the type.
     public Entity createEntity(JSONObject json, String id, DungeonInfo info){
