@@ -456,10 +456,10 @@ public class DungeonManiaController {
     }
 
     public DungeonResponse rewind(int ticks) throws IllegalArgumentException {
-        if (ticks <= 0) {
+        DungeonInfo info = infoMap.get(this.dungeonId);
+        if (ticks <= 0 || info.getDungeonInfoHistorySize() < ticks) {
             throw new IllegalArgumentException("tick can not be less than or equal to 0");
         }
-        DungeonInfo info = infoMap.get(this.dungeonId);
         info.rewind(ticks);
         return getDungeonResponseModel();
     }

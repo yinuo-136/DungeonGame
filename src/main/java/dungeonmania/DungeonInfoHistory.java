@@ -15,6 +15,10 @@ public class DungeonInfoHistory implements Serializable{
         return dungeonInfoHistory.get(index);
     }
 
+    public List<DungeonInfo> getDungeonInfoList() {
+        return dungeonInfoHistory;
+    }
+
     public int getDungeonInfoSize() {
         return dungeonInfoHistory.size();
     }

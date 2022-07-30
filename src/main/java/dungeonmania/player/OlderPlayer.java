@@ -11,7 +11,7 @@ public class OlderPlayer extends Entity {
 
     public OlderPlayer(String id, Player player) {
         this.id = id;
-        this.pos = player.getPos();
+        this.pos = new Position(player.position.getX(), player.position.getY());
     }
 
     @Override
