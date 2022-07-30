@@ -1,20 +1,17 @@
 package dungeonmania.staticEntities;
 
-
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class SwampTile extends staticEntity {
-    private String id;
+public class TimeTravellingPortal extends staticEntity{
+    String id;
     private Position pos;
-    private int movement_factor;
-    private String type = "swamp_tile";
+    private String type = "time_travelling_portal";
 
-    public SwampTile(Position p, String id, int movement_factor) {
-        this.id = id;
+    public TimeTravellingPortal(Position p, String id) {
         this.pos = p;
-        this.movement_factor = movement_factor;
+        this.id = id;
     }
 
     @Override
@@ -29,17 +26,17 @@ public class SwampTile extends staticEntity {
 
     @Override
     public String getId() {
-        return this.id;
+        return id;
     }
 
     @Override
     public String getType() {
-        return this.type;
+        return type;
     }
 
     @Override
     public Position getPos() {
-        return this.pos;
+        return pos;
     }
 
     @Override
@@ -50,10 +47,7 @@ public class SwampTile extends staticEntity {
 
     @Override
     public void setConfig() {
-    }
-
-    public int getMovementFactor() {
-        return movement_factor;
+        
     }
     
 }

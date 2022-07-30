@@ -9,6 +9,7 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.google.gson.JsonObject;
@@ -46,10 +47,17 @@ import dungeonmania.staticEntities.Boulder;
 import dungeonmania.staticEntities.Door;
 import dungeonmania.staticEntities.Exit;
 import dungeonmania.staticEntities.FloorSwitch;
+import dungeonmania.staticEntities.LightBulb;
+import dungeonmania.staticEntities.LogicFloorSwitch;
+import dungeonmania.staticEntities.LogicLightBulb;
+import dungeonmania.staticEntities.LogicSwitchDoor;
 import dungeonmania.staticEntities.PlacedBomb;
 import dungeonmania.staticEntities.Portal;
 import dungeonmania.staticEntities.SwampTile;
+import dungeonmania.staticEntities.SwitchDoor;
+import dungeonmania.staticEntities.TimeTravellingPortal;
 import dungeonmania.staticEntities.Wall;
+import dungeonmania.staticEntities.Wire;
 import dungeonmania.staticEntities.ZombieToastSpawner;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
@@ -70,14 +78,14 @@ public class DungeonInfo implements Serializable{
             //get an id for that entity
             this.entityCounter = this.entityCounter + 1;
             String id = Integer.toString(this.entityCounter);
-            entityMap.put(id, DungeonInfo.createEntity(json, id, this));
+            entityMap.put(id, this.createEntity(json, id, this));
         }
     }
 
     //helper methods
 
     //create an entity class in terms of the type.
-    public static Entity createEntity(JSONObject json, String id, DungeonInfo info){
+    public Entity createEntity(JSONObject json, String id, DungeonInfo info){
         Entity newEntity;
         int x = (int) json.get("x");
         int y = (int) json.get("y");
@@ -126,7 +134,12 @@ public class DungeonInfo implements Serializable{
                 break;
             
             case "switch":
-                newEntity = new FloorSwitch(new Position(x, y), id);
+                try{
+                    newEntity = new LogicFloorSwitch(new Position(x, y), id, (String) json.get("logic"));
+                    this.addTick((Tick) newEntity);
+                } catch(JSONException e) {
+                    newEntity = new FloorSwitch(new Position(x, y), id);
+                } 
                 break;
 
             case "portal":
@@ -156,7 +169,41 @@ public class DungeonInfo implements Serializable{
             case "swamp_tile":
                 newEntity = new SwampTile(new Position(x, y), id, (int) json.get("movement_factor"));
                 break;
-                
+            
+            case "switch_door":
+                try{
+                    newEntity = new LogicSwitchDoor(new Position(x, y), (int) json.get("key"), id, (String) json.get("logic"));
+                } catch(JSONException e){
+                    newEntity = new SwitchDoor(new Position(x, y), (int) json.get("key"), id);
+                }         
+                this.addTick((Tick) newEntity);
+                break;
+            
+            case "light_bulb_off":
+                try{
+                    newEntity = new LogicLightBulb(new Position(x, y), id, (String) json.get("logic"));
+                } catch(JSONException e) {
+                    newEntity = new LightBulb(new Position(x, y), id);
+                }           
+                this.addTick((Tick) newEntity);
+                break;
+            
+            case "wire":
+                newEntity = new Wire(new Position(x, y), id);
+                break;
+            
+            case "bomb":
+                try{
+                    newEntity = new CollectableEntity(id, (String) json.get("type"), new Position(x, y), (String) json.get("logic"));
+                } catch(JSONException e) {
+                    newEntity = new CollectableEntity(id, (String) json.get("type"), new Position(x, y));
+                }
+                break;
+            
+            case "time_travelling_portal":
+                newEntity = new TimeTravellingPortal(new Position(x, y), id);
+                break;
+            
             // if default, it will be collectableEntities
             default:
                 newEntity = new CollectableEntity(id, (String) json.get("type"), new Position(x, y));
@@ -488,4 +535,34 @@ public class DungeonInfo implements Serializable{
         this.dungeonGoal = dungeonGoal;
     }
 
+    public List<Entity> getSurroundingEntities(Position pos) {
+        List<Entity> l = new ArrayList<>();
+
+        List<Position> adjacentPositions = new ArrayList<>();
+        adjacentPositions.add(pos.translateBy(Direction.UP));
+        adjacentPositions.add(pos.translateBy(Direction.DOWN));
+        adjacentPositions.add(pos.translateBy(Direction.LEFT));
+        adjacentPositions.add(pos.translateBy(Direction.RIGHT));
+
+        for (Position p : adjacentPositions) {
+            List<Entity> le = getEntitiesByPosition(p);
+            for (Entity e : le) {
+                l.add(e);
+            }
+        }
+
+        return l;
+    }
+
+    public void updateActives() {
+        for (Entity e : entityMap.values()) {
+            if (e instanceof FloorSwitch) {
+                FloorSwitch fl = (FloorSwitch) e;
+                fl.setTriggeredLastTick(fl.isTriggered());
+            } else if (e instanceof Wire) {
+                Wire w = (Wire) e;
+                w.setIsConnectedLastTick(w.getIsConnected());
+            }
+        }
+    }
 }

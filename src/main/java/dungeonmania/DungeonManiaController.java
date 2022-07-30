@@ -81,6 +81,19 @@ public class DungeonManiaController {
         infoMap.put(dungeonId, info);
 
         String jsonContent = null;
+
+
+        List<String> dungeonList = dungeons();
+        List<String> configList = configs();
+
+        if (!dungeonList.contains(dungeonName)) {
+            throw new IllegalArgumentException();
+        }
+
+        if (!configList.contains(configName)) {
+            throw new IllegalArgumentException();
+        }
+
         //read and set config file
         try {
             jsonContent = FileLoader.loadResourceFile("/configs/" + configName + ".json");
@@ -155,7 +168,8 @@ public class DungeonManiaController {
             //check exceptions
             throw new IllegalArgumentException("not usable item");
         }
-        InvItem item = info.getItemById(itemUsedId);
+        info.updateActives();
+        InvItem item = info.getItemById(itemUsedId);      
         item.use();
         info.runTicks();
         info.getPlayer().tickPlayerState();
@@ -172,6 +186,7 @@ public class DungeonManiaController {
     public DungeonResponse tick(Direction movementDirection) {
         DungeonInfo info = infoMap.get(this.dungeonId);
         //trigger player movement
+        info.updateActives();
         info.movePLayer(movementDirection);
         info.runTicks();
         info.getPlayer().tickPlayerState();
@@ -414,5 +429,12 @@ public class DungeonManiaController {
         infoMap.put(dungeonId, info);
         DungeonResponse response = new DungeonResponse(dungeonId, "Generated_Dungeon", entities, new ArrayList<ItemResponse>(), new ArrayList<BattleResponse>(), new ArrayList<String>(), ":exit");
         return response;
+    }
+
+    public DungeonResponse rewind(int ticks) throws IllegalArgumentException {
+        if (ticks <= 0) {
+            throw new IllegalArgumentException("tick can not be less than or equal to 0");
+        }
+        return getDungeonResponseModel();
     }
 }
