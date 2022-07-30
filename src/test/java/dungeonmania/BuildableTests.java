@@ -445,6 +445,9 @@ public class BuildableTests {
         res = dmc.tick(Direction.RIGHT);
         expectedPosition = expectedPosition.translateBy(Direction.LEFT);
         assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
+        res = dmc.tick(Direction.RIGHT);
+        expectedPosition = expectedPosition.translateBy(Direction.LEFT);
+        assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
 
         //Build Sceptre
         assertDoesNotThrow(() -> dmc.build("sceptre"));
@@ -488,7 +491,9 @@ public class BuildableTests {
         //Gather crafting materials
         res = dmc.tick(Direction.RIGHT);
         assertEquals(expectedPosition, getEntities(res, "assassin").get(0).getPosition());
-
+        res = dmc.tick(Direction.RIGHT);
+        expectedPosition = expectedPosition.translateBy(Direction.LEFT);
+        assertEquals(expectedPosition, getEntities(res, "assassin").get(0).getPosition());
         res = dmc.tick(Direction.RIGHT);
         expectedPosition = expectedPosition.translateBy(Direction.LEFT);
         assertEquals(expectedPosition, getEntities(res, "assassin").get(0).getPosition());
