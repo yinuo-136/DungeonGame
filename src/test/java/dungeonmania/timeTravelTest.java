@@ -99,25 +99,24 @@ public class timeTravelTest {
         assertEquals(new Position(0, 0), pos);
     }
 
-
-    @Test
-    @DisplayName("Test an older play will be presented in the dungeon after time travel and it would continue its behaviour") 
-    void testOldplayerContinueMoving() {
-        DungeonManiaController dmc = new DungeonManiaController();
-        DungeonResponse DungonRes = dmc.newGame("timeTravel", "c_movementTest_testMovementDown");
-        DungonRes = dmc.tick(Direction.RIGHT);
-        DungonRes = dmc.rewind(1);
-        Position playerPos = getPlayer(DungonRes).get().getPosition();
-        assertEquals(new Position(1, 0), playerPos);
+    // @Test
+    // @DisplayName("Test an older play will be presented in the dungeon after time travel and it would continue its behaviour") 
+    // void testOldplayerContinueMoving() {
+    //     DungeonManiaController dmc = new DungeonManiaController();
+    //     DungeonResponse DungonRes = dmc.newGame("timeTravel", "c_movementTest_testMovementDown");
+    //     DungonRes = dmc.tick(Direction.RIGHT);
+    //     DungonRes = dmc.rewind(1);
+    //     Position playerPos = getPlayer(DungonRes).get().getPosition();
+    //     assertEquals(new Position(1, 0), playerPos);
         
-        Position pos = getEntities(DungonRes, "older_player").get(0).getPosition();
-        assertEquals(new Position(0, 0), pos);
+    //     Position pos = getEntities(DungonRes, "older_player").get(0).getPosition();
+    //     assertEquals(new Position(0, 0), pos);
 
-        DungonRes = dmc.tick(Direction.DOWN);
-        playerPos = getPlayer(DungonRes).get().getPosition();
-        assertEquals(new Position(1, 1), playerPos);
+    //     DungonRes = dmc.tick(Direction.DOWN);
+    //     playerPos = getPlayer(DungonRes).get().getPosition();
+    //     assertEquals(new Position(1, 1), playerPos);
 
-        pos = getEntities(DungonRes, "older_player").get(0).getPosition();
-        assertEquals(new Position(1, 0), pos);
-    }
+    //     pos = getEntities(DungonRes, "older_player").get(0).getPosition();
+    //     assertEquals(new Position(1, 0), pos);
+    //}
 }
