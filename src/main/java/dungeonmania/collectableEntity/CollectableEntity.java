@@ -10,6 +10,7 @@ import dungeonmania.inventoryItem.InvItem;
 import dungeonmania.inventoryItem.ItemKey;
 import dungeonmania.inventoryItem.Sunstone;
 import dungeonmania.inventoryItem.Sword;
+import dungeonmania.inventoryItem.TimeTurner;
 import dungeonmania.inventoryItem.Treasure;
 import dungeonmania.inventoryItem.Wood;
 import dungeonmania.inventoryItem.Potion.InvincibilityPotion;
@@ -88,6 +89,9 @@ public class CollectableEntity extends Entity implements Serializable{
                 break;
             case "sun_stone":
                 newItem = new Sunstone(id);
+                break;
+            case "time_turner":
+                newItem = new TimeTurner(id);
                 break;
         }
         items.add(newItem);
