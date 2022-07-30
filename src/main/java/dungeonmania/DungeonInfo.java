@@ -55,6 +55,7 @@ import dungeonmania.staticEntities.PlacedBomb;
 import dungeonmania.staticEntities.Portal;
 import dungeonmania.staticEntities.SwampTile;
 import dungeonmania.staticEntities.SwitchDoor;
+import dungeonmania.staticEntities.TimeTravellingPortal;
 import dungeonmania.staticEntities.Wall;
 import dungeonmania.staticEntities.Wire;
 import dungeonmania.staticEntities.ZombieToastSpawner;
@@ -197,6 +198,10 @@ public class DungeonInfo implements Serializable{
                 } catch(JSONException e) {
                     newEntity = new CollectableEntity(id, (String) json.get("type"), new Position(x, y));
                 }
+                break;
+            
+            case "time_travelling_portal":
+                newEntity = new TimeTravellingPortal(new Position(x, y), id);
                 break;
             
             // if default, it will be collectableEntities
