@@ -430,4 +430,11 @@ public class DungeonManiaController {
         DungeonResponse response = new DungeonResponse(dungeonId, "Generated_Dungeon", entities, new ArrayList<ItemResponse>(), new ArrayList<BattleResponse>(), new ArrayList<String>(), ":exit");
         return response;
     }
+
+    public DungeonResponse rewind(int ticks) throws IllegalArgumentException {
+        if (ticks <= 0) {
+            throw new IllegalArgumentException("tick can not be less than or equal to 0");
+        }
+        return getDungeonResponseModel();
+    }
 }
