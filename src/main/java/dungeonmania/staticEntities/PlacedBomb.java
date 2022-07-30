@@ -1,6 +1,5 @@
 package dungeonmania.staticEntities;
 
-import java.io.Serializable;
 import java.util.List;
 
 import dungeonmania.DungeonInfo;
@@ -11,12 +10,12 @@ import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class PlacedBomb extends staticEntity implements Tick, Serializable{
+public class PlacedBomb extends staticEntity implements Tick{
     
-    private Position pos;
-    private String type = "bomb";
-    private String id;
-    private int radius;
+    protected Position pos;
+    protected String type = "bomb";
+    protected String id;
+    protected int radius;
 
     public PlacedBomb(Position position, String id, int radius) {
         this.pos = position;
@@ -38,6 +37,13 @@ public class PlacedBomb extends staticEntity implements Tick, Serializable{
                     blast();
                     return;
             }
+            if (e instanceof Wire) {
+                Wire w = (Wire) e;
+                if (w.getIsConnected()) {
+                    blast();
+                    return;
+                }
+            }
         }
         //below
         entities = dungeonInfo.getEntitiesByPosition(new Position(x_pos, y_pos + 1));
@@ -47,6 +53,13 @@ public class PlacedBomb extends staticEntity implements Tick, Serializable{
                 if (floorSwitch.isTriggered())
                     blast();
                     return;
+            }
+            if (e instanceof Wire) {
+                Wire w = (Wire) e;
+                if (w.getIsConnected()) {
+                    blast();
+                    return;
+                }
             }
         }
         //left
@@ -58,6 +71,13 @@ public class PlacedBomb extends staticEntity implements Tick, Serializable{
                     blast();
                     return;
             }
+            if (e instanceof Wire) {
+                Wire w = (Wire) e;
+                if (w.getIsConnected()) {
+                    blast();
+                    return;
+                }
+            }
         }
         //right
         entities = dungeonInfo.getEntitiesByPosition(new Position(x_pos + 1, y_pos));
@@ -67,6 +87,14 @@ public class PlacedBomb extends staticEntity implements Tick, Serializable{
                 if (floorSwitch.isTriggered())
                     blast();
                     return;
+            }
+
+            if (e instanceof Wire) {
+                Wire w = (Wire) e;
+                if (w.getIsConnected()) {
+                    blast();
+                    return;
+                }
             }
         }
     }

@@ -1,6 +1,5 @@
 package dungeonmania.movingEntity;
 
-import java.io.Serializable;
 import java.util.List;
 
 import dungeonmania.Entity;
@@ -9,7 +8,7 @@ import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class Mercenary extends Entity implements Moving, Serializable {
+public class Mercenary extends Entity implements Moving, MercenaryType {
     private String id;
     private Position position;
     private double health;
@@ -17,10 +16,13 @@ public class Mercenary extends Entity implements Moving, Serializable {
     private static int bribedDamage;
     private static int bribedDefence;
     private MercenaryMovingStrategy currentState = new NotBribedStrategy();
+    private MercenaryMovingStrategy prevState = new NotBribedStrategy();
+
     private int costToBribe;
     private int bribeRadius;
     private String type = "mercenary";
     private boolean bribed = false;
+    private MoveFactorCounter moveFactorCounter = null;
 
     public Mercenary(Position position, String id) {
         this.position = position;
@@ -35,12 +37,40 @@ public class Mercenary extends Entity implements Moving, Serializable {
     }
 
     public void move() {
-        currentState.move(this);
+        // create a moveFactorCounter if it is null, so if the moving entity first enter a new position
+        // if it is any position with a movement factor block(swamptile) in it, it will count the movement factor block
+        if (moveFactorCounter == null) {
+            moveFactorCounter = new MoveFactorCounter(this, getPos());
+        }
+        // if the counter is 0, then move the zombie.
+        if (moveFactorCounter.movementFactorCounter()) {
+            currentState.move(this);
+            moveFactorCounter = null;
+        }
     }
 
     @Override
     public Position getPos() {
         return position;
+    }
+
+    public int getCostToBribe() {
+        return costToBribe;
+    }
+
+    public boolean checkBribeAmoountEnough(int bribeAmount){
+        if (bribeAmount >= costToBribe) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean checkBribeDistance(Player player){
+        if (Math.abs(player.getPos().getX() - position.getX()) >  bribeRadius || Math.abs(player.getPos().getY() - position.getY()) > bribeRadius) {
+            // if the player is not within the radius of the mercenary bribe radius
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -49,7 +79,7 @@ public class Mercenary extends Entity implements Moving, Serializable {
      * @return true if the mercenary was bribed, false otherwise.
      */
     public boolean bribe(int bribeAmount) {
-        if (bribeAmount >= costToBribe) {
+        if (checkBribeAmoountEnough(bribeAmount)) {
             currentState = new BribedStrategy();
             damage = bribedDamage;
             bribed = true;
@@ -108,5 +138,19 @@ public class Mercenary extends Entity implements Moving, Serializable {
 
     public Boolean getBribed() {
         return bribed;
+    }
+
+    public void setPlayerInvisibleStrategy(Player player) {
+        prevState = currentState;
+        this.currentState = new RandomStrategy();
+    }
+
+    public void revertStrategy() {
+        this.currentState = prevState;
+    }
+
+    public void setPlayerInvincibleStrategy() {
+        prevState = currentState;
+        this.currentState = new RunAwayStrategy();
     }
 }

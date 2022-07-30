@@ -14,7 +14,7 @@ public class InvisibilityPotion implements Potion, InvItem, Serializable {
     private DungeonInfo dungeonInfo;
     
     public InvisibilityPotion(int duration, String id) {
-        this.duration = duration;
+        this.duration = duration + 1;
         this.id = id;
     }
     @Override

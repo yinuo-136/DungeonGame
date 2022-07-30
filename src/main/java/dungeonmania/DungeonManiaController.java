@@ -8,6 +8,7 @@ import dungeonmania.inventoryItem.Bomb;
 import dungeonmania.inventoryItem.InvItem;
 import dungeonmania.inventoryItem.Treasure;
 import dungeonmania.movingEntity.Mercenary;
+import dungeonmania.movingEntity.MercenaryType;
 import dungeonmania.player.Player;
 import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.DungeonResponse;
@@ -80,6 +81,19 @@ public class DungeonManiaController {
         infoMap.put(dungeonId, info);
 
         String jsonContent = null;
+
+
+        List<String> dungeonList = dungeons();
+        List<String> configList = configs();
+
+        if (!dungeonList.contains(dungeonName)) {
+            throw new IllegalArgumentException();
+        }
+
+        if (!configList.contains(configName)) {
+            throw new IllegalArgumentException();
+        }
+
         //read and set config file
         try {
             jsonContent = FileLoader.loadResourceFile("/configs/" + configName + ".json");
@@ -154,7 +168,8 @@ public class DungeonManiaController {
             //check exceptions
             throw new IllegalArgumentException("not usable item");
         }
-        InvItem item = info.getItemById(itemUsedId);
+        info.updateActives();
+        InvItem item = info.getItemById(itemUsedId);      
         item.use();
         info.runTicks();
         info.getPlayer().tickPlayerState();
@@ -171,6 +186,7 @@ public class DungeonManiaController {
     public DungeonResponse tick(Direction movementDirection) {
         DungeonInfo info = infoMap.get(this.dungeonId);
         //trigger player movement
+        info.updateActives();
         info.movePLayer(movementDirection);
         info.runTicks();
         info.getPlayer().tickPlayerState();
@@ -201,7 +217,7 @@ public class DungeonManiaController {
         if (e == null) {
             throw new IllegalArgumentException("null");
         }
-        if (e.getType() != "zombie_toast_spawner" && e.getType() != "mercenary") {
+        if (e.getType() != "zombie_toast_spawner" && !(e instanceof MercenaryType)) {
             throw new IllegalArgumentException();
         }
 
@@ -217,21 +233,18 @@ public class DungeonManiaController {
             }
             info.getEntityMap().remove(entityId);
         }
-        if (e.getType().equals("mercenary")) {
-            // check bribe distance
-            int PlayerX = info.getPlayer().getPos().getX();
-            int PlayerY = info.getPlayer().getPos().getY();
-            int mercenaryX = e.getPos().getX();
-            int mercenaryY = e.getPos().getY();
-            int radius = info.getSpecificConfig("bribe_radius");
-            int amount = info.getSpecificConfig("bribe_amount");
-            if (Math.abs(PlayerX - mercenaryX) >  radius || Math.abs(PlayerY - mercenaryY) > radius) {
-                // if the player is not within the radius of the mercenary bribe radius
+
+        if(e instanceof MercenaryType){
+            int amount = ((MercenaryType)e).getCostToBribe();
+            // check if the player is within the bribe radius
+            if (((MercenaryType) e).checkBribeDistance(info.getPlayer()) == false) {
                 throw new InvalidActionException("Player is not in the mercenary's range");
             }
-            if (((Mercenary) e).bribe(getTreasureCount()) == false) {
+            // check if player has enough money
+            if (((MercenaryType) e).checkBribeAmoountEnough(getTreasureCount()) == false) {
                 throw new InvalidActionException("Player does not have enough treasure");
             }
+            ((MercenaryType) e).bribe(getTreasureCount());
             removeTreasure(amount);
         }
         
@@ -416,5 +429,12 @@ public class DungeonManiaController {
         infoMap.put(dungeonId, info);
         DungeonResponse response = new DungeonResponse(dungeonId, "Generated_Dungeon", entities, new ArrayList<ItemResponse>(), new ArrayList<BattleResponse>(), new ArrayList<String>(), ":exit");
         return response;
+    }
+
+    public DungeonResponse rewind(int ticks) throws IllegalArgumentException {
+        if (ticks <= 0) {
+            throw new IllegalArgumentException("tick can not be less than or equal to 0");
+        }
+        return getDungeonResponseModel();
     }
 }

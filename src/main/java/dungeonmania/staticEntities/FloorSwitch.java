@@ -1,16 +1,21 @@
 package dungeonmania.staticEntities;
 
-import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
+import dungeonmania.Entity;
+import dungeonmania.Tick;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class FloorSwitch extends staticEntity implements Serializable{
-    private String id;
-    private Position pos;
-    private boolean isTriggered;
-    private String type = "switch";
+public class FloorSwitch extends staticEntity{
+    protected Boolean hasBoulder = false;
+    protected String id;
+    protected Position pos;
+    protected boolean isTriggeredLastTick = false;
+    protected boolean isTriggered;
+    protected String type = "switch";
 
     public FloorSwitch(Position p, String id) {
         this.id = id;
@@ -30,6 +35,7 @@ public class FloorSwitch extends staticEntity implements Serializable{
         this.isTriggered = isTriggered;
     }
 
+    
     public String getId() {
         return id;
     }
@@ -54,8 +60,70 @@ public class FloorSwitch extends staticEntity implements Serializable{
         return this.pos;
     }
 
+    public void setHasBoulder(Boolean hasBoulder) {
+        this.hasBoulder = hasBoulder;
+    }
+
     @Override
     public Position boulderMoveIn(Position p) {
         return this.pos;
     } 
+    
+    public void activateWire() {
+
+        //activate the wire that connect to this
+        //get a list of adjencent positions
+        List<Position> adjacentPositions = new ArrayList<>();
+        adjacentPositions.add(this.pos.translateBy(Direction.UP));
+        adjacentPositions.add(this.pos.translateBy(Direction.DOWN));
+        adjacentPositions.add(this.pos.translateBy(Direction.LEFT));
+        adjacentPositions.add(this.pos.translateBy(Direction.RIGHT));
+
+        for (Position p : adjacentPositions) {
+            List<Entity> le = dungeonInfo.getEntitiesByPosition(p);
+            for (Entity e : le) {
+                if (e instanceof Wire) {
+                    Wire w = (Wire) e;
+                    if (!w.getIsConnected()) {
+                        w.activate();
+                    }
+                }
+            }
+            
+        }
+    }
+
+    public void deactivateWire() {
+         //deactivate the wire that connect to this
+        //get a list of adjencent positions
+        List<Position> adjacentPositions = new ArrayList<>();
+        adjacentPositions.add(this.pos.translateBy(Direction.UP));
+        adjacentPositions.add(this.pos.translateBy(Direction.DOWN));
+        adjacentPositions.add(this.pos.translateBy(Direction.LEFT));
+        adjacentPositions.add(this.pos.translateBy(Direction.RIGHT));
+
+        for (Position p : adjacentPositions) {
+            List<Entity> le = dungeonInfo.getEntitiesByPosition(p);
+            for (Entity e : le) {
+                if (e instanceof Wire) {
+                    Wire w = (Wire) e;
+                    if (w.getIsConnected()) {
+                        w.deactivate();
+                    }
+                }
+            }
+            
+        }
+
+    }
+
+    public boolean isTriggeredLastTick() {
+        return isTriggeredLastTick;
+    }
+
+    public void setTriggeredLastTick(boolean isTriggeredLastTick) {
+        this.isTriggeredLastTick = isTriggeredLastTick;
+    }
+
+    
 }

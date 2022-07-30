@@ -10,6 +10,7 @@ import dungeonmania.inventoryItem.InvItem;
 import dungeonmania.inventoryItem.ItemKey;
 import dungeonmania.inventoryItem.Sunstone;
 import dungeonmania.inventoryItem.Sword;
+import dungeonmania.inventoryItem.TimeTurner;
 import dungeonmania.inventoryItem.Treasure;
 import dungeonmania.inventoryItem.Wood;
 import dungeonmania.inventoryItem.Potion.InvincibilityPotion;
@@ -23,12 +24,20 @@ public class CollectableEntity extends Entity implements Serializable{
     protected String id;
     protected String type;
     protected Position position;
+    protected String logic = "no_logic";
 
 
     public CollectableEntity(String id, String type, Position position) {
         this.id = id;
         this.type = type;
         this.position = position;
+    }
+
+    public CollectableEntity(String id, String type, Position position, String logic) {
+        this.id = id;
+        this.type = type;
+        this.position = position;
+        this.logic = logic;
     }
 
     public String getId() {
@@ -61,7 +70,11 @@ public class CollectableEntity extends Entity implements Serializable{
                 newItem = new Arrow(id);
                 break;
             case "bomb":
-                newItem = new Bomb(id, dungeonInfo.getConfigMap().get("bomb_radius"));
+                if (logic.equals("no_logic") == false) {
+                    newItem = new Bomb(id, dungeonInfo.getConfigMap().get("bomb_radius"), logic);
+                } else {
+                    newItem = new Bomb(id, dungeonInfo.getConfigMap().get("bomb_radius"));
+                }            
                 newItem.setDungeonInfo(dungeonInfo);
                 break;
             case "sword":
@@ -76,6 +89,9 @@ public class CollectableEntity extends Entity implements Serializable{
                 break;
             case "sun_stone":
                 newItem = new Sunstone(id);
+                break;
+            case "time_turner":
+                newItem = new TimeTurner(id);
                 break;
         }
         items.add(newItem);

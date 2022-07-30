@@ -10,12 +10,13 @@ import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class Door extends staticEntity implements Serializable{
-    private String id;
-    private Position pos;
-    private boolean isOpen;
-    private int key;
-    private String type = "door";
+public class Door extends staticEntity {
+    protected String id;
+    protected Position pos;
+    protected boolean isOpen;
+    protected int key;
+    protected String type = "door";
+    protected boolean canClose = true;
 
     public Door(Position position, int key, String id) {
         this.id = id;
@@ -36,6 +37,10 @@ public class Door extends staticEntity implements Serializable{
         this.isOpen = true;
     }
 
+    public void Close() {
+        this.isOpen = false;
+    }
+
     public int getKey() {
         return key;
     }
@@ -46,6 +51,11 @@ public class Door extends staticEntity implements Serializable{
  
     public String getType() {
         return type;
+    }
+
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     @Override
@@ -69,10 +79,12 @@ public class Door extends staticEntity implements Serializable{
                 if (k.getKey() == this.key){
                     this.Open(); 
                     items.remove(i);
+                    this.canClose = false;
                     break;   
                 }
             } else if (i instanceof Sunstone) {
                 this.Open();
+                this.canClose = false;
                 break;
             }
         }
