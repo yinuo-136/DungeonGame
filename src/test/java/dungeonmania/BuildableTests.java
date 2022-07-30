@@ -3,6 +3,7 @@ package dungeonmania;
 import static dungeonmania.TestUtils.getEntities;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -414,6 +415,9 @@ public class BuildableTests {
         controller.tick(dungeonmania.util.Direction.RIGHT);
         controller.tick(dungeonmania.util.Direction.RIGHT);
 
+        assertFalse(controller.getDungeonResponseModel().getBuildables().contains("sceptre"));
+
+        controller.tick(dungeonmania.util.Direction.RIGHT);
         assertTrue(controller.getDungeonResponseModel().getBuildables().contains("sceptre"));
 
         DungeonResponse response = controller.build("sceptre");
