@@ -284,6 +284,7 @@ public class BuildableTests {
         assertEquals(5, ma.getDefenseBonus());
         assertEquals(6, ma.getAttackBonus());
         assertEquals("midnight_armour", ma.getType());
+        assertEquals("midnight_armour1", ma.getId());
 
         assertEquals("midnight_armour1", ma.getItemResponse().getId());
         assertEquals("midnight_armour", ma.getItemResponse().getType());
