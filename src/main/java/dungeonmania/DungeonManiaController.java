@@ -71,6 +71,7 @@ public class DungeonManiaController {
 
     /**
      * /game/new
+     * @throws CloneNotSupportedException
      */
     public DungeonResponse newGame(String dungeonName, String configName) throws IllegalArgumentException{
         //Create a new dungeon with unique id.
@@ -134,6 +135,14 @@ public class DungeonManiaController {
         info.initSpawnConfig();
         DungeonResponse response = new DungeonResponse(dungeonId, dungeonName, entityResponses, new ArrayList<ItemResponse>(), new ArrayList<BattleResponse>(), new ArrayList<String>(), goalString);
 
+        //store the dungeonInfo for time travel when the game start(tick 0)
+        try {
+            info.storeDungeonInfo();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+            return null;
+        }
+
         return response;
     }
     
@@ -177,6 +186,12 @@ public class DungeonManiaController {
         info.moveAllMovingEntity();
         info.Spawn();
         
+        //store the dungeonInfo everytime we tick
+        try {
+            info.storeDungeonInfo();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
 
         return this.getDungeonResponseModel();
     }
@@ -193,6 +208,15 @@ public class DungeonManiaController {
         info.getPlayer().tickPlayerState();
         info.moveAllMovingEntity();
         info.Spawn();
+
+        //store the dungeonInfo everytime we tick
+        try {
+            info.storeDungeonInfo();
+        } catch (CloneNotSupportedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
         return this.getDungeonResponseModel();
     }
 
@@ -440,9 +464,11 @@ public class DungeonManiaController {
     }
 
     public DungeonResponse rewind(int ticks) throws IllegalArgumentException {
-        if (ticks <= 0) {
+        DungeonInfo info = infoMap.get(this.dungeonId);
+        if (ticks <= 0 || info.getDungeonInfoHistorySize() < ticks) {
             throw new IllegalArgumentException("tick can not be less than or equal to 0");
         }
+        info.rewind(ticks);
         return getDungeonResponseModel();
     }
 }

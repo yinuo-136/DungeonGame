@@ -39,6 +39,7 @@ import dungeonmania.movingEntity.Moving;
 import dungeonmania.movingEntity.Spider;
 import dungeonmania.movingEntity.ZombieToast;
 import dungeonmania.movingEntity.ZombieType;
+import dungeonmania.player.OlderPlayer;
 import dungeonmania.player.Player;
 import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.EntityResponse;
@@ -62,7 +63,7 @@ import dungeonmania.staticEntities.ZombieToastSpawner;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class DungeonInfo implements Serializable{
+public class DungeonInfo implements Serializable, Cloneable{
     private HashMap<String, Entity> entityMap = new HashMap<>(); // the entity map
     private HashMap<String, Integer> configMap = new HashMap<>(); // the config file map
     private List<InvItem> itemList = new ArrayList<>(); // the item list
@@ -70,6 +71,7 @@ public class DungeonInfo implements Serializable{
     private List<BattleResponse> battleList = new ArrayList<>(); // battle response list
     private List<Tick> tickList = new ArrayList<>(); // tickable entities list
     private int entityCounter = 0;
+    private DungeonInfoHistory dungeonInfoHistory = new DungeonInfoHistory();
 
     //store all entities into map
     public void storeEntitiesInMap(JSONArray arr){
@@ -83,6 +85,57 @@ public class DungeonInfo implements Serializable{
     }
 
     //helper methods
+    public int getDungeonInfoHistorySize(){
+        return this.dungeonInfoHistory.getDungeonInfoSize();
+    }
+
+    public void storeDungeonInfo() throws CloneNotSupportedException{
+        //clone the dungeonInfo and everything in it and add it to dungeonInfoHistory
+        DungeonInfo dungeonInfoClone = (DungeonInfo) this.clone();
+        // copy everything in the entityMap and put it in the dungeonInfoHistory
+        HashMap<String, Entity> entityMapClone = new HashMap<>();
+        for (String key : this.entityMap.keySet()){
+            entityMapClone.put(key, this.entityMap.get(key).clone());
+        }
+        dungeonInfoClone.setEntityMap(entityMapClone);
+        // store the dungeonInfo into the historyArray for time travel
+        dungeonInfoHistory.addDungeonInfo(dungeonInfoClone);
+    }
+
+    public void rewind(int tickBefore) {
+        int index = dungeonInfoHistory.getDungeonInfoSize() - tickBefore - 1;
+        if (index < 0) {
+            index = 0;
+        }
+
+        // get the old dungeonInfo from the historyArray
+        DungeonInfo oldDungeonInfo = dungeonInfoHistory.getDungeonInfo(index);
+        // get the player in the current dungeonInfo
+        Player player = this.getPlayer();
+        // get the player in the last dungeonInfo if there is no olderplayer in the current dungeonInfo, add a new one
+        Player playerLast = oldDungeonInfo.getPlayer();
+
+        if (this.getOlderPlayer() == null) {
+            String id = "older_player";
+            OlderPlayer olderPlayer = new OlderPlayer(id, playerLast);
+            oldDungeonInfo.getEntityMap().put(olderPlayer.getId(), olderPlayer);
+            oldDungeonInfo.replacePlayer(player);
+        } else {
+            // get the older player in the last dungeonInfo
+            OlderPlayer olderPlayer = this.getOlderPlayer();
+            // set the older player to the player in the current dungeonInfo
+            olderPlayer.setPos(playerLast.getPos());
+        }
+        // set the dungeonInfo to the current dungeonInfo
+        this.entityMap = oldDungeonInfo.entityMap;
+        this.configMap = oldDungeonInfo.configMap;
+        this.itemList = oldDungeonInfo.itemList;
+        this.dungeonGoal = oldDungeonInfo.dungeonGoal;
+        this.battleList = oldDungeonInfo.battleList;
+        this.tickList = oldDungeonInfo.tickList;
+        this.entityCounter = oldDungeonInfo.entityCounter;
+        this.dungeonInfoHistory = oldDungeonInfo.dungeonInfoHistory;
+    }
 
     //create an entity class in terms of the type.
     public Entity createEntity(JSONObject json, String id, DungeonInfo info){
@@ -279,6 +332,26 @@ public class DungeonInfo implements Serializable{
             }
         }
         return null;
+    }
+
+    public OlderPlayer getOlderPlayer(){
+        for (Entity e : entityMap.values()){
+            if (e.getType().equals("older_player")){
+                OlderPlayer p = (OlderPlayer) e;
+                return p;
+            }
+        }
+        return null;
+    }
+
+    public void replacePlayer(Player newPlayer){
+        for (Entity e : entityMap.values()){
+            if (e.getType().equals("player")){
+                entityMap.remove(e.getId());
+                entityMap.put(newPlayer.getId(), newPlayer);
+                return;
+            }
+        }
     }
 
     public HashMap<String, Entity> getEntityMap() {
@@ -558,4 +631,9 @@ public class DungeonInfo implements Serializable{
             }
         }
     }
+
+    public void setEntityMap(HashMap<String, Entity> entityMap) {
+        this.entityMap = entityMap;
+    }
+    
 }
