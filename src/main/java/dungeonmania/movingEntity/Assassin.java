@@ -36,7 +36,7 @@ public class Assassin extends Entity implements Moving, MercenaryType, Serializa
         this.damage = dungeonInfo.getSpecificConfig("assassin_attack");
         this.costToBribe = dungeonInfo.getSpecificConfig("assassin_bribe_amount");
         this.bribeRadius = dungeonInfo.getSpecificConfig("bribe_radius");
-        this.bribe_fail_rate = dungeonInfo.getSpecificConfigDouble("assassin_bribe_fail_rate");
+        this.bribe_fail_rate = (double) dungeonInfo.getSpecificConfig("assassin_bribe_fail_rate") / 100.0;
         this.assassin_recon_radius = dungeonInfo.getSpecificConfig("assassin_recon_radius");
     }
 
