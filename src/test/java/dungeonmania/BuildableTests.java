@@ -1,18 +1,26 @@
 package dungeonmania;
-import java.util.List;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+
+import static dungeonmania.TestUtils.getEntities;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import dungeonmania.DungeonManiaController;
+
+import java.util.List;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
 import dungeonmania.buildableEntity.Bow;
-import dungeonmania.buildableEntity.Shield;
-import dungeonmania.buildableEntity.Sceptre;
 import dungeonmania.buildableEntity.MidnightArmour;
+import dungeonmania.buildableEntity.Sceptre;
+import dungeonmania.buildableEntity.Shield;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.ItemResponse;
+import dungeonmania.util.Direction;
+import dungeonmania.util.Position;
 
 public class BuildableTests {
     @Test
@@ -406,6 +414,9 @@ public class BuildableTests {
         controller.tick(dungeonmania.util.Direction.RIGHT);
         controller.tick(dungeonmania.util.Direction.RIGHT);
 
+        assertFalse(controller.getDungeonResponseModel().getBuildables().contains("sceptre"));
+
+        controller.tick(dungeonmania.util.Direction.RIGHT);
         assertTrue(controller.getDungeonResponseModel().getBuildables().contains("sceptre"));
 
         DungeonResponse response = controller.build("sceptre");
@@ -418,4 +429,107 @@ public class BuildableTests {
         assertTrue(succeed);
     }
 
+    @Test
+    @DisplayName("Test Sceptre Mind control works with Mercenary")
+    public void testSceptreMindControlMercernary() throws IllegalArgumentException, InvalidActionException{
+        // test if mercenary can be bribe and its behaviour after bribed
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_build_sceptre_mercenary", "c_buildableTest_testSceptre");
+        Position pos = getEntities(res, "mercenary").get(0).getPosition();
+        Position expectedPosition = pos.translateBy(Direction.LEFT);
+
+        //Gather crafting materials
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
+        
+        res = dmc.tick(Direction.RIGHT);
+        expectedPosition = expectedPosition.translateBy(Direction.LEFT);
+        assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
+        
+        res = dmc.tick(Direction.RIGHT);
+        expectedPosition = expectedPosition.translateBy(Direction.LEFT);
+        assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
+
+        //Build Sceptre
+        assertDoesNotThrow(() -> dmc.build("sceptre"));
+
+        //Mind control the Mercenary
+        String mercenaryId = getEntities(res, "mercenary").get(0).getId();
+        res = assertDoesNotThrow(() -> dmc.interact(mercenaryId));
+
+        //Move and make sure Mercenary is bribed
+        res = dmc.tick(Direction.LEFT);
+        expectedPosition = expectedPosition.translateBy(Direction.LEFT);
+        assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
+        assertFalse(getEntities(res, "mercenary").get(0).isInteractable());
+
+        res = dmc.tick(Direction.LEFT);
+        expectedPosition = expectedPosition.translateBy(Direction.LEFT);
+        assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
+        assertFalse(getEntities(res, "mercenary").get(0).isInteractable());
+
+        res = dmc.tick(Direction.LEFT);
+        expectedPosition = expectedPosition.translateBy(Direction.LEFT);
+        assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
+        assertFalse(getEntities(res, "mercenary").get(0).isInteractable());
+
+        ////Move and make sure Mercenary is no longer bribed
+        res = dmc.tick(Direction.LEFT);
+        expectedPosition = expectedPosition.translateBy(Direction.LEFT);
+        assertEquals(expectedPosition, getEntities(res, "mercenary").get(0).getPosition());
+        assertTrue(getEntities(res, "mercenary").get(0).isInteractable());
+}
+
+    @Test
+    @DisplayName("Test Sceptre Mind control works with Assassin")
+    public void testSceptreMindControlAssassin() throws IllegalArgumentException, InvalidActionException{
+        // Test if Sceptre Mind Control works and that it lasts for the current time 
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_build_sceptre_assassin", "c_buildableTest_testSceptre");
+        Position pos = getEntities(res, "assassin").get(0).getPosition();
+        Position expectedPosition = pos.translateBy(Direction.LEFT);
+
+        //Gather crafting materials
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(expectedPosition, getEntities(res, "assassin").get(0).getPosition());
+        
+        res = dmc.tick(Direction.RIGHT);
+        expectedPosition = expectedPosition.translateBy(Direction.LEFT);
+        assertEquals(expectedPosition, getEntities(res, "assassin").get(0).getPosition());
+        
+        res = dmc.tick(Direction.RIGHT);
+        expectedPosition = expectedPosition.translateBy(Direction.LEFT);
+        assertEquals(expectedPosition, getEntities(res, "assassin").get(0).getPosition());
+        
+        //Build Sceptre
+        assertDoesNotThrow(() -> dmc.build("sceptre"));
+
+        //Mind Control the Assassin
+        String assassinId = getEntities(res, "assassin").get(0).getId();
+        res = assertDoesNotThrow(() -> dmc.interact(assassinId));
+
+        //Move and make sure Assassin is bribed
+        res = dmc.tick(Direction.LEFT);
+        expectedPosition = expectedPosition.translateBy(Direction.LEFT);
+        assertEquals(expectedPosition, getEntities(res, "assassin").get(0).getPosition());
+        assertFalse(getEntities(res, "assassin").get(0).isInteractable());
+
+        res = dmc.tick(Direction.LEFT);
+        expectedPosition = expectedPosition.translateBy(Direction.LEFT);
+        assertEquals(expectedPosition, getEntities(res, "assassin").get(0).getPosition());
+        assertFalse(getEntities(res, "assassin").get(0).isInteractable());
+
+        res = dmc.tick(Direction.LEFT);
+        expectedPosition = expectedPosition.translateBy(Direction.LEFT);
+        assertEquals(expectedPosition, getEntities(res, "assassin").get(0).getPosition());
+        assertFalse(getEntities(res, "assassin").get(0).isInteractable());
+
+        ////Move and make sure Assassin is no longer bribed
+        res = dmc.tick(Direction.LEFT);
+        expectedPosition = expectedPosition.translateBy(Direction.LEFT);
+        assertEquals(expectedPosition, getEntities(res, "assassin").get(0).getPosition());
+        assertTrue(getEntities(res, "assassin").get(0).isInteractable());
+
+
+    }
 }
