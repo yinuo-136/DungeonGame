@@ -122,6 +122,9 @@ public class timeTravelTest {
 
         pos = getEntities(DungonRes, "boulder").get(0).getPosition();
         assertEquals(new Position(2, 0), pos);
+
+        oldPlayerPos = getEntities(DungonRes, "older_player").get(0).getPosition();
+        assertEquals(new Position(1, 0), oldPlayerPos);
     }
 
     @Test

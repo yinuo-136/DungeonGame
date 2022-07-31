@@ -135,10 +135,10 @@ public class DungeonInfo implements Serializable, Cloneable{
     }
 
     public void removeOlderPlayerIfExist(){
-        // remove all older_player in the entityMap
-        for (String key : this.entityMap.keySet()){
-            if (this.entityMap.get(key) instanceof OlderPlayer){
-                this.entityMap.remove(key);
+        for (Entity e : entityMap.values()){
+            if (e instanceof OlderPlayer){
+                entityMap.remove(e.getId());
+                return;
             }
         }
     }
@@ -156,6 +156,7 @@ public class DungeonInfo implements Serializable, Cloneable{
         if (index < 0) {
             index = 0;
             timeTravelledTick.set(dungeonInfoHistory.getDungeonInfoSize() - 1);
+            timeTravelCounter.set(dungeonInfoHistory.getDungeonInfoSize() - 1);
         }
 
         // get the old dungeonInfo from the historyArray
