@@ -43,6 +43,14 @@ public class Hydra extends Entity implements Moving, ZombieType, Serializable {
 
     @Override
     public void setHealth(double health) {
+        if (health < this.health) {
+            int rate = (int)(hydra_health_increase_rate * 100);
+            Random rand = new Random();
+            if (rand.nextInt(100) < rate) {
+                this.health += hydra_health_increase_amount;
+                return;
+            }
+        }
         this.health = health;
     }
 

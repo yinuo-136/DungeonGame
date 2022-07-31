@@ -24,9 +24,6 @@ public class DungeonGenerator {
                 DungeonArray[i][j] = false;
         }
     }
-    public Boolean[][] getarray() {
-        return DungeonArray; 
-    }
     public List<EntityResponse> generate(){
         int start_x;
         int start_y;
@@ -155,7 +152,7 @@ public class DungeonGenerator {
         if (start_x == 0)
             end_x = width - 1;
         else
-            end_x = 1;
+            end_x = 0;
         if (start_y == 0)
             end_y = height - 1;
         else
@@ -163,43 +160,37 @@ public class DungeonGenerator {
         if (DungeonArray[end_y][end_x] == false)
             DungeonArray[end_y][end_x] = true;
         List<Position> neighbours = new ArrayList<>();
-        // all cardinal neighbour of distance 2
-        // above 2
-        if (end_y - 2 >= 0 ) {
-            if (DungeonArray[end_y - 2][end_x] == false)
-                neighbours.add(new Position(end_x, end_y - 2));
+        // all cardinal neighbour of distance 1
+        // above 1
+        if (end_y - 1 >= 0 ) {
+            if (DungeonArray[end_y - 1][end_x] == false)
+                neighbours.add(new Position(end_x, end_y - 1));
         }
-        // right 2
-        if (end_x + 2 < width) {
-            if (DungeonArray[end_y][end_x + 2] == false)
-                neighbours.add(new Position(end_x + 2, end_y));
+        // right 1
+        if (end_x + 1 < width) {
+            if (DungeonArray[end_y][end_x + 1] == false)
+                neighbours.add(new Position(end_x + 1, end_y));
         }
-        // left 2
-        if (end_x - 2 >= 0) {
-            if (DungeonArray[end_y][end_x - 2] == false)
-                neighbours.add(new Position(end_x - 2, end_y));
+        // left 1
+        if (end_x - 1 >= 0) {
+            if (DungeonArray[end_y][end_x - 1] == false)
+                neighbours.add(new Position(end_x - 1, end_y));
         }
-        // below 2
-        if (end_y + 2 < height) {
-            if (DungeonArray[end_y + 2][end_x] == false)
-                neighbours.add(new Position(end_x, end_y + 2));
+        // below 1
+        if (end_y + 1 < height) {
+            if (DungeonArray[end_y + 1][end_x] == false)
+                neighbours.add(new Position(end_x, end_y + 1));
         }
-        Boolean has_empty_neighbour = false;
-        for (Position neighbour : neighbours) {
-            if(DungeonArray[neighbour.getY()][neighbour.getX()] == true)
-                has_empty_neighbour = true;
-        }
-        if (has_empty_neighbour == false && neighbours.size() != 0) {
+        if (neighbours.size() != 0) {
             Random random = new Random();
             Position neighbour_to_make_empty = neighbours.get(random.nextInt(neighbours.size()));
             DungeonArray[neighbour_to_make_empty.getY()][neighbour_to_make_empty.getX()] = true;
         }
         List<EntityResponse>  entities = new ArrayList<>();
         int id = 2;
-        
         for (int i = 0; i < height + 2; i++) {
             for (int j = 0; j < width + 2; j++) {
-                Position current_pos = new Position(start.getX() + (j - 1), start.getY() + (i - 1));
+                Position current_pos = new Position(start.getX() + (j - 1), start.getY() + (i - 1), 0);
                 if (i == 0 || i == height + 1 || j == 0 || j == width + 1){
                     entities.add(new EntityResponse( String.valueOf(id), "wall", current_pos, false));
                     id ++;
@@ -210,31 +201,29 @@ public class DungeonGenerator {
                         id ++;
                     }
                 }
+                
             }
         }
+
         entities.add(new EntityResponse("0", "player", start, false));
         entities.add(new EntityResponse("1", "exit", end, false));
-        return entities;
+        return entities; 
     }
-    /*
+    public Boolean[][] getDungeonArray() {
+        return DungeonArray;
+    }
     public static void main(String[] args) {
-        DungeonGenerator gen = new DungeonGenerator(new Position(0, 0), new Position(10, 10));
-        List<EntityResponse> response = gen.generate();
-        Boolean[][] printer = new Boolean [13][13];
-        for (EntityResponse entity : response) {
-            if (entity.getType() == wall
-        }
-        Boolean[][] printer = gen.getarray();
-        for (int i = 0; i < 11; i ++) {
-            for (int j = 0; j < 11; j ++) {
-                if (printer[i][j] == false)
+        DungeonGenerator gen = new DungeonGenerator(new Position(0, 0), new Position(7, 7));
+        gen.generate();
+        Boolean [][] array = gen.getDungeonArray();
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (array[i][j] == false)
                     System.out.print("[W]");
                 else
                     System.out.print("[ ]");
             }
-            System.out.println();
+            System.out.println("");
         }
-        
     }
-    */
 }
