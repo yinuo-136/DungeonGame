@@ -1,5 +1,6 @@
 package dungeonmania.staticEntities;
 
+import dungeonmania.DungeonInfo;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
@@ -16,7 +17,9 @@ public class TimeTravellingPortal extends staticEntity{
 
     @Override
     public Position playerMoveIn(Position p, Direction d) {
-        return this.pos;
+        DungeonInfo info = getDungeonInfo();
+        info.rewind(29);
+        return info.getPlayer().getPos();
     }
 
     @Override

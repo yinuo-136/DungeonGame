@@ -1,6 +1,7 @@
 package dungeonmania;
 
 import dungeonmania.buildableEntity.BuildableFactory;
+import dungeonmania.buildableEntity.Sceptre;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.goal.Goal;
 import dungeonmania.goal.basicGoal.exitGoal;
@@ -70,6 +71,7 @@ public class DungeonManiaController {
 
     /**
      * /game/new
+     * @throws CloneNotSupportedException
      */
     public DungeonResponse newGame(String dungeonName, String configName) throws IllegalArgumentException{
         //Create a new dungeon with unique id.
@@ -133,6 +135,14 @@ public class DungeonManiaController {
         info.initSpawnConfig();
         DungeonResponse response = new DungeonResponse(dungeonId, dungeonName, entityResponses, new ArrayList<ItemResponse>(), new ArrayList<BattleResponse>(), new ArrayList<String>(), goalString);
 
+        //store the dungeonInfo for time travel when the game start(tick 0)
+        try {
+            info.storeDungeonInfo();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+            return null;
+        }
+
         return response;
     }
     
@@ -176,6 +186,12 @@ public class DungeonManiaController {
         info.moveAllMovingEntity();
         info.Spawn();
         
+        //store the dungeonInfo everytime we tick
+        try {
+            info.storeDungeonInfo();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
 
         return this.getDungeonResponseModel();
     }
@@ -192,6 +208,15 @@ public class DungeonManiaController {
         info.getPlayer().tickPlayerState();
         info.moveAllMovingEntity();
         info.Spawn();
+
+        //store the dungeonInfo everytime we tick
+        try {
+            info.storeDungeonInfo();
+        } catch (CloneNotSupportedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
         return this.getDungeonResponseModel();
     }
 
@@ -235,6 +260,13 @@ public class DungeonManiaController {
         }
 
         if(e instanceof MercenaryType){
+            //Bribes MercenaryType with sceptre if available
+            if (info.getNumInvItemType("sceptre")>0) {
+                ((MercenaryType) e).mindControl(info);
+
+                return this.getDungeonResponseModel();
+            }
+
             int amount = ((MercenaryType)e).getCostToBribe();
             // check if the player is within the bribe radius
             if (((MercenaryType) e).checkBribeDistance(info.getPlayer()) == false) {
@@ -432,9 +464,11 @@ public class DungeonManiaController {
     }
 
     public DungeonResponse rewind(int ticks) throws IllegalArgumentException {
-        if (ticks <= 0) {
+        DungeonInfo info = infoMap.get(this.dungeonId);
+        if (ticks <= 0 || info.getDungeonInfoHistorySize() < ticks) {
             throw new IllegalArgumentException("tick can not be less than or equal to 0");
         }
+        info.rewind(ticks);
         return getDungeonResponseModel();
     }
 }

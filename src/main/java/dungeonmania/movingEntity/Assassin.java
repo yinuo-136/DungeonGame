@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Random;
 
+import dungeonmania.DungeonInfo;
 import dungeonmania.Entity;
+import dungeonmania.buildableEntity.Sceptre;
 import dungeonmania.player.Player;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Position;
@@ -25,6 +27,7 @@ public class Assassin extends Entity implements Moving, MercenaryType, Serializa
     private static int bribedDamage;
     private boolean bribed = false;
     private MoveFactorCounter moveFactorCounter = null;
+    private int mindControlDuration = -1;
 
     public Assassin(Position position, String id) {
         this.id = id;
@@ -105,6 +108,19 @@ public class Assassin extends Entity implements Moving, MercenaryType, Serializa
             currentState.move(this);
             moveFactorCounter = null;
         }
+
+        //Increment Mind Control
+        if (mindControlDuration == -1) {return;} 
+        else if (mindControlDuration == 0) {
+            this.revertStrategy();
+            this.bribed = false;
+            this.damage = dungeonInfo.getSpecificConfig("assassin_attack");
+            this.mindControlDuration = -1;
+            return;
+        } else {
+            this.mindControlDuration--;
+            return;
+        }
     }
     @Override
     public List<String> getEntitiesStringByPosition(Position pos) {
@@ -129,8 +145,7 @@ public class Assassin extends Entity implements Moving, MercenaryType, Serializa
 
     @Override
     public EntityResponse getEntityResponse() {
-        EntityResponse response = new EntityResponse(id, type, getPos(), false);
-        return response;
+        return new EntityResponse(id, type, position, !(bribed));
     }
 
     public void setStrategy(MercenaryMovingStrategy strategy) {
@@ -162,5 +177,17 @@ public class Assassin extends Entity implements Moving, MercenaryType, Serializa
     public void setPlayerInvincibleStrategy() {
         prevState = currentState;
         setStrategy(new RunAwayStrategy());
+    }
+
+    @Override
+    public void mindControl(DungeonInfo dungeonInfo) {
+        List<String> sceptreList = dungeonInfo.getInvItemIdsListByType("sceptre");
+        mindControlDuration = ((Sceptre) dungeonInfo.getItemById(sceptreList.get(0))).getDuration();
+        
+        prevState = currentState;
+        currentState = new BribedStrategy();
+        damage = bribedDamage;
+        bribed = true;
+        
     }
 }
