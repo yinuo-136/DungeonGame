@@ -117,15 +117,6 @@ public class DungeonInfo implements Serializable, Cloneable{
         HashMap<String, Entity> entityMapClone = new HashMap<>();
         for (String key : this.entityMap.keySet()){
             entityMapClone.put(key, this.entityMap.get(key).clone());
-            // if (this.entityMap.get(key) instanceof Player) {
-            //     Player playerClone = (Player) this.entityMap.get(key).clone();
-            //     Player player = (Player) this.entityMap.get(key);
-            //     playerClone.setPos(new Position (player.getPos().getX(), player.getPos().getY()));
-            //     entityMapClone.put(key, playerClone);
-            // } else {
-            //     entityMapClone.put(key, this.entityMap.get(key).clone());
-
-            // }
         }
         dungeonInfoClone.setEntityMap(entityMapClone);
         dungeonInfoClone.setTimeTravelCounter(timeTravelCounter);
