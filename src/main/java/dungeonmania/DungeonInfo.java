@@ -137,6 +137,7 @@ public class DungeonInfo implements Serializable, Cloneable{
     }
 
     public void removeOlderPlayerIfExist(){
+        // remove all older_player in the entityMap
         for (String key : this.entityMap.keySet()){
             if (this.entityMap.get(key) instanceof OlderPlayer){
                 this.entityMap.remove(key);
@@ -166,7 +167,7 @@ public class DungeonInfo implements Serializable, Cloneable{
         // get the player in the last dungeonInfo if there is no olderplayer in the current dungeonInfo, add a new one
         Player playerLast = oldDungeonInfo.getPlayer();
 
-        if (this.getOlderPlayer() == null) {
+        if (oldDungeonInfo.getOlderPlayer() == null) {
             String id = "older_player";
             OlderPlayer olderPlayer = new OlderPlayer(id, playerLast);
             oldDungeonInfo.getEntityMap().put(olderPlayer.getId(), olderPlayer);
