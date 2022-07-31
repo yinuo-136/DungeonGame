@@ -331,16 +331,46 @@ public class DungeonInfo implements Serializable, Cloneable{
     } 
 
     // set config
-    public void setConfigs(JSONObject config){
-        //Default Values for backwards compatibility
-        configMap.put("mind_control_duration", 3);
-        configMap.put("midnight_armour_attack", 2);
-        configMap.put("midnight_armour_defence", 2);
+    public void setConfigs(JSONObject config){    
 
         for (String keyString : config.keySet()){
-            int configValue = config.getInt(keyString);
+            int configValue;
+            if (keyString == "assassin_bribe_fail_rate" || keyString == "hydra_health_increase_rate") {
+                double double_configValue = config.getDouble(keyString) * 100;
+                configValue = (int) double_configValue;
+            }
+            else
+                configValue = config.getInt(keyString);
+            
             configMap.put(keyString, configValue);
         }
+        //m3 config Values for backwards compatibility
+        if (configMap.get("mind_control_duration") == null)
+            configMap.put("mind_control_duration", 3);
+        if (configMap.get("midnight_armour_attack") == null)
+            configMap.put("midnight_armour_attack", 2);
+        if (configMap.get("midnight_armour_defence") == null)
+            configMap.put("midnight_armour_defence", 2);
+        if (configMap.get("hydra_attack") == null) 
+            configMap.put("hydra_attack", 10);
+        if (configMap.get("hydra_health") == null)
+            configMap.put("hydra_health", 10);
+        if (configMap.get("hydra_health_increase_amount") == null)
+            configMap.put("hydra_health_increase_amount", 1);
+        if (configMap.get("hydra_health_increase_rate") == null)
+            configMap.put("hydra_health_increase_rate", 50);
+        if (configMap.get("hydra_spawn_rate") == null)
+            configMap.put("hydra_spawn_rate", 0);
+        if (configMap.get("assassin_attack") == null)
+            configMap.put("assassin_attack", 10);
+        if (configMap.get("assassin_bribe_amount") == null)
+            configMap.put("assassin_bribe_amount", 1);
+        if (configMap.get("assassin_bribe_fail_rate") == null)
+            configMap.put("assassin_bribe_fail_rate", 30);
+        if (configMap.get("assassin_health") == null)
+            configMap.put("assassin_health", 10);
+        if (configMap.get("assassin_recon_radius") == null)
+            configMap.put("assassin_recon_radius", 5);
     }
 
     public int getSpecificConfig(String name){
