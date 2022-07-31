@@ -136,6 +136,14 @@ public class DungeonInfo implements Serializable, Cloneable{
         dungeonInfoHistory.addDungeonInfo(dungeonInfoClone);
     }
 
+    public void removeOlderPlayerIfExist(){
+        for (String key : this.entityMap.keySet()){
+            if (this.entityMap.get(key) instanceof OlderPlayer){
+                this.entityMap.remove(key);
+            }
+        }
+    }
+
     // get the dungeon from history based on the tickbefore,then overlap the current dungeon with the dungeon from history
     public void rewind(int tickBefore) {
         if (timeTravelCounter.get() == 0) {
@@ -145,7 +153,6 @@ public class DungeonInfo implements Serializable, Cloneable{
         if (timeTravelCounter.get() > 0) {
             timeTravelCounter.getAndDecrement();
         }
-        int dungeoninfoHistorySize = this.dungeonInfoHistory.getDungeonInfoSize();
         int index = dungeonInfoHistory.getDungeonInfoSize() - tickBefore - 1;
         if (index < 0) {
             index = 0;

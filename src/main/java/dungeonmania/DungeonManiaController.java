@@ -180,6 +180,8 @@ public class DungeonManiaController {
         }
         if (info.getTimeTravelCounter() > 0) {
             rewind(info.getTimeTravelledTick());
+        } else {
+            info.removeOlderPlayerIfExist();
         }
         
         info.updateActives();
@@ -208,6 +210,8 @@ public class DungeonManiaController {
 
         if (info.getTimeTravelCounter() > 0) {
             rewind(info.getTimeTravelledTick());
+        } else {
+            info.removeOlderPlayerIfExist();
         }
 
         //trigger player movement
