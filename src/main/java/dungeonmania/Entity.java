@@ -5,7 +5,7 @@ import java.io.Serializable;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Position;
 
-public abstract class Entity implements Serializable{
+public abstract class Entity implements Serializable, Cloneable{
     protected DungeonInfo dungeonInfo;
     public abstract String getId();
     public abstract String getType();
@@ -22,5 +22,15 @@ public abstract class Entity implements Serializable{
 
     public DungeonInfo getDungeonInfo(){
         return dungeonInfo;
+    }
+
+    //clone the entity
+    public Entity clone(){
+        try{
+            return (Entity) super.clone();
+        }catch(CloneNotSupportedException e){
+            e.printStackTrace();
+            return null;
+        }
     }
 }

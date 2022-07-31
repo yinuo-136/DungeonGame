@@ -8,6 +8,7 @@ import dungeonmania.response.models.ItemResponse;
 public class TimeTurner implements InvItem, Serializable{
     private String id;
     private String type = "time_turner";
+    private DungeonInfo info;
 
     public TimeTurner(String id) {
         this.id = id;
@@ -15,8 +16,7 @@ public class TimeTurner implements InvItem, Serializable{
 
     @Override
     public void use() {
-        // TODO Auto-generated method stub
-        
+        //info.rewind(1);
     }
 
     @Override
@@ -26,7 +26,7 @@ public class TimeTurner implements InvItem, Serializable{
 
     @Override
     public void setDungeonInfo(DungeonInfo dungeonInfo) {
-        
+        info = dungeonInfo;
     }
 
     @Override
