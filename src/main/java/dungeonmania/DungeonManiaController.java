@@ -178,6 +178,12 @@ public class DungeonManiaController {
             //check exceptions
             throw new IllegalArgumentException("not usable item");
         }
+        if (info.getTimeTravelCounter() > 0) {
+            rewind(info.getTimeTravelledTick());
+        } else {
+            info.removeOlderPlayerIfExist();
+        }
+        
         info.updateActives();
         InvItem item = info.getItemById(itemUsedId);      
         item.use();
@@ -201,6 +207,13 @@ public class DungeonManiaController {
      */
     public DungeonResponse tick(Direction movementDirection) {
         DungeonInfo info = infoMap.get(this.dungeonId);
+
+        if (info.getTimeTravelCounter() > 0) {
+            rewind(info.getTimeTravelledTick());
+        } else {
+            info.removeOlderPlayerIfExist();
+        }
+
         //trigger player movement
         info.updateActives();
         info.movePLayer(movementDirection);
@@ -209,11 +222,11 @@ public class DungeonManiaController {
         info.moveAllMovingEntity();
         info.Spawn();
 
+
         //store the dungeonInfo everytime we tick
         try {
             info.storeDungeonInfo();
         } catch (CloneNotSupportedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         

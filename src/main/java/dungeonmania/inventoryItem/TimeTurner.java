@@ -17,6 +17,7 @@ public class TimeTurner implements InvItem, Serializable{
     @Override
     public void use() {
         //info.rewind(1);
+        info.removeInvItemById(id);
     }
 
     @Override
