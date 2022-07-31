@@ -1,6 +1,7 @@
 package dungeonmania;
 
 import dungeonmania.buildableEntity.BuildableFactory;
+import dungeonmania.buildableEntity.Sceptre;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.goal.Goal;
 import dungeonmania.goal.basicGoal.exitGoal;
@@ -259,6 +260,13 @@ public class DungeonManiaController {
         }
 
         if(e instanceof MercenaryType){
+            //Bribes MercenaryType with sceptre if available
+            if (info.getNumInvItemType("sceptre")>0) {
+                ((MercenaryType) e).mindControl(info);
+
+                return this.getDungeonResponseModel();
+            }
+
             int amount = ((MercenaryType)e).getCostToBribe();
             // check if the player is within the bribe radius
             if (((MercenaryType) e).checkBribeDistance(info.getPlayer()) == false) {
