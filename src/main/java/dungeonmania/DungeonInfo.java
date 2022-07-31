@@ -1,10 +1,13 @@
 package dungeonmania;
 
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.io.Serializable;
 import java.io.ObjectInputFilter.Config;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -73,6 +76,9 @@ public class DungeonInfo implements Serializable, Cloneable{
     private int entityCounter = 0;
     private DungeonInfoHistory dungeonInfoHistory = new DungeonInfoHistory();
 
+    private AtomicInteger timeTravelCounter = new AtomicInteger(0);
+    private AtomicInteger timeTravelledTick = new AtomicInteger(0);
+
     //store all entities into map
     public void storeEntitiesInMap(JSONArray arr){
         for (int i = 0; i < arr.length(); i++){
@@ -85,10 +91,27 @@ public class DungeonInfo implements Serializable, Cloneable{
     }
 
     //helper methods
+    public int getTimeTravelCounter() {
+        return timeTravelCounter.get();
+    }
+
+    public void setTimeTravelCounter(AtomicInteger timeTravelCounter) {
+        this.timeTravelCounter = timeTravelCounter;
+    }
+
+    public int getTimeTravelledTick() {
+        return timeTravelledTick.get();
+    }
+
+    public void setTimeTravelledTick(AtomicInteger timeTravelledTick) {
+        this.timeTravelledTick = timeTravelledTick;
+    }
+
     public int getDungeonInfoHistorySize(){
         return this.dungeonInfoHistory.getDungeonInfoSize();
     }
 
+    //Store the dungeon info history
     public void storeDungeonInfo() throws CloneNotSupportedException{
         //clone the dungeonInfo and everything in it and add it to dungeonInfoHistory
         DungeonInfo dungeonInfoClone = (DungeonInfo) this.clone();
@@ -96,16 +119,37 @@ public class DungeonInfo implements Serializable, Cloneable{
         HashMap<String, Entity> entityMapClone = new HashMap<>();
         for (String key : this.entityMap.keySet()){
             entityMapClone.put(key, this.entityMap.get(key).clone());
+            // if (this.entityMap.get(key) instanceof Player) {
+            //     Player playerClone = (Player) this.entityMap.get(key).clone();
+            //     Player player = (Player) this.entityMap.get(key);
+            //     playerClone.setPos(new Position (player.getPos().getX(), player.getPos().getY()));
+            //     entityMapClone.put(key, playerClone);
+            // } else {
+            //     entityMapClone.put(key, this.entityMap.get(key).clone());
+
+            // }
         }
         dungeonInfoClone.setEntityMap(entityMapClone);
+        dungeonInfoClone.setTimeTravelCounter(timeTravelCounter);
+        dungeonInfoClone.setTimeTravelledTick(timeTravelledTick);
         // store the dungeonInfo into the historyArray for time travel
         dungeonInfoHistory.addDungeonInfo(dungeonInfoClone);
     }
 
+    // get the dungeon from history based on the tickbefore,then overlap the current dungeon with the dungeon from history
     public void rewind(int tickBefore) {
+        if (timeTravelCounter.get() == 0) {
+            timeTravelCounter.set(tickBefore + 1);
+            timeTravelledTick.set(tickBefore + 1);
+        }
+        if (timeTravelCounter.get() > 0) {
+            timeTravelCounter.getAndDecrement();
+        }
+        int dungeoninfoHistorySize = this.dungeonInfoHistory.getDungeonInfoSize();
         int index = dungeonInfoHistory.getDungeonInfoSize() - tickBefore - 1;
         if (index < 0) {
             index = 0;
+            timeTravelledTick.set(dungeonInfoHistory.getDungeonInfoSize() - 1);
         }
 
         // get the old dungeonInfo from the historyArray
@@ -119,12 +163,14 @@ public class DungeonInfo implements Serializable, Cloneable{
             String id = "older_player";
             OlderPlayer olderPlayer = new OlderPlayer(id, playerLast);
             oldDungeonInfo.getEntityMap().put(olderPlayer.getId(), olderPlayer);
+            //replace the player in the old dungeon with the player in current dungeon
             oldDungeonInfo.replacePlayer(player);
         } else {
             // get the older player in the last dungeonInfo
             OlderPlayer olderPlayer = this.getOlderPlayer();
             // set the older player to the player in the current dungeonInfo
             olderPlayer.setPos(playerLast.getPos());
+            oldDungeonInfo.replacePlayer(player);
         }
         // set the dungeonInfo to the current dungeonInfo
         this.entityMap = oldDungeonInfo.entityMap;
@@ -135,6 +181,8 @@ public class DungeonInfo implements Serializable, Cloneable{
         this.tickList = oldDungeonInfo.tickList;
         this.entityCounter = oldDungeonInfo.entityCounter;
         this.dungeonInfoHistory = oldDungeonInfo.dungeonInfoHistory;
+        this.timeTravelCounter = oldDungeonInfo.timeTravelCounter;
+        this.timeTravelledTick = oldDungeonInfo.timeTravelledTick;
     }
 
     //create an entity class in terms of the type.
