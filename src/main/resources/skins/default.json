@@ -2,7 +2,10 @@
     "main_menu": {
         "background_image": "images/backgrounds/main_menu.png",
         "text_color": "white",
-        "background_music": "audio/MenuMusic1.mp3"
+        "background_music": {
+            "audio/MenuMusic1.mp3" : 2,
+            "audio/MenuMusic2.mp3" : 2
+        }
     },
     "game": {
         "background_image": {
@@ -13,7 +16,12 @@
         },
         "resolution_px": 16,
         "item_box": "images/ui/box.png",
-        "text_color": "white"
+        "text_color": "white",
+        "background_music": {
+            "audio/GameMusic1.mp3" : 2,
+            "audio/GameMusic2.mp3" : 2,
+            "audio/GameMusic3.mp3" : 8
+        }
     },
     "entities": {
         "boulder": "images/tileset/entities/boulder_00.png",
